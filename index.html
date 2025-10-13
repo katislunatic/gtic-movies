@@ -84,7 +84,6 @@
       box-shadow:0 6px 16px rgba(229,9,20,0.4);
     }
 
-    /* Main page styles remain unchanged */
     .wrap {
       max-width:var(--max-width);
       margin:36px auto;
@@ -161,14 +160,10 @@
     <footer>Tip: You can play any movie directly inside this page by clicking Watch.</footer>
   </div>
 
-<div id="playerOverlay">
-  <iframe 
-      id="movieFrame" 
-      allowfullscreen 
-      sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation allow-forms">
-  </iframe>
-  <button id="closePlayer">✖ Close</button>
-</div>
+  <div id="playerOverlay">
+    <iframe id="movieFrame" allowfullscreen></iframe>
+    <button id="closePlayer">✖ Close</button>
+  </div>
 
   <script>
     const correctPassword = "GTICMOVIES6741";
@@ -191,7 +186,6 @@
       if (e.key === 'Enter') pwBtn.click();
     });
 
-    // ---- Movie hub JS ----
     const movies = [
       { title:"Dog Man",rating:"PG",desc:"Animated chaos from the Captain Underpants universe — silly humor and easy laughs.",link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview"},
       { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy — part horror, part meme material.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview"},
@@ -241,20 +235,16 @@
         const watch=document.createElement('button');
         watch.className='btn btn-watch';
         watch.textContent='🎥 Watch';
-watch.onclick = () => {
-  const testFrame = document.createElement('iframe');
-  testFrame.src = m.link;
-  testFrame.style.display = 'none';
-  document.body.appendChild(testFrame);
-  testFrame.onload = () => {
-    overlayPlayer.style.display = 'flex';
-    frame.src = m.link;
-    document.body.removeChild(testFrame);
-  };
-  testFrame.onerror = () => {
-    window.open(m.link, '_blank'); // fallback: open in new tab if iframe blocked
-  };
-};
+        watch.onclick = () => {
+          const blockedDomains = ['nextgencloudtools.com', 'embed.nextgencloudtools.com'];
+          const url = new URL(m.link);
+          if (blockedDomains.includes(url.hostname)) {
+            window.open(m.link, '_blank'); // open in new tab if iframe blocked
+          } else {
+            frame.src = m.link;
+            overlayPlayer.style.display = 'flex';
+          }
+        };
 
         const info=document.createElement('button');
         info.className='btn btn-info';
