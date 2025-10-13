@@ -26,12 +26,14 @@
       color:#f7f7f7;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
     }
 
     .wrap {
       max-width:var(--max-width);
       margin:36px auto;
       padding:28px;
+      display:none; /* hidden until password is correct */
     }
 
     header {
@@ -141,23 +143,61 @@
       cursor:pointer;
     }
 
+    /* Fullscreen password overlay */
+    #passwordOverlay {
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.95);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      z-index:10000;
+    }
+    #passwordOverlay h1 {
+      font-size:36px;
+      margin-bottom:20px;
+      color:var(--accent);
+    }
+    #passwordInput {
+      padding:12px 18px;
+      font-size:18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.1);
+      background:var(--glass);
+      color:#fff;
+      outline:none;
+      width:300px;
+      text-align:center;
+    }
+    #passwordBtn {
+      margin-top:16px;
+      padding:12px 24px;
+      font-size:18px;
+      border-radius:12px;
+      border:0;
+      background:var(--accent);
+      color:white;
+      cursor:pointer;
+      font-weight:700;
+      box-shadow:0 6px 18px rgba(229,9,20,0.3);
+    }
+
     @media(max-width:520px){
       .poster{height:160px;}
       h1{font-size:20px;}
       #playerOverlay iframe {width:95%;height:70%;}
+      #passwordInput {width:200px;}
     }
   </style>
 </head>
 <body>
-  <script>
-    // Password protection
-    const password = "GTICMOVIES6741";
-    const entered = prompt("Enter password to access GTIC Movie Hub:");
-    if (entered !== password) {
-      alert("Incorrect password. Access denied.");
-      window.location.href = "about:blank";
-    }
-  </script>
+
+  <div id="passwordOverlay">
+    <h1>GTIC Movie Hub</h1>
+    <input id="passwordInput" type="password" placeholder="Enter password..." />
+    <button id="passwordBtn">Enter</button>
+  </div>
 
   <div class="wrap">
     <header>
@@ -174,128 +214,4 @@
           <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <input id="q" placeholder="Search title or description..." />
-      </div>
-
-      <select id="filter" class="select">
-        <option value="all">All ratings</option>
-        <option value="G">G</option>
-        <option value="PG">PG</option>
-        <option value="PG-13">PG-13</option>
-        <option value="R">R</option>
-      </select>
-
-      <button id="sortBtn" class="select">Sort A→Z</button>
-    </div>
-
-    <main id="movies" class="movies"></main>
-
-    <footer>Tip: You can play any movie directly inside this page by clicking Watch.</footer>
-  </div>
-
-  <div id="playerOverlay">
-    <iframe id="movieFrame" allowfullscreen sandbox="allow-scripts allow-same-origin"></iframe>
-    <button id="closePlayer">✖ Close</button>
-  </div>
-
-  <script>
-    const movies = [
-      { title:"Dog Man",rating:"PG",desc:"Animated chaos from the Captain Underpants universe — silly humor and easy laughs.",link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview"},
-      { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy — part horror, part meme material.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview"},
-      { title:"M3GAN 2.0",rating:"PG-13",desc:"Sequel vibes: more horror, more dark humor, and more meme potential.",link:"https://embed.nextgencloudtools.com/embed/movie/tt26342662"},
-      { title:"The Black Phone",rating:"R",desc:"Intense horror with tense atmosphere — best for mature audiences.",link:"https://nextgencloudtools.com/embed/movie/tt7144666/"},
-      { title:"Coco",rating:"PG",desc:"A vibrant journey through the Land of the Dead, celebrating music, family, and memory.",link:"https://drive.google.com/file/d/194M4dGCwh1hTxVM1-_axnLSdt4trnbK2/preview"},
-      { title:"The Lorax",rating:"PG",desc:"Bright colors and a 'save the trees' message.",link:"https://drive.google.com/file/d/1g6ZVlbeJ05SY5jleCqn_PMUMzevqPX6Y/preview"},
-      { title:"Captain Underpants",rating:"PG",desc:"Dumb jokes done right — nonstop laughs and nostalgia.",link:"https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/preview"},
-      { title:"Five Nights at Freddy's",rating:"PG-13",desc:"Creepy animatronics and mystery vibes.",link:"https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/preview"},
-      { title:"The Super Mario Bros. Movie",rating:"PG",desc:"Action, nostalgia, and memes.",link:"https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/preview"},
-      { title:"A Charlie Brown Christmas",rating:"G",desc:"Cozy classic with chill vibes and a sweet message.",link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview"}
-    ];
-
-    const container = document.getElementById('movies');
-    const overlay = document.getElementById('playerOverlay');
-    const frame = document.getElementById('movieFrame');
-    const closeBtn = document.getElementById('closePlayer');
-
-    function renderList(list){
-      container.innerHTML = '';
-      if(list.length===0){
-        container.innerHTML='<p style="color:var(--muted);">No movies found.</p>';
-        return;
-      }
-      list.forEach(m=>{
-        const card=document.createElement('article');
-        card.className='card';
-        const poster=document.createElement('div');
-        poster.className='poster';
-        poster.textContent=m.title;
-
-        const meta=document.createElement('div');
-        meta.className='meta';
-
-        const titleRow=document.createElement('div');
-        titleRow.className='title-row';
-        titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
-
-        const desc=document.createElement('div');
-        desc.className='desc';
-        desc.textContent=m.desc;
-
-        const actions=document.createElement('div');
-        actions.className='actions';
-
-        const watch=document.createElement('button');
-        watch.className='btn btn-watch';
-        watch.textContent='🎥 Watch';
-        watch.onclick=()=>{
-          if(!m.link){alert("No link set for "+m.title);return;}
-          frame.src=m.link;
-          overlay.style.display='flex';
-        };
-
-        const info=document.createElement('button');
-        info.className='btn btn-info';
-        info.textContent='More info';
-        info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\n\n${m.desc}`);
-
-        actions.append(watch,info);
-        meta.append(titleRow,desc,actions);
-        card.append(poster,meta);
-        container.append(card);
-      });
-    }
-
-    renderList(movies);
-
-    const qEl=document.getElementById('q');
-    const fEl=document.getElementById('filter');
-    const sBtn=document.getElementById('sortBtn');
-    let sortAZ=true;
-
-    function getFiltered(){
-      const q=qEl.value.trim().toLowerCase();
-      const f=fEl.value;
-      let out=movies.filter(m=>{
-        const matchesQ=m.title.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
-        const matchesF=(f==='all')||(m.rating===f);
-        return matchesQ&&matchesF;
-      });
-      if(sortAZ) out=out.slice().sort((a,b)=>a.title.localeCompare(b.title));
-      return out;
-    }
-
-    qEl.addEventListener('input',()=>renderList(getFiltered()));
-    fEl.addEventListener('change',()=>renderList(getFiltered()));
-    sBtn.addEventListener('click',()=>{
-      sortAZ=!sortAZ;
-      sBtn.textContent=sortAZ?'Sort A→Z':'Sort Z→A';
-      renderList(getFiltered());
-    });
-
-    closeBtn.onclick=()=>{
-      overlay.style.display='none';
-      frame.src='';
-    };
-  </script>
-</body>
-</html>
+        <input
