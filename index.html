@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GTIC Movie Hub</title>
-
   <style>
     :root {
       --bg:#0b0b0d;
@@ -16,7 +15,6 @@
       --max-width:1100px;
       font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-
     html,body {
       height:100%;
       margin:0;
@@ -27,19 +25,8 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
-
-    .wrap {
-      max-width:var(--max-width);
-      margin:36px auto;
-      padding:28px;
-    }
-
-    header {
-      display:flex;
-      align-items:center;
-      gap:18px;
-      margin-bottom:18px;
-    }
+    .wrap {max-width:var(--max-width);margin:36px auto;padding:28px;}
+    header {display:flex;align-items:center;gap:18px;margin-bottom:18px;}
     .logo {
       width:64px;height:64px;border-radius:10px;
       background:linear-gradient(135deg,#ff6b6b,#ff9a9e);
@@ -49,99 +36,61 @@
     }
     h1 {margin:0;font-size:26px;letter-spacing:0.2px}
     p.lead {margin:4px 0 0;color:var(--muted);font-size:14px;}
-
-    .controls {
-      display:flex;gap:12px;margin:22px 0;
-      flex-wrap:wrap;align-items:center;
-    }
+    .controls {display:flex;gap:12px;margin:22px 0;flex-wrap:wrap;align-items:center;}
     .search {
-      flex:1;min-width:220px;
-      display:flex;align-items:center;gap:8px;
-      background:var(--glass);
-      padding:8px 12px;border-radius:10px;
+      flex:1;min-width:220px;display:flex;align-items:center;gap:8px;
+      background:var(--glass);padding:8px 12px;border-radius:10px;
       border:1px solid rgba(255,255,255,0.03);
     }
-    .search input {
-      background:transparent;border:0;outline:0;
-      color:inherit;width:100%;font-size:14px;
-    }
+    .search input {background:transparent;border:0;outline:0;color:inherit;width:100%;font-size:14px;}
     .select {
       background:transparent;color:var(--muted);
       border:1px solid rgba(255,255,255,0.04);
       padding:8px 10px;border-radius:10px;font-size:14px;
     }
-
     .movies {
       display:grid;
       grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
       gap:18px;margin-top:12px;
     }
-
     .card {
       background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
-      border-radius:var(--radius);
-      overflow:hidden;
+      border-radius:var(--radius);overflow:hidden;
       box-shadow:0 8px 24px rgba(2,6,23,0.6);
       border:1px solid rgba(255,255,255,0.02);
       display:flex;flex-direction:column;
       transition: transform .18s ease, box-shadow .18s ease;
     }
     .card:hover {transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.8);}
-    .poster {
-      height:180px;background:linear-gradient(135deg,#0f1720,#111827);
-      display:flex;align-items:center;justify-content:center;
-      color:var(--muted);font-weight:600;font-size:18px;
-    }
+    .poster {height:180px;background:linear-gradient(135deg,#0f1720,#111827);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:18px;}
     .poster img {width:100%;height:100%;object-fit:cover;display:block;}
-
     .meta {padding:14px;display:flex;gap:12px;flex-direction:column;}
     .title-row {display:flex;justify-content:space-between;align-items:center;gap:12px;}
     .title {font-size:16px;font-weight:700;margin:0;}
-    .rating {
-      background:rgba(255,255,255,0.04);
-      padding:6px 8px;border-radius:8px;
-      font-weight:700;font-size:13px;color:var(--muted);
-    }
+    .rating {background:rgba(255,255,255,0.04);padding:6px 8px;border-radius:8px;font-weight:700;font-size:13px;color:var(--muted);}
     .desc {margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.35;}
     .actions {display:flex;gap:10px;margin-top:12px;}
-    .btn {
-      padding:10px 14px;border-radius:10px;border:0;
-      cursor:pointer;font-weight:700;font-size:14px;
-    }
+    .btn {padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;font-size:14px;}
     .btn-watch {background:var(--accent);color:white;box-shadow:0 8px 18px rgba(229,9,20,0.18);}
     .btn-info {background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);}
     footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
-
     /* Overlay player */
     #playerOverlay {
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.95);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:9999;
-      flex-direction:column;
+      position:fixed;inset:0;background:rgba(0,0,0,0.95);
+      display:none;align-items:center;justify-content:center;
+      z-index:9999;flex-direction:column;
     }
     #playerOverlay iframe {
-      width:90%;
-      height:80%;
-      border:0;
-      border-radius:10px;
+      width:90%;height:80%;
+      border:0;border-radius:10px;
       box-shadow:0 0 40px rgba(0,0,0,0.8);
       background:black;
     }
     #closePlayer {
-      margin-top:20px;
-      background:var(--accent);
-      color:white;
-      border:0;
-      padding:10px 20px;
-      border-radius:10px;
-      font-weight:700;
-      cursor:pointer;
+      margin-top:20px;background:var(--accent);
+      color:white;border:0;padding:10px 20px;
+      border-radius:10px;font-weight:700;cursor:pointer;
     }
-
     @media(max-width:520px){
       .poster{height:160px;}
       h1{font-size:20px;}
@@ -186,7 +135,8 @@
 
   <!-- Overlay video player -->
   <div id="playerOverlay">
-    <iframe id="movieFrame" allowfullscreen></iframe>
+    <!-- sandboxed iframe to block popups/redirects -->
+    <iframe id="movieFrame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
     <button id="closePlayer">✖ Close</button>
   </div>
 
@@ -223,7 +173,6 @@
 
         const meta=document.createElement('div');
         meta.className='meta';
-
         const titleRow=document.createElement('div');
         titleRow.className='title-row';
         titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
@@ -234,7 +183,6 @@
 
         const actions=document.createElement('div');
         actions.className='actions';
-
         const watch=document.createElement('button');
         watch.className='btn btn-watch';
         watch.textContent='🎥 Watch';
