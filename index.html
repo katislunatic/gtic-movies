@@ -109,7 +109,7 @@
     .desc {margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.35;}
     .actions {display:flex;gap:10px;margin-top:12px;}
     .btn {padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;font-size:14px;}
-    .btn-watch {background:var(--accent);color:white;box-shadow:0 8px 18px rgba(229,9,20,0.18);}
+    .btn-watch {background:var(--accent);color:white;box-shadow:0 8px 18px rgba(229,9,20,0.18); position:relative;}
     .btn-info {background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);}
     footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
     #playerOverlay { position:fixed; inset:0; background:rgba(0,0,0,0.95); display:none; align-items:center; justify-content:center; z-index:9999; flex-direction:column; }
@@ -185,10 +185,19 @@ pwInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') pwBtn.click();
 });
 
+// All movies
 const movies = [
+  { title:"Dog Man",rating:"PG",desc:"Animated chaos from the Captain Underpants universe — silly humor and easy laughs.",link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview"},
+  { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy — part horror, part meme material.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview"},
   { title:"M3GAN 2.0",rating:"PG-13",desc:"Sequel vibes: more horror, more dark humor, and more meme potential.",link:"https://embed.nextgencloudtools.com/embed/movie/tt26342662"},
   { title:"The Black Phone",rating:"R",desc:"Intense horror with tense atmosphere — best for mature audiences.",link:"https://nextgencloudtools.com/embed/movie/tt7144666/"},
-  { title:"Dear Santa", rating:"PG", desc:"Jack Black stars in this festive comedy.", link:"https://nextgencloudtools.com/embed/movie/tt2396431/"}
+  { title:"Coco",rating:"PG",desc:"A vibrant journey through the Land of the Dead, celebrating music, family, and memory.",link:"https://drive.google.com/file/d/194M4dGCwh1hTxVM1-_axnLSdt4trnbK2/preview"},
+  { title:"The Lorax",rating:"PG",desc:"Bright colors and a 'save the trees' message.",link:"https://drive.google.com/file/d/1g6ZVlbeJ05SY5jleCqn_PMUMzevqPX6Y/preview"},
+  { title:"Captain Underpants",rating:"PG",desc:"Dumb jokes done right — nonstop laughs and nostalgia.",link:"https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/preview"},
+  { title:"Five Nights at Freddy's",rating:"PG-13",desc:"Creepy animatronics and mystery vibes.",link:"https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/preview"},
+  { title:"The Super Mario Bros. Movie",rating:"PG",desc:"Action, nostalgia, and memes.",link:"https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/preview"},
+  { title:"A Charlie Brown Christmas",rating:"G",desc:"Cozy classic with chill vibes and a sweet message.",link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview"},
+  { title:"Dear Santa", rating:"PG", desc:"Jack Black stars in this festive comedy — full of holiday chaos and laughs.", link:"https://nextgencloudtools.com/embed/movie/tt2396431/"}
 ];
 
 const container = document.getElementById('movies');
@@ -228,12 +237,11 @@ function renderList(list){
     watch.textContent='🎥 Watch';
     watch.onclick = () => {
       const url = new URL(m.link);
-      // If the link is embeddable NextGenCloudTools, play in overlay
-      if (url.hostname === 'embed.nextgencloudtools.com') {
+      if(url.hostname === 'embed.nextgencloudtools.com' || url.hostname === 'drive.google.com'){
         frame.src = m.link;
         overlayPlayer.style.display = 'flex';
       } else {
-        window.open(m.link, '_blank'); // non-embed links open in new tab
+        window.open(m.link, '_blank'); // other NextGenCloudTools links open new tab
       }
     };
 
