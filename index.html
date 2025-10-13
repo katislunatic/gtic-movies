@@ -32,6 +32,7 @@
       max-width:var(--max-width);
       margin:36px auto;
       padding:28px;
+      display:none; /* hidden until password entered */
     }
 
     header {
@@ -147,10 +148,59 @@
       h1{font-size:20px;}
       #playerOverlay iframe {width:95%;height:70%;}
     }
+
+    /* Password screen */
+    #lockScreen {
+      position:fixed;
+      inset:0;
+      background:#000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      z-index:10000;
+      color:white;
+      gap:16px;
+      font-family:Inter, sans-serif;
+    }
+    #lockScreen input {
+      padding:10px 14px;
+      border-radius:8px;
+      border:1px solid #333;
+      background:#111;
+      color:white;
+      font-size:15px;
+      outline:none;
+    }
+    #lockScreen button {
+      padding:10px 16px;
+      background:var(--accent);
+      color:white;
+      border:0;
+      border-radius:8px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .shake {
+      animation: shake 0.3s;
+    }
+    @keyframes shake {
+      0%,100% {transform:translateX(0);}
+      25% {transform:translateX(-6px);}
+      75% {transform:translateX(6px);}
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div id="lockScreen">
+    <h2>🔒 GTIC Movie Hub Access</h2>
+    <p style="color:gray;font-size:14px;">Authorized organizers only. Please enter the access password.</p>
+    <input type="password" id="passInput" placeholder="Enter password..." />
+    <button id="unlockBtn">Unlock</button>
+    <p id="errorMsg" style="color:#e50914;font-size:13px;display:none;">Incorrect password. Try again.</p>
+  </div>
+
+  <div class="wrap" id="mainContent">
     <header>
       <div class="logo">GTIC</div>
       <div>
@@ -186,11 +236,37 @@
 
   <!-- Overlay video player -->
   <div id="playerOverlay">
-    <iframe id="movieFrame" allowfullscreen></iframe>
+    <iframe id="movieFrame" sandbox="allow-scripts allow-same-origin" allowfullscreen></iframe>
     <button id="closePlayer">✖ Close</button>
   </div>
 
   <script>
+    // ---- Password Gate ----
+    const unlockBtn = document.getElementById('unlockBtn');
+    const passInput = document.getElementById('passInput');
+    const errorMsg = document.getElementById('errorMsg');
+    const lockScreen = document.getElementById('lockScreen');
+    const mainContent = document.getElementById('mainContent');
+
+    const encodedPass = btoa('GTICMOVIES6741'); // lightly encoded
+
+    unlockBtn.onclick = () => {
+      const entered = btoa(passInput.value);
+      if (entered === encodedPass) {
+        lockScreen.style.display = 'none';
+        mainContent.style.display = 'block';
+      } else {
+        errorMsg.style.display = 'block';
+        passInput.classList.add('shake');
+        setTimeout(()=>passInput.classList.remove('shake'),300);
+      }
+    };
+
+    passInput.addEventListener('keypress',e=>{
+      if(e.key==='Enter') unlockBtn.click();
+    });
+
+    // ---- Movie Logic ----
     const movies = [
       { title:"Dog Man",rating:"PG",desc:"Animated chaos from the Captain Underpants universe — silly humor and easy laughs.",link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview"},
       { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy — part horror, part meme material.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview"},
