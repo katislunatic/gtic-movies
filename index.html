@@ -241,7 +241,20 @@
         const watch=document.createElement('button');
         watch.className='btn btn-watch';
         watch.textContent='🎥 Watch';
-        watch.onclick=()=>{ frame.src=m.link; overlayPlayer.style.display='flex'; };
+watch.onclick = () => {
+  const testFrame = document.createElement('iframe');
+  testFrame.src = m.link;
+  testFrame.style.display = 'none';
+  document.body.appendChild(testFrame);
+  testFrame.onload = () => {
+    overlayPlayer.style.display = 'flex';
+    frame.src = m.link;
+    document.body.removeChild(testFrame);
+  };
+  testFrame.onerror = () => {
+    window.open(m.link, '_blank'); // fallback: open in new tab if iframe blocked
+  };
+};
 
         const info=document.createElement('button');
         info.className='btn btn-info';
