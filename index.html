@@ -5,20 +5,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GTIC Movie Hub</title>
 
-  <!-- Simple dark Netflix-style look -->
   <style>
-    :root{
+    :root {
       --bg:#0b0b0d;
       --card:#0f1113;
       --muted:#9aa3ad;
-      --accent:#e50914; /* Netflix-ish red */
+      --accent:#e50914;
       --glass: rgba(255,255,255,0.03);
       --radius:14px;
       --max-width:1100px;
       font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
 
-    html,body{
+    html,body {
       height:100%;
       margin:0;
       background:
@@ -29,164 +28,124 @@
       -moz-osx-font-smoothing:grayscale;
     }
 
-    .wrap{
+    .wrap {
       max-width:var(--max-width);
       margin:36px auto;
       padding:28px;
     }
 
-    header{
+    header {
       display:flex;
       align-items:center;
       gap:18px;
       margin-bottom:18px;
     }
-    .logo{
-      width:64px;
-      height:64px;
-      border-radius:10px;
+    .logo {
+      width:64px;height:64px;border-radius:10px;
       background:linear-gradient(135deg,#ff6b6b,#ff9a9e);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      color:#111;
-      font-size:20px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;color:#111;font-size:20px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.6);
     }
-    h1{margin:0;font-size:26px;letter-spacing:0.2px}
-    p.lead{margin:4px 0 0;color:var(--muted);font-size:14px;}
+    h1 {margin:0;font-size:26px;letter-spacing:0.2px}
+    p.lead {margin:4px 0 0;color:var(--muted);font-size:14px;}
 
-    /* search + controls */
-    .controls{
-      display:flex;
-      gap:12px;
-      margin:22px 0;
-      flex-wrap:wrap;
-      align-items:center;
+    .controls {
+      display:flex;gap:12px;margin:22px 0;
+      flex-wrap:wrap;align-items:center;
     }
-    .search{
-      flex:1;
-      min-width:220px;
-      display:flex;
-      align-items:center;
-      gap:8px;
+    .search {
+      flex:1;min-width:220px;
+      display:flex;align-items:center;gap:8px;
       background:var(--glass);
-      padding:8px 12px;
-      border-radius:10px;
+      padding:8px 12px;border-radius:10px;
       border:1px solid rgba(255,255,255,0.03);
     }
-    .search input{
-      background:transparent;
-      border:0;
-      outline:0;
-      color:inherit;
-      width:100%;
-      font-size:14px;
+    .search input {
+      background:transparent;border:0;outline:0;
+      color:inherit;width:100%;font-size:14px;
     }
-    .select{
-      background:transparent;
-      color:var(--muted);
+    .select {
+      background:transparent;color:var(--muted);
       border:1px solid rgba(255,255,255,0.04);
-      padding:8px 10px;
-      border-radius:10px;
-      font-size:14px;
+      padding:8px 10px;border-radius:10px;font-size:14px;
     }
 
-    /* grid/list */
     .movies {
       display:grid;
       grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
-      gap:18px;
-      margin-top:12px;
+      gap:18px;margin-top:12px;
     }
 
-    .card{
+    .card {
       background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
       border-radius:var(--radius);
       overflow:hidden;
-      box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+      box-shadow:0 8px 24px rgba(2,6,23,0.6);
       border:1px solid rgba(255,255,255,0.02);
-      display:flex;
-      flex-direction:column;
+      display:flex;flex-direction:column;
       transition: transform .18s ease, box-shadow .18s ease;
     }
-    .card:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px rgba(2,6,23,0.8); }
+    .card:hover {transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.8);}
+    .poster {
+      height:180px;background:linear-gradient(135deg,#0f1720,#111827);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--muted);font-weight:600;font-size:18px;
+    }
+    .poster img {width:100%;height:100%;object-fit:cover;display:block;}
 
-    .poster{
-      height:180px;
-      background: linear-gradient(135deg,#0f1720,#111827);
-      display:flex;
+    .meta {padding:14px;display:flex;gap:12px;flex-direction:column;}
+    .title-row {display:flex;justify-content:space-between;align-items:center;gap:12px;}
+    .title {font-size:16px;font-weight:700;margin:0;}
+    .rating {
+      background:rgba(255,255,255,0.04);
+      padding:6px 8px;border-radius:8px;
+      font-weight:700;font-size:13px;color:var(--muted);
+    }
+    .desc {margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.35;}
+    .actions {display:flex;gap:10px;margin-top:12px;}
+    .btn {
+      padding:10px 14px;border-radius:10px;border:0;
+      cursor:pointer;font-weight:700;font-size:14px;
+    }
+    .btn-watch {background:var(--accent);color:white;box-shadow:0 8px 18px rgba(229,9,20,0.18);}
+    .btn-info {background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);}
+    footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
+
+    /* Overlay player */
+    #playerOverlay {
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.95);
+      display:none;
       align-items:center;
       justify-content:center;
-      color:var(--muted);
-      font-weight:600;
-      font-size:18px;
-    }
-    .poster img{ width:100%; height:100%; object-fit:cover; display:block; }
-
-    .meta{
-      padding:14px;
-      display:flex;
-      gap:12px;
+      z-index:9999;
       flex-direction:column;
     }
-    .title-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-    }
-    .title{ font-size:16px; font-weight:700; margin:0; }
-    .rating{
-      background: rgba(255,255,255,0.04);
-      padding:6px 8px;
-      border-radius:8px;
-      font-weight:700;
-      font-size:13px;
-      color:var(--muted);
-    }
-    .desc{
-      margin:8px 0 0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.35;
-    }
-
-    .actions{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-    }
-    .btn{
-      padding:10px 14px;
-      border-radius:10px;
+    #playerOverlay iframe {
+      width:90%;
+      height:80%;
       border:0;
-      cursor:pointer;
-      font-weight:700;
-      font-size:14px;
+      border-radius:10px;
+      box-shadow:0 0 40px rgba(0,0,0,0.8);
+      background:black;
     }
-    .btn-watch{
+    #closePlayer {
+      margin-top:20px;
       background:var(--accent);
       color:white;
-      box-shadow: 0 8px 18px rgba(229,9,20,0.18);
-    }
-    .btn-info{
-      background:transparent;
-      color:var(--muted);
-      border:1px solid rgba(255,255,255,0.03);
-    }
-
-    footer{
-      margin-top:28px;
-      color:var(--muted);
-      font-size:13px;
-      text-align:center;
+      border:0;
+      padding:10px 20px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
     }
 
-    @media (max-width:520px){
-      .poster{ height:160px; }
-      h1{ font-size:20px; }
+    @media(max-width:520px){
+      .poster{height:160px;}
+      h1{font-size:20px;}
+      #playerOverlay iframe {width:95%;height:70%;}
     }
   </style>
 </head>
@@ -196,17 +155,20 @@
       <div class="logo">GTIC</div>
       <div>
         <h1>🎬 GTIC Movie Hub</h1>
-        <p class="lead">Scroll the library — each card has the rating, short description, and a "Watch" button that opens the Drive link in a new tab (if set).</p>
+        <p class="lead">Scroll the library — each card has the rating, short description, and a "Watch" button that plays it inside the site.</p>
       </div>
     </header>
 
-    <div class="controls" role="region" aria-label="controls">
-      <div class="search" aria-hidden="false">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.7"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
-        <input id="q" placeholder="Search title or description..." aria-label="Search movies" />
+    <div class="controls">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.7">
+          <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input id="q" placeholder="Search title or description..." />
       </div>
 
-      <select id="filter" class="select" aria-label="Filter by rating">
+      <select id="filter" class="select">
         <option value="all">All ratings</option>
         <option value="G">G</option>
         <option value="PG">PG</option>
@@ -214,215 +176,117 @@
         <option value="R">R</option>
       </select>
 
-      <button id="sortBtn" class="select" title="Sort alphabetically">Sort A→Z</button>
+      <button id="sortBtn" class="select">Sort A→Z</button>
     </div>
 
-    <main id="movies" class="movies" aria-live="polite"></main>
+    <main id="movies" class="movies"></main>
 
-    <footer>
-      Tip: To enable a Watch button for a movie, edit the `movies` array in the script and set `link` to your Google Drive file URL (make sure sharing is "Anyone with the link can view").
-    </footer>
+    <footer>Tip: You can play any movie directly inside this page by clicking Watch.</footer>
+  </div>
+
+  <!-- Overlay video player -->
+  <div id="playerOverlay">
+    <iframe id="movieFrame" allowfullscreen></iframe>
+    <button id="closePlayer">✖ Close</button>
   </div>
 
   <script>
-    // Movie data - replace poster: '' with poster image URLs if you have them.
-    // To enable the Watch button for a movie, set link to your Drive URL (e.g. "https://drive.google.com/file/d/FILEID/view")
     const movies = [
-      {
-        title: "Dog Man",
-        rating: "PG",
-        poster: "",
-        desc: "Animated chaos from the Captain Underpants universe — silly humor and easy laughs. Perfect for a chill GTIC hangout.",
-        link: "https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/view"
-      },
-      {
-        title: "M3GAN",
-        rating: "PG-13",
-        poster: "",
-        desc: "Creepy doll meets comedy — part horror, part meme material. Great Halloween-style watch for the group.",
-        link: "https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/view"
-      },
-      {
-        title: "M3GAN 2.0",
-        rating: "PG-13",
-        poster: "",
-        desc: "Sequel vibes: more horror, more dark humor, and more meme potential. Add your private Drive link to enable watching.",
-        link: ""  // <-- Add your Drive link here when ready
-      },
-      {
-        title: "The Black Phone",
-        rating: "R",
-        poster: "",
-        desc: "Intense horror with tense atmosphere — best for mature audiences. Add your Drive link to enable watching.",
-        link: ""  // <-- Add your Drive link here when ready
-      },
-      {
-        title: "The Lorax",
-        rating: "PG",
-        poster: "",
-        desc: "Bright colors and a 'save the trees' message — funny, family-friendly, and chill for movie night.",
-        link: "https://drive.google.com/file/d/1g6ZVlbeJ05SY5jleCqn_PMUMzevqPX6Y/view"
-      },
-      {
-        title: "Captain Underpants",
-        rating: "PG",
-        poster: "",
-        desc: "Dumb jokes done right — nonstop laughs and nostalgia. Great when the server wants to keep it light.",
-        link: "https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/view"
-      },
-      {
-        title: "Five Nights at Freddy's",
-        rating: "PG-13",
-        poster: "",
-        desc: "Creepy animatronics and mystery vibes. Good horror pick that’s spooky but not over-the-top for the group.",
-        link: "https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/view?pli=1"
-      },
-      {
-        title: "The Super Mario Bros. Movie",
-        rating: "PG",
-        poster: "",
-        desc: "Action, nostalgia, and memes — a crowd favorite for gamers and families alike.",
-        link: "https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/view"
-      },
-      {
-        title: "A Charlie Brown Christmas",
-        rating: "G",
-        poster: "",
-        desc: "Cozy classic with chill vibes and a sweet message — perfect for the holiday season.",
-        link: "https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/view?t=2"
-      }
+      { title:"Dog Man",rating:"PG",desc:"Animated chaos from the Captain Underpants universe — silly humor and easy laughs.",link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview"},
+      { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy — part horror, part meme material.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview"},
+      { title:"M3GAN 2.0",rating:"PG-13",desc:"Sequel vibes: more horror, more dark humor, and more meme potential.",link:"https://embed.nextgencloudtools.com/embed/movie/tt26342662"},
+      { title:"The Black Phone",rating:"R",desc:"Intense horror with tense atmosphere — best for mature audiences.",link:"https://nextgencloudtools.com/embed/movie/tt7144666/"},
+      { title:"The Lorax",rating:"PG",desc:"Bright colors and a 'save the trees' message.",link:"https://drive.google.com/file/d/1g6ZVlbeJ05SY5jleCqn_PMUMzevqPX6Y/preview"},
+      { title:"Captain Underpants",rating:"PG",desc:"Dumb jokes done right — nonstop laughs and nostalgia.",link:"https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/preview"},
+      { title:"Five Nights at Freddy's",rating:"PG-13",desc:"Creepy animatronics and mystery vibes.",link:"https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/preview"},
+      { title:"The Super Mario Bros. Movie",rating:"PG",desc:"Action, nostalgia, and memes.",link:"https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/preview"},
+      { title:"A Charlie Brown Christmas",rating:"G",desc:"Cozy classic with chill vibes and a sweet message.",link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview"}
     ];
 
-    // Render cards
     const container = document.getElementById('movies');
+    const overlay = document.getElementById('playerOverlay');
+    const frame = document.getElementById('movieFrame');
+    const closeBtn = document.getElementById('closePlayer');
+
     function renderList(list){
       container.innerHTML = '';
-      if(list.length === 0){
-        container.innerHTML = '<p style="color:var(--muted);">No movies found.</p>';
+      if(list.length===0){
+        container.innerHTML='<p style="color:var(--muted);">No movies found.</p>';
         return;
       }
-      list.forEach(m => {
-        const card = document.createElement('article');
-        card.className = 'card';
+      list.forEach(m=>{
+        const card=document.createElement('article');
+        card.className='card';
+        const poster=document.createElement('div');
+        poster.className='poster';
+        poster.textContent=m.title;
 
-        const poster = document.createElement('div');
-        poster.className = 'poster';
-        if(m.poster){
-          const img = document.createElement('img');
-          img.src = m.poster;
-          img.alt = m.title + " poster";
-          poster.appendChild(img);
-        } else {
-          // placeholder with title initials
-          poster.innerHTML = '<div style="padding:10px;text-align:center;color:var(--muted);font-weight:700;">' + (m.title) + '</div>';
-        }
+        const meta=document.createElement('div');
+        meta.className='meta';
 
-        const meta = document.createElement('div');
-        meta.className = 'meta';
+        const titleRow=document.createElement('div');
+        titleRow.className='title-row';
+        titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
 
-        const titleRow = document.createElement('div');
-        titleRow.className = 'title-row';
+        const desc=document.createElement('div');
+        desc.className='desc';
+        desc.textContent=m.desc;
 
-        const title = document.createElement('h3');
-        title.className = 'title';
-        title.textContent = m.title;
+        const actions=document.createElement('div');
+        actions.className='actions';
 
-        const rating = document.createElement('div');
-        rating.className = 'rating';
-        rating.textContent = m.rating;
-
-        titleRow.appendChild(title);
-        titleRow.appendChild(rating);
-
-        const desc = document.createElement('div');
-        desc.className = 'desc';
-        desc.textContent = m.desc;
-
-        const actions = document.createElement('div');
-        actions.className = 'actions';
-
-        const watch = document.createElement('button');
-        watch.className = 'btn btn-watch';
-        watch.textContent = '🎥 Watch';
-        watch.onclick = () => {
-          if(!m.link || typeof m.link !== 'string' || m.link.trim() === ""){
-            alert("No watch link set for \"" + m.title + "\".\n\nTo enable watching from the site, edit the `movies` array in the script and set `link` to your Google Drive file URL (make sure Drive sharing is 'Anyone with the link can view').");
-            return;
-          }
-          // basic safety check — do not auto-open suspicious embed hosts
-          try {
-            const url = new URL(m.link);
-            // allow drive.google.com links only (recommended). If you want other private links, replace this check.
-            if(url.hostname.includes('drive.google.com') || url.hostname.includes('docs.google.com')){
-              window.open(m.link, '_blank', 'noopener');
-            } else {
-              // If you intentionally use another host, it will still open but we warn first
-              if(confirm("The link for \"" + m.title + "\" is hosted on " + url.hostname + ". Open it?")){
-                window.open(m.link, '_blank', 'noopener');
-              }
-            }
-          } catch(e){
-            window.open(m.link, '_blank', 'noopener');
-          }
+        const watch=document.createElement('button');
+        watch.className='btn btn-watch';
+        watch.textContent='🎥 Watch';
+        watch.onclick=()=>{
+          if(!m.link){alert("No link set for "+m.title);return;}
+          frame.src=m.link;
+          overlay.style.display='flex';
         };
 
-        const info = document.createElement('button');
-        info.className = 'btn btn-info';
-        info.textContent = 'More info';
-        info.onclick = () => {
-          alert(m.title + "\n\nRating: " + m.rating + "\n\n" + m.desc + "\n\n(Click 'Watch' to open the link in a new tab if a link is set.)");
-        };
+        const info=document.createElement('button');
+        info.className='btn btn-info';
+        info.textContent='More info';
+        info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\n\n${m.desc}`);
 
-        actions.appendChild(watch);
-        actions.appendChild(info);
-
-        meta.appendChild(titleRow);
-        meta.appendChild(desc);
-        meta.appendChild(actions);
-
-        card.appendChild(poster);
-        card.appendChild(meta);
-
-        container.appendChild(card);
+        actions.append(watch,info);
+        meta.append(titleRow,desc,actions);
+        card.append(poster,meta);
+        container.append(card);
       });
     }
 
-    // initial render
     renderList(movies);
 
-    // searching + filtering + sort
-    const qEl = document.getElementById('q');
-    const filterEl = document.getElementById('filter');
-    const sortBtn = document.getElementById('sortBtn');
-    let sortAZ = true;
+    const qEl=document.getElementById('q');
+    const fEl=document.getElementById('filter');
+    const sBtn=document.getElementById('sortBtn');
+    let sortAZ=true;
 
     function getFiltered(){
-      const q = qEl.value.trim().toLowerCase();
-      const f = filterEl.value;
-      let out = movies.filter(m=>{
-        const matchesQ = m.title.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q);
-        const matchesF = (f === 'all') || (m.rating === f);
-        return matchesQ && matchesF;
+      const q=qEl.value.trim().toLowerCase();
+      const f=fEl.value;
+      let out=movies.filter(m=>{
+        const matchesQ=m.title.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
+        const matchesF=(f==='all')||(m.rating===f);
+        return matchesQ&&matchesF;
       });
-      if(sortAZ) out = out.slice().sort((a,b)=> a.title.localeCompare(b.title));
+      if(sortAZ) out=out.slice().sort((a,b)=>a.title.localeCompare(b.title));
       return out;
     }
 
-    qEl.addEventListener('input', ()=> renderList(getFiltered()));
-    filterEl.addEventListener('change', ()=> renderList(getFiltered()));
-    sortBtn.addEventListener('click', ()=>{
-      sortAZ = !sortAZ;
-      sortBtn.textContent = sortAZ ? 'Sort A→Z' : 'Sort Z→A';
+    qEl.addEventListener('input',()=>renderList(getFiltered()));
+    fEl.addEventListener('change',()=>renderList(getFiltered()));
+    sBtn.addEventListener('click',()=>{
+      sortAZ=!sortAZ;
+      sBtn.textContent=sortAZ?'Sort A→Z':'Sort Z→A';
       renderList(getFiltered());
     });
 
-    // accessible keyboard support: press Enter on search to focus first watch button
-    qEl.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter'){
-        const firstWatch = document.querySelector('.btn-watch');
-        if(firstWatch) firstWatch.focus();
-      }
-    });
+    closeBtn.onclick=()=>{
+      overlay.style.display='none';
+      frame.src='';
+    };
   </script>
 </body>
 </html>
