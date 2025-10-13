@@ -161,10 +161,14 @@
     <footer>Tip: You can play any movie directly inside this page by clicking Watch.</footer>
   </div>
 
-  <div id="playerOverlay">
-    <iframe id="movieFrame" allowfullscreen sandbox="allow-scripts allow-same-origin"></iframe>
-    <button id="closePlayer">✖ Close</button>
-  </div>
+<div id="playerOverlay">
+  <iframe 
+      id="movieFrame" 
+      allowfullscreen 
+      sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation allow-forms">
+  </iframe>
+  <button id="closePlayer">✖ Close</button>
+</div>
 
   <script>
     const correctPassword = "GTICMOVIES6741";
