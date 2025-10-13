@@ -120,175 +120,166 @@
 </head>
 <body>
 
-  <!-- Password Overlay -->
-  <div id="passwordOverlay">
+<div id="passwordOverlay">
+  <div class="logo">GTIC</div>
+  <h2>Enter Password to Access GTIC Movie Hub</h2>
+  <input type="password" id="pwInput" placeholder="Password" />
+  <button id="pwBtn">Enter</button>
+</div>
+
+<div class="wrap" id="mainContent" style="display:none;">
+  <header>
     <div class="logo">GTIC</div>
-    <h2>Enter Password to Access GTIC Movie Hub</h2>
-    <input type="password" id="pwInput" placeholder="Password" />
-    <button id="pwBtn">Enter</button>
-  </div>
-
-  <div class="wrap" id="mainContent" style="display:none;">
-    <header>
-      <div class="logo">GTIC</div>
-      <div>
-        <h1>🎬 GTIC Movie Hub</h1>
-        <p class="lead">Scroll the library — each card has the rating, short description, and a "Watch" button that plays it inside the site.</p>
-      </div>
-    </header>
-
-    <div class="controls">
-      <div class="search">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.7">
-          <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <input id="q" placeholder="Search title or description..." />
-      </div>
-      <select id="filter" class="select">
-        <option value="all">All ratings</option>
-        <option value="G">G</option>
-        <option value="PG">PG</option>
-        <option value="PG-13">PG-13</option>
-        <option value="R">R</option>
-      </select>
-      <button id="sortBtn" class="select">Sort A→Z</button>
+    <div>
+      <h1>🎬 GTIC Movie Hub</h1>
+      <p class="lead">Scroll the library — each card has the rating, short description, and a "Watch" button that plays it inside the site.</p>
     </div>
+  </header>
 
-    <main id="movies" class="movies"></main>
-
-    <footer>Tip: You can play any movie directly inside this page by clicking Watch.</footer>
+  <div class="controls">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.7">
+        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <input id="q" placeholder="Search title or description..." />
+    </div>
+    <select id="filter" class="select">
+      <option value="all">All ratings</option>
+      <option value="G">G</option>
+      <option value="PG">PG</option>
+      <option value="PG-13">PG-13</option>
+      <option value="R">R</option>
+    </select>
+    <button id="sortBtn" class="select">Sort A→Z</button>
   </div>
 
-  <div id="playerOverlay">
-    <iframe id="movieFrame" allowfullscreen></iframe>
-    <button id="closePlayer">✖ Close</button>
-  </div>
+  <main id="movies" class="movies"></main>
 
-  <script>
-    const correctPassword = "GTICMOVIES6741";
-    const overlay = document.getElementById('passwordOverlay');
-    const mainContent = document.getElementById('mainContent');
-    const pwInput = document.getElementById('pwInput');
-    const pwBtn = document.getElementById('pwBtn');
+  <footer>Tip: You can play any movie directly inside this page by clicking Watch.</footer>
+</div>
 
-    pwBtn.addEventListener('click', () => {
-      if (pwInput.value === correctPassword) {
-        overlay.classList.add('hidden');
-        mainContent.style.display = 'block';
+<div id="playerOverlay">
+  <iframe id="movieFrame" allowfullscreen></iframe>
+  <button id="closePlayer">✖ Close</button>
+</div>
+
+<script>
+const correctPassword = "GTICMOVIES6741";
+const overlay = document.getElementById('passwordOverlay');
+const mainContent = document.getElementById('mainContent');
+const pwInput = document.getElementById('pwInput');
+const pwBtn = document.getElementById('pwBtn');
+
+pwBtn.addEventListener('click', () => {
+  if (pwInput.value === correctPassword) {
+    overlay.classList.add('hidden');
+    mainContent.style.display = 'block';
+  } else {
+    alert("Incorrect password. Access denied.");
+    pwInput.value = '';
+  }
+});
+
+pwInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') pwBtn.click();
+});
+
+const movies = [
+  { title:"M3GAN 2.0",rating:"PG-13",desc:"Sequel vibes: more horror, more dark humor, and more meme potential.",link:"https://embed.nextgencloudtools.com/embed/movie/tt26342662"},
+  { title:"The Black Phone",rating:"R",desc:"Intense horror with tense atmosphere — best for mature audiences.",link:"https://nextgencloudtools.com/embed/movie/tt7144666/"},
+  { title:"Dear Santa", rating:"PG", desc:"Jack Black stars in this festive comedy.", link:"https://nextgencloudtools.com/embed/movie/tt2396431/"}
+];
+
+const container = document.getElementById('movies');
+const overlayPlayer = document.getElementById('playerOverlay');
+const frame = document.getElementById('movieFrame');
+const closeBtn = document.getElementById('closePlayer');
+
+function renderList(list){
+  container.innerHTML = '';
+  if(list.length===0){
+    container.innerHTML='<p style="color:var(--muted);">No movies found.</p>';
+    return;
+  }
+  list.forEach(m=>{
+    const card=document.createElement('article');
+    card.className='card';
+    const poster=document.createElement('div');
+    poster.className='poster';
+    poster.textContent=m.title;
+
+    const meta=document.createElement('div');
+    meta.className='meta';
+
+    const titleRow=document.createElement('div');
+    titleRow.className='title-row';
+    titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
+
+    const desc=document.createElement('div');
+    desc.className='desc';
+    desc.textContent=m.desc;
+
+    const actions=document.createElement('div');
+    actions.className='actions';
+
+    const watch=document.createElement('button');
+    watch.className='btn btn-watch';
+    watch.textContent='🎥 Watch';
+    watch.onclick = () => {
+      const url = new URL(m.link);
+      // If the link is embeddable NextGenCloudTools, play in overlay
+      if (url.hostname === 'embed.nextgencloudtools.com') {
+        frame.src = m.link;
+        overlayPlayer.style.display = 'flex';
       } else {
-        alert("Incorrect password. Access denied.");
-        pwInput.value = '';
+        window.open(m.link, '_blank'); // non-embed links open in new tab
       }
-    });
-
-    pwInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') pwBtn.click();
-    });
-
-    const movies = [
-      { title:"Dog Man",rating:"PG",desc:"Animated chaos from the Captain Underpants universe — silly humor and easy laughs.",link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview"},
-      { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy — part horror, part meme material.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview"},
-      { title:"M3GAN 2.0",rating:"PG-13",desc:"Sequel vibes: more horror, more dark humor, and more meme potential.",link:"https://embed.nextgencloudtools.com/embed/movie/tt26342662"},
-      { title:"The Black Phone",rating:"R",desc:"Intense horror with tense atmosphere — best for mature audiences.",link:"https://nextgencloudtools.com/embed/movie/tt7144666/"},
-      { title:"Coco",rating:"PG",desc:"A vibrant journey through the Land of the Dead, celebrating music, family, and memory.",link:"https://drive.google.com/file/d/194M4dGCwh1hTxVM1-_axnLSdt4trnbK2/preview"},
-      { title:"The Lorax",rating:"PG",desc:"Bright colors and a 'save the trees' message.",link:"https://drive.google.com/file/d/1g6ZVlbeJ05SY5jleCqn_PMUMzevqPX6Y/preview"},
-      { title:"Captain Underpants",rating:"PG",desc:"Dumb jokes done right — nonstop laughs and nostalgia.",link:"https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/preview"},
-      { title:"Five Nights at Freddy's",rating:"PG-13",desc:"Creepy animatronics and mystery vibes.",link:"https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/preview"},
-      { title:"The Super Mario Bros. Movie",rating:"PG",desc:"Action, nostalgia, and memes.",link:"https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/preview"},
-      { title:"A Charlie Brown Christmas",rating:"G",desc:"Cozy classic with chill vibes and a sweet message.",link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview"},
-      { title:"Dear Santa", rating:"PG", desc:"Jack Black stars in this festive comedy — full of holiday chaos and laughs.", link:"https://nextgencloudtools.com/embed/movie/tt2396431/"}
-    ];
-
-    const container = document.getElementById('movies');
-    const overlayPlayer = document.getElementById('playerOverlay');
-    const frame = document.getElementById('movieFrame');
-    const closeBtn = document.getElementById('closePlayer');
-
-    function renderList(list){
-      container.innerHTML = '';
-      if(list.length===0){
-        container.innerHTML='<p style="color:var(--muted);">No movies found.</p>';
-        return;
-      }
-      list.forEach(m=>{
-        const card=document.createElement('article');
-        card.className='card';
-        const poster=document.createElement('div');
-        poster.className='poster';
-        poster.textContent=m.title;
-
-        const meta=document.createElement('div');
-        meta.className='meta';
-
-        const titleRow=document.createElement('div');
-        titleRow.className='title-row';
-        titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
-
-        const desc=document.createElement('div');
-        desc.className='desc';
-        desc.textContent=m.desc;
-
-        const actions=document.createElement('div');
-        actions.className='actions';
-
-        const watch=document.createElement('button');
-        watch.className='btn btn-watch';
-        watch.textContent='🎥 Watch';
-        watch.onclick = () => {
-          const blockedDomains = ['nextgencloudtools.com', 'embed.nextgencloudtools.com'];
-          const url = new URL(m.link);
-          if (blockedDomains.includes(url.hostname)) {
-            window.open(m.link, '_blank'); // open in new tab if iframe blocked
-          } else {
-            frame.src = m.link;
-            overlayPlayer.style.display = 'flex';
-          }
-        };
-
-        const info=document.createElement('button');
-        info.className='btn btn-info';
-        info.textContent='More info';
-        info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\n\n${m.desc}`);
-
-        actions.append(watch,info);
-        meta.append(titleRow,desc,actions);
-        card.append(poster,meta);
-        container.append(card);
-      });
-    }
-
-    renderList(movies);
-
-    const qEl=document.getElementById('q');
-    const fEl=document.getElementById('filter');
-    const sBtn=document.getElementById('sortBtn');
-    let sortAZ=true;
-
-    function getFiltered(){
-      const q=qEl.value.trim().toLowerCase();
-      const f=fEl.value;
-      let out=movies.filter(m=>{
-        const matchesQ=m.title.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
-        const matchesF=(f==='all')||(m.rating===f);
-        return matchesQ&&matchesF;
-      });
-      if(sortAZ) out=out.slice().sort((a,b)=>a.title.localeCompare(b.title));
-      return out;
-    }
-
-    qEl.addEventListener('input',()=>renderList(getFiltered()));
-    fEl.addEventListener('change',()=>renderList(getFiltered()));
-    sBtn.addEventListener('click',()=>{
-      sortAZ=!sortAZ;
-      sBtn.textContent=sortAZ?'Sort A→Z':'Sort Z→A';
-      renderList(getFiltered());
-    });
-
-    closeBtn.onclick=()=>{
-      overlayPlayer.style.display='none';
-      frame.src='';
     };
-  </script>
+
+    const info=document.createElement('button');
+    info.className='btn btn-info';
+    info.textContent='More info';
+    info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\n\n${m.desc}`);
+
+    actions.append(watch,info);
+    meta.append(titleRow,desc,actions);
+    card.append(poster,meta);
+    container.append(card);
+  });
+}
+
+renderList(movies);
+
+const qEl=document.getElementById('q');
+const fEl=document.getElementById('filter');
+const sBtn=document.getElementById('sortBtn');
+let sortAZ=true;
+
+function getFiltered(){
+  const q=qEl.value.trim().toLowerCase();
+  const f=fEl.value;
+  let out=movies.filter(m=>{
+    const matchesQ=m.title.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
+    const matchesF=(f==='all')||(m.rating===f);
+    return matchesQ&&matchesF;
+  });
+  if(sortAZ) out=out.slice().sort((a,b)=>a.title.localeCompare(b.title));
+  return out;
+}
+
+qEl.addEventListener('input',()=>renderList(getFiltered()));
+fEl.addEventListener('change',()=>renderList(getFiltered()));
+sBtn.addEventListener('click',()=>{
+  sortAZ=!sortAZ;
+  sBtn.textContent=sortAZ?'Sort A→Z':'Sort Z→A';
+  renderList(getFiltered());
+});
+
+closeBtn.onclick=()=>{
+  overlayPlayer.style.display='none';
+  frame.src='';
+};
+</script>
 </body>
 </html>
