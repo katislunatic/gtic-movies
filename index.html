@@ -112,7 +112,6 @@
     .btn-info {background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);}
     footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
 
-    /* Overlay player */
     #playerOverlay {
       position:fixed;
       inset:0;
@@ -150,6 +149,16 @@
   </style>
 </head>
 <body>
+  <script>
+    // Password protection
+    const password = "GTICMOVIES6741";
+    const entered = prompt("Enter password to access GTIC Movie Hub:");
+    if (entered !== password) {
+      alert("Incorrect password. Access denied.");
+      window.location.href = "about:blank";
+    }
+  </script>
+
   <div class="wrap">
     <header>
       <div class="logo">GTIC</div>
@@ -184,9 +193,8 @@
     <footer>Tip: You can play any movie directly inside this page by clicking Watch.</footer>
   </div>
 
-  <!-- Overlay video player -->
   <div id="playerOverlay">
-    <iframe id="movieFrame" allowfullscreen></iframe>
+    <iframe id="movieFrame" allowfullscreen sandbox="allow-scripts allow-same-origin"></iframe>
     <button id="closePlayer">✖ Close</button>
   </div>
 
@@ -196,6 +204,7 @@
       { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy — part horror, part meme material.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview"},
       { title:"M3GAN 2.0",rating:"PG-13",desc:"Sequel vibes: more horror, more dark humor, and more meme potential.",link:"https://embed.nextgencloudtools.com/embed/movie/tt26342662"},
       { title:"The Black Phone",rating:"R",desc:"Intense horror with tense atmosphere — best for mature audiences.",link:"https://nextgencloudtools.com/embed/movie/tt7144666/"},
+      { title:"Coco",rating:"PG",desc:"A vibrant journey through the Land of the Dead, celebrating music, family, and memory.",link:"https://drive.google.com/file/d/194M4dGCwh1hTxVM1-_axnLSdt4trnbK2/preview"},
       { title:"The Lorax",rating:"PG",desc:"Bright colors and a 'save the trees' message.",link:"https://drive.google.com/file/d/1g6ZVlbeJ05SY5jleCqn_PMUMzevqPX6Y/preview"},
       { title:"Captain Underpants",rating:"PG",desc:"Dumb jokes done right — nonstop laughs and nostalgia.",link:"https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/preview"},
       { title:"Five Nights at Freddy's",rating:"PG-13",desc:"Creepy animatronics and mystery vibes.",link:"https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/preview"},
