@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GTIC Movie Hub</title>
+
+  <!-- Simple dark Netflix-style look -->
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --card:#0f1113;
+      --muted:#9aa3ad;
+      --accent:#e50914; /* Netflix-ish red */
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      --max-width:1100px;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(229,9,20,0.06), transparent 6%),
+        linear-gradient(180deg, #071018 0%, var(--bg) 100%);
+      color:#f7f7f7;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .wrap{
+      max-width:var(--max-width);
+      margin:36px auto;
+      padding:28px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:18px;
+    }
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:10px;
+      background:linear-gradient(135deg,#ff6b6b,#ff9a9e);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#111;
+      font-size:20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    }
+    h1{margin:0;font-size:26px;letter-spacing:0.2px}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:14px;}
+
+    /* search + controls */
+    .controls{
+      display:flex;
+      gap:12px;
+      margin:22px 0;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .search{
+      flex:1;
+      min-width:220px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .search input{
+      background:transparent;
+      border:0;
+      outline:0;
+      color:inherit;
+      width:100%;
+      font-size:14px;
+    }
+    .select{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:14px;
+    }
+
+    /* grid/list */
+    .movies {
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
+      gap:18px;
+      margin-top:12px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      flex-direction:column;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px rgba(2,6,23,0.8); }
+
+    .poster{
+      height:180px;
+      background: linear-gradient(135deg,#0f1720,#111827);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-weight:600;
+      font-size:18px;
+    }
+    .poster img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .meta{
+      padding:14px;
+      display:flex;
+      gap:12px;
+      flex-direction:column;
+    }
+    .title-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .title{ font-size:16px; font-weight:700; margin:0; }
+    .rating{
+      background: rgba(255,255,255,0.04);
+      padding:6px 8px;
+      border-radius:8px;
+      font-weight:700;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .desc{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.35;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:700;
+      font-size:14px;
+    }
+    .btn-watch{
+      background:var(--accent);
+      color:white;
+      box-shadow: 0 8px 18px rgba(229,9,20,0.18);
+    }
+    .btn-info{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    footer{
+      margin-top:28px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+    }
+
+    @media (max-width:520px){
+      .poster{ height:160px; }
+      h1{ font-size:20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">GTIC</div>
+      <div>
+        <h1>🎬 GTIC Movie Hub</h1>
+        <p class="lead">Scroll the library — each card has the rating, short description, and a "Watch" button that opens the Drive link in a new tab.</p>
+      </div>
+    </header>
+
+    <div class="controls" role="region" aria-label="controls">
+      <div class="search" aria-hidden="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.7"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
+        <input id="q" placeholder="Search title or description..." aria-label="Search movies" />
+      </div>
+
+      <select id="filter" class="select" aria-label="Filter by rating">
+        <option value="all">All ratings</option>
+        <option value="G">G</option>
+        <option value="PG">PG</option>
+        <option value="PG-13">PG-13</option>
+      </select>
+
+      <button id="sortBtn" class="select" title="Sort alphabetically">Sort A→Z</button>
+    </div>
+
+    <main id="movies" class="movies" aria-live="polite"></main>
+
+    <footer>
+      Tip: To add posters, edit the `movies` array in the script and set `poster` to an image URL. Watch buttons open your Drive file in a new tab.
+    </footer>
+  </div>
+
+  <script>
+    // Movie data - replace poster: '' with poster image URLs if you have them.
+    const movies = [
+      {
+        title: "Dog Man",
+        rating: "PG",
+        poster: "",
+        desc: "Animated chaos from the Captain Underpants universe — silly humor and easy laughs. Perfect for a chill GTIC hangout.",
+        link: "https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/view"
+      },
+      {
+        title: "M3GAN",
+        rating: "PG-13",
+        poster: "",
+        desc: "Creepy doll meets comedy — part horror, part meme material. Great Halloween-style watch for the group.",
+        link: "https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/view"
+      },
+      {
+        title: "The Lorax",
+        rating: "PG",
+        poster: "",
+        desc: "Bright colors and a 'save the trees' message — funny, family-friendly, and chill for movie night.",
+        link: "https://drive.google.com/file/d/1g6ZVlbeJ05SY5jleCqn_PMUMzevqPX6Y/view"
+      },
+      {
+        title: "Captain Underpants",
+        rating: "PG",
+        poster: "",
+        desc: "Dumb jokes done right — nonstop laughs and nostalgia. Great when the server wants to keep it light.",
+        link: "https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/view"
+      },
+      {
+        title: "Five Nights at Freddy's",
+        rating: "PG-13",
+        poster: "",
+        desc: "Creepy animatronics and mystery vibes. Good horror pick that’s spooky but not over-the-top for the group.",
+        link: "https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/view?pli=1"
+      },
+      {
+        title: "The Super Mario Bros. Movie",
+        rating: "PG",
+        poster: "",
+        desc: "Action, nostalgia, and memes — a crowd favorite for gamers and families alike.",
+        link: "https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/view"
+      },
+      {
+        title: "A Charlie Brown Christmas",
+        rating: "G",
+        poster: "",
+        desc: "Cozy classic with chill vibes and a sweet message — perfect for the holiday season.",
+        link: "https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/view?t=2"
+      }
+    ];
+
+    // Render cards
+    const container = document.getElementById('movies');
+    function renderList(list){
+      container.innerHTML = '';
+      if(list.length === 0){
+        container.innerHTML = '<p style="color:var(--muted);">No movies found.</p>';
+        return;
+      }
+      list.forEach(m => {
+        const card = document.createElement('article');
+        card.className = 'card';
+
+        const poster = document.createElement('div');
+        poster.className = 'poster';
+        if(m.poster){
+          const img = document.createElement('img');
+          img.src = m.poster;
+          img.alt = m.title + " poster";
+          poster.appendChild(img);
+        } else {
+          // placeholder with title initials
+          poster.innerHTML = '<div style="padding:10px;text-align:center;color:var(--muted);font-weight:700;">' + (m.title) + '</div>';
+        }
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+
+        const titleRow = document.createElement('div');
+        titleRow.className = 'title-row';
+
+        const title = document.createElement('h3');
+        title.className = 'title';
+        title.textContent = m.title;
+
+        const rating = document.createElement('div');
+        rating.className = 'rating';
+        rating.textContent = m.rating;
+
+        titleRow.appendChild(title);
+        titleRow.appendChild(rating);
+
+        const desc = document.createElement('div');
+        desc.className = 'desc';
+        desc.textContent = m.desc;
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const watch = document.createElement('button');
+        watch.className = 'btn btn-watch';
+        watch.textContent = '🎥 Watch';
+        watch.onclick = () => {
+          // open the drive link in a new tab/window
+          window.open(m.link, '_blank', 'noopener');
+        };
+
+        const info = document.createElement('button');
+        info.className = 'btn btn-info';
+        info.textContent = 'More info';
+        info.onclick = () => {
+          alert(m.title + "\\n\\nRating: " + m.rating + "\\n\\n" + m.desc + "\\n\\nOpens Drive link when you click 'Watch'.");
+        };
+
+        actions.appendChild(watch);
+        actions.appendChild(info);
+
+        meta.appendChild(titleRow);
+        meta.appendChild(desc);
+        meta.appendChild(actions);
+
+        card.appendChild(poster);
+        card.appendChild(meta);
+
+        container.appendChild(card);
+      });
+    }
+
+    // initial render
+    renderList(movies);
+
+    // searching + filtering + sort
+    const qEl = document.getElementById('q');
+    const filterEl = document.getElementById('filter');
+    const sortBtn = document.getElementById('sortBtn');
+    let sortAZ = true;
+
+    function getFiltered(){
+      const q = qEl.value.trim().toLowerCase();
+      const f = filterEl.value;
+      let out = movies.filter(m=>{
+        const matchesQ = m.title.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q);
+        const matchesF = (f === 'all') || (m.rating === f);
+        return matchesQ && matchesF;
+      });
+      if(sortAZ) out = out.slice().sort((a,b)=> a.title.localeCompare(b.title));
+      return out;
+    }
+
+    qEl.addEventListener('input', ()=> renderList(getFiltered()));
+    filterEl.addEventListener('change', ()=> renderList(getFiltered()));
+    sortBtn.addEventListener('click', ()=>{
+      sortAZ = !sortAZ;
+      sortBtn.textContent = sortAZ ? 'Sort A→Z' : 'Sort Z→A';
+      renderList(getFiltered());
+    });
+
+    // accessible keyboard support: press Enter on search to focus first watch button
+    qEl.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        const firstWatch = document.querySelector('.btn-watch');
+        if(firstWatch) firstWatch.focus();
+      }
+    });
+  </script>
+</body>
+</html>
