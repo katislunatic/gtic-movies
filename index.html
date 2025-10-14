@@ -40,40 +40,7 @@ html,body {
 #passwordOverlay input {padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:var(--glass);color:white;font-size:16px;outline:none;width:240px;text-align:center;margin-bottom:12px;}
 #passwordOverlay button {padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:700;cursor:pointer;font-size:16px;box-shadow:0 6px 16px rgba(229,9,20,0.4);}
 
-/* Main layout now flex to include sidebar */
-.wrap {
-  display: flex;
-  gap: 20px;
-  max-width: var(--max-width);
-  margin: 36px auto;
-  padding: 28px;
-}
-
-#mainContentInner {
-  flex: 1;
-}
-
-#adSidebar {
-  width: 160px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#adSidebar a img {
-  width: 100%;
-  border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-  margin-bottom: 20px;
-}
-
-@media(max-width:900px){
-  .wrap { flex-direction: column; }
-  #adSidebar { width: 100%; }
-}
-
-/* Existing styles */
+.wrap { max-width:var(--max-width); margin:36px auto; padding:28px; }
 header { display:flex; align-items:center; gap:18px; justify-content:space-between; margin-bottom:18px; }
 header .left { display:flex; align-items:center; gap:18px; }
 .logo { width:64px;height:64px;border-radius:10px; background:linear-gradient(135deg,#ff6b6b,#ff9a9e); display:flex;align-items:center;justify-content:center; font-weight:700;color:#111;font-size:20px; box-shadow:0 6px 18px rgba(0,0,0,0.6); }
@@ -116,50 +83,40 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
 </div>
 
 <div class="wrap" id="mainContent" style="display:none;">
-  <!-- Main content area -->
-  <div id="mainContentInner">
-    <header>
-      <div class="left">
-        <div class="logo">GTIC</div>
-        <div>
-          <h1>🎬 GTIC Movie Hub</h1>
-          <p class="lead">Watch and enjoy — no ads, no redirects.</p>
-        </div>
+  <header>
+    <div class="left">
+      <div class="logo">GTIC</div>
+      <div>
+        <h1>🎬 GTIC Movie Hub</h1>
+        <p class="lead">Watch and enjoy — no ads, no redirects.</p>
       </div>
-      <button id="logoutBtn" class="logout-btn">Logout</button>
-    </header>
-
-    <div class="controls">
-      <div class="search">
-        <input id="q" placeholder="Search title or description..." />
-      </div>
-      <select id="filter" class="select">
-        <option value="all">All ratings</option>
-        <option value="G">G</option>
-        <option value="PG">PG</option>
-        <option value="PG-13">PG-13</option>
-        <option value="R">R</option>
-      </select>
-      <select id="categoryFilter" class="select">
-        <option value="all">All categories</option>
-        <option value="Family">Family</option>
-        <option value="Christmas">Christmas</option>
-        <option value="Halloween">Halloween</option>
-        <option value="Action">Action</option>
-      </select>
-      <button id="sortBtn" class="select">Sort A→Z</button>
     </div>
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </header>
 
-    <main id="movies" class="movies"></main>
-    <footer>Powered by GTIC • Movies for our community only.</footer>
+  <div class="controls">
+    <div class="search">
+      <input id="q" placeholder="Search title or description..." />
+    </div>
+    <select id="filter" class="select">
+      <option value="all">All ratings</option>
+      <option value="G">G</option>
+      <option value="PG">PG</option>
+      <option value="PG-13">PG-13</option>
+      <option value="R">R</option>
+    </select>
+    <select id="categoryFilter" class="select">
+      <option value="all">All categories</option>
+      <option value="Family">Family</option>
+      <option value="Christmas">Christmas</option>
+      <option value="Halloween">Halloween</option>
+      <option value="Action">Action</option>
+    </select>
+    <button id="sortBtn" class="select">Sort A→Z</button>
   </div>
 
-  <!-- Vertical Ad Sidebar -->
-  <aside id="adSidebar">
-    <a href="https://www.apexinnoshop.com/?sca_ref=9784053.P1fWYFyZGU" target="_blank">
-      <img src="https://www.apexinnoshop.com/cdn/shop/articles/DSC06331_1_3dd87745-ccc1-42ed-9935-2baa2f9e9466.jpg?v=1754034351&width=1100" alt="APEXINNO Ad Banner" />
-    </a>
-  </aside>
+  <main id="movies" class="movies"></main>
+  <footer>Powered by GTIC • Movies for our community only.</footer>
 </div>
 
 <div id="playerOverlay">
@@ -178,18 +135,18 @@ const logoutBtn = document.getElementById('logoutBtn');
 
 if (localStorage.getItem("gtic_dev_access") === "true") {
   overlay.classList.add("hidden");
-  mainContent.style.display = "flex";
+  mainContent.style.display = "block";
 }
 
 pwBtn.addEventListener("click", () => {
   const val = pwInput.value;
   if (val === correctPassword) {
     overlay.classList.add("hidden");
-    mainContent.style.display = "flex";
+    mainContent.style.display = "block";
   } else if (val === devPassword) {
     localStorage.setItem("gtic_dev_access", "true");
     overlay.classList.add("hidden");
-    mainContent.style.display = "flex";
+    mainContent.style.display = "block";
   } else {
     alert("Incorrect password. Access denied.");
     pwInput.value = "";
@@ -201,7 +158,6 @@ logoutBtn.addEventListener("click", () => {
   location.reload();
 });
 
-// Movie data
 const movies = [
   { title:"Dog Man",rating:"PG",desc:"Animated chaos from the Captain Underpants universe.",link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview",category:"Family"},
   { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview",category:"Halloween"},
