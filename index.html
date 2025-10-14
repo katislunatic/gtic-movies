@@ -1,123 +1,74 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GTIC Movie Hub</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GTIC Movie Hub</title>
 
-  <style>
-    :root {
-      --bg:#0b0b0d;
-      --card:#0f1113;
-      --muted:#9aa3ad;
-      --accent:#e50914;
-      --glass: rgba(255,255,255,0.03);
-      --radius:14px;
-      --max-width:1100px;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
+<style>
+:root {
+  --bg:#0b0b0d;
+  --card:#0f1113;
+  --muted:#9aa3ad;
+  --accent:#e50914;
+  --glass: rgba(255,255,255,0.03);
+  --radius:14px;
+  --max-width:1100px;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
 
-    html,body {
-      height:100%;
-      margin:0;
-      background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(229,9,20,0.06), transparent 6%),
-        linear-gradient(180deg, #071018 0%, var(--bg) 100%);
-      color:#f7f7f7;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
+html,body {
+  height:100%;
+  margin:0;
+  background:
+    radial-gradient(1200px 600px at 10% 10%, rgba(229,9,20,0.06), transparent 6%),
+    linear-gradient(180deg, #071018 0%, var(--bg) 100%);
+  color:#f7f7f7;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
 
-    /* Full-screen password overlay */
-    #passwordOverlay {
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.95);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      z-index:9999;
-      transition: opacity 0.3s ease;
-    }
-    #passwordOverlay.hidden { display:none; }
+#passwordOverlay {
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.95);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:9999;
+}
+#passwordOverlay.hidden { display:none; }
+#passwordOverlay .logo { width:100px;height:100px;border-radius:14px; background:linear-gradient(135deg,#ff6b6b,#ff9a9e); display:flex;align-items:center;justify-content:center; font-weight:700;color:#111;font-size:28px;margin-bottom:20px; box-shadow:0 6px 18px rgba(0,0,0,0.6); }
+#passwordOverlay h2 {margin:0 0 16px 0;font-size:24px;font-weight:700;color:white;text-align:center;}
+#passwordOverlay input {padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:var(--glass);color:white;font-size:16px;outline:none;width:240px;text-align:center;margin-bottom:12px;}
+#passwordOverlay button {padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:700;cursor:pointer;font-size:16px;box-shadow:0 6px 16px rgba(229,9,20,0.4);}
 
-    #passwordOverlay .logo {
-      width:100px;height:100px;border-radius:14px;
-      background:linear-gradient(135deg,#ff6b6b,#ff9a9e);
-      display:flex;align-items:center;justify-content:center;
-      font-weight:700;color:#111;font-size:28px;
-      margin-bottom:20px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.6);
-    }
-
-    #passwordOverlay h2 {
-      margin:0 0 16px 0;
-      font-size:24px;
-      font-weight:700;
-      color:white;
-      text-align:center;
-    }
-
-    #passwordOverlay input {
-      padding:12px 16px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.1);
-      background:var(--glass);
-      color:white;
-      font-size:16px;
-      outline:none;
-      width:240px;
-      text-align:center;
-      margin-bottom:12px;
-    }
-
-    #passwordOverlay button {
-      padding:10px 20px;
-      border-radius:10px;
-      border:0;
-      background:var(--accent);
-      color:white;
-      font-weight:700;
-      cursor:pointer;
-      font-size:16px;
-      box-shadow:0 6px 16px rgba(229,9,20,0.4);
-    }
-
-    .wrap {
-      max-width:var(--max-width);
-      margin:36px auto;
-      padding:28px;
-    }
-    header { display:flex; align-items:center; gap:18px; margin-bottom:18px; }
-    .logo { width:64px;height:64px;border-radius:10px; background:linear-gradient(135deg,#ff6b6b,#ff9a9e); display:flex;align-items:center;justify-content:center; font-weight:700;color:#111;font-size:20px; box-shadow:0 6px 18px rgba(0,0,0,0.6); }
-    h1 {margin:0;font-size:26px;letter-spacing:0.2px}
-    p.lead {margin:4px 0 0;color:var(--muted);font-size:14px;}
-    .controls { display:flex; gap:12px; margin:22px 0; flex-wrap:wrap; align-items:center; }
-    .search { flex:1; min-width:220px; display:flex; align-items:center; gap:8px; background:var(--glass); padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); }
-    .search input { background:transparent; border:0; outline:0; color:inherit; width:100%; font-size:14px; }
-    .select { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04); padding:8px 10px; border-radius:10px; font-size:14px; }
-    .movies { display:grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap:18px; margin-top:12px; }
-    .card { background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.02); display:flex; flex-direction:column; transition: transform .18s ease, box-shadow .18s ease; }
-    .card:hover {transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.8);}
-    .poster { height:180px; background:linear-gradient(135deg,#0f1720,#111827); display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:600; font-size:18px; }
-    .poster img {width:100%;height:100%;object-fit:cover;display:block;}
-    .meta {padding:14px;display:flex;gap:12px;flex-direction:column;}
-    .title-row {display:flex;justify-content:space-between;align-items:center;gap:12px;}
-    .title {font-size:16px;font-weight:700;margin:0;}
-    .rating { background:rgba(255,255,255,0.04); padding:6px 8px;border-radius:8px; font-weight:700;font-size:13px;color:var(--muted); }
-    .desc {margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.35;}
-    .actions {display:flex;gap:10px;margin-top:12px;}
-    .btn {padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;font-size:14px;}
-    .btn-watch {background:var(--accent);color:white;box-shadow:0 8px 18px rgba(229,9,20,0.18); position:relative;}
-    .btn-info {background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);}
-    footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
-    #playerOverlay { position:fixed; inset:0; background:rgba(0,0,0,0.95); display:none; align-items:center; justify-content:center; z-index:9999; flex-direction:column; }
-    #playerOverlay iframe { width:90%; height:80%; border:0; border-radius:10px; box-shadow:0 0 40px rgba(0,0,0,0.8); background:black; }
-    #closePlayer { margin-top:20px; background:var(--accent); color:white; border:0; padding:10px 20px; border-radius:10px; font-weight:700; cursor:pointer; }
-    @media(max-width:520px){ .poster{height:160px;} h1{font-size:20px;} #playerOverlay iframe {width:95%;height:70%;} }
-  </style>
-</head>
+.wrap { max-width:var(--max-width); margin:36px auto; padding:28px; }
+header { display:flex; align-items:center; gap:18px; margin-bottom:18px; }
+.logo { width:64px;height:64px;border-radius:10px; background:linear-gradient(135deg,#ff6b6b,#ff9a9e); display:flex;align-items:center;justify-content:center; font-weight:700;color:#111;font-size:20px; box-shadow:0 6px 18px rgba(0,0,0,0.6); }
+h1 {margin:0;font-size:26px;letter-spacing:0.2px}
+p.lead {margin:4px 0 0;color:var(--muted);font-size:14px;}
+.controls { display:flex; gap:12px; margin:22px 0; flex-wrap:wrap; align-items:center; }
+.search { flex:1; min-width:220px; display:flex; align-items:center; gap:8px; background:var(--glass); padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); }
+.search input { background:transparent; border:0; outline:0; color:inherit; width:100%; font-size:14px; }
+.select { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04); padding:8px 10px; border-radius:10px; font-size:14px; }
+.movies { display:grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap:18px; margin-top:12px; }
+.card { background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.02); display:flex; flex-direction:column; transition: transform .18s ease, box-shadow .18s ease; }
+.card:hover {transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.8);}
+.poster { height:180px; background:linear-gradient(135deg,#0f1720,#111827); display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:600; font-size:18px; }
+.poster img {width:100%;height:100%;object-fit:cover;display:block;}
+.meta {padding:14px;display:flex;gap:12px;flex-direction:column;}
+.title-row {display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.title {font-size:16px;font-weight:700;margin:0;}
+.rating { background:rgba(255,255,255,0.04); padding:6px 8px;border-radius:8px; font-weight:700;font-size:13px;color:var(--muted); }
+.desc {margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.35;}
+.actions {display:flex;gap:10px;margin-top:12px;}
+.btn {padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;font-size:14px;}
+.btn-watch {background:var(--accent);color:white;box-shadow:0 8px 18px rgba(229,9,20,0.18); position:relative;}
+.btn-info {background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);}
+footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
+#playerOverlay { position:fixed; inset:0; background:rgba(0,0,0,0.95); display:none; align-items:center; justify-content:center; z-index:9999; flex-direction:column; }
+#playerOverlay iframe { width:90%; height:80%; border:0; border-radius:10px; box-shadow:0 0 40px rgba(0,0,0,0.8); background:black; }
+#closePlayer { margin-top:20px; background:var(--accent); color:white; border:0; padding:10px 20px; border-radius:10px; font-weight:700; cursor:pointer; }
+@media(max-width:520px){ .poster{height:160px;} h1{font-size:20px;} #playerOverlay iframe {width:95%;height:70%;} }
+</style>
 <body>
 
 <div id="passwordOverlay">
@@ -155,7 +106,6 @@
   </div>
 
   <main id="movies" class="movies"></main>
-
   <footer>Tip: You can play any movie directly inside this page by clicking Watch.</footer>
 </div>
 
@@ -180,12 +130,8 @@ pwBtn.addEventListener('click', () => {
     pwInput.value = '';
   }
 });
+pwInput.addEventListener('keydown', e => { if (e.key==='Enter') pwBtn.click(); });
 
-pwInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') pwBtn.click();
-});
-
-// All movies
 const movies = [
   { title:"Dog Man",rating:"PG",desc:"Animated chaos from the Captain Underpants universe — silly humor and easy laughs.",link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview"},
   { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy — part horror, part meme material.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview"},
@@ -207,53 +153,33 @@ const closeBtn = document.getElementById('closePlayer');
 
 function renderList(list){
   container.innerHTML = '';
-  if(list.length===0){
-    container.innerHTML='<p style="color:var(--muted);">No movies found.</p>';
-    return;
-  }
+  if(list.length===0){ container.innerHTML='<p style="color:var(--muted);">No movies found.</p>'; return; }
   list.forEach(m=>{
-    const card=document.createElement('article');
-    card.className='card';
-    const poster=document.createElement('div');
-    poster.className='poster';
-    poster.textContent=m.title;
-
-    const meta=document.createElement('div');
-    meta.className='meta';
-
-    const titleRow=document.createElement('div');
-    titleRow.className='title-row';
+    const card=document.createElement('article'); card.className='card';
+    const poster=document.createElement('div'); poster.className='poster'; poster.textContent=m.title;
+    const meta=document.createElement('div'); meta.className='meta';
+    const titleRow=document.createElement('div'); titleRow.className='title-row';
     titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
+    const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc;
+    const actions=document.createElement('div'); actions.className='actions';
 
-    const desc=document.createElement('div');
-    desc.className='desc';
-    desc.textContent=m.desc;
-
-    const actions=document.createElement('div');
-    actions.className='actions';
-
-    const watch=document.createElement('button');
-    watch.className='btn btn-watch';
-    watch.textContent='🎥 Watch';
+    const watch=document.createElement('button'); watch.className='btn btn-watch'; watch.textContent='🎥 Watch';
     watch.onclick = () => {
       const url = new URL(m.link);
-      if(url.hostname === 'embed.nextgencloudtools.com' || url.hostname === 'drive.google.com'){
+      // Play in iframe for these hosts
+      const playableHosts = ['embed.nextgencloudtools.com','drive.google.com','gtic-home.short.gy'];
+      if(playableHosts.includes(url.hostname)){
         frame.src = m.link;
         overlayPlayer.style.display = 'flex';
       } else {
-        window.open(m.link, '_blank'); // other NextGenCloudTools links open new tab
+        window.open(m.link,'_blank');
       }
     };
 
-    const info=document.createElement('button');
-    info.className='btn btn-info';
-    info.textContent='More info';
+    const info=document.createElement('button'); info.className='btn btn-info'; info.textContent='More info';
     info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\n\n${m.desc}`);
 
-    actions.append(watch,info);
-    meta.append(titleRow,desc,actions);
-    card.append(poster,meta);
-    container.append(card);
+    actions.append(watch,info); meta.append(titleRow,desc,actions); card.append(poster,meta); container.append(card);
   });
 }
 
@@ -263,7 +189,6 @@ const qEl=document.getElementById('q');
 const fEl=document.getElementById('filter');
 const sBtn=document.getElementById('sortBtn');
 let sortAZ=true;
-
 function getFiltered(){
   const q=qEl.value.trim().toLowerCase();
   const f=fEl.value;
@@ -275,7 +200,6 @@ function getFiltered(){
   if(sortAZ) out=out.slice().sort((a,b)=>a.title.localeCompare(b.title));
   return out;
 }
-
 qEl.addEventListener('input',()=>renderList(getFiltered()));
 fEl.addEventListener('change',()=>renderList(getFiltered()));
 sBtn.addEventListener('click',()=>{
@@ -284,10 +208,7 @@ sBtn.addEventListener('click',()=>{
   renderList(getFiltered());
 });
 
-closeBtn.onclick=()=>{
-  overlayPlayer.style.display='none';
-  frame.src='';
-};
+closeBtn.onclick=()=>{ overlayPlayer.style.display='none'; frame.src=''; };
 </script>
 </body>
 </html>
