@@ -28,6 +28,7 @@ html,body {
   -moz-osx-font-smoothing:grayscale;
 }
 
+/* Password Overlay */
 #passwordOverlay {
   position:fixed; inset:0;
   background:rgba(0,0,0,0.95);
@@ -40,6 +41,30 @@ html,body {
 #passwordOverlay input {padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:var(--glass);color:white;font-size:16px;outline:none;width:240px;text-align:center;margin-bottom:12px;}
 #passwordOverlay button {padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:700;cursor:pointer;font-size:16px;box-shadow:0 6px 16px rgba(229,9,20,0.4);}
 
+/* Intro Overlay */
+#introOverlay {
+  position:fixed; inset:0;
+  background:black;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9998;
+  flex-direction:column;
+  display:none;
+}
+#loadingBarContainer {
+  width:60%; height:12px; background:rgba(255,255,255,0.1); border-radius:6px; overflow:hidden; margin-top:20px;
+}
+#loadingBar { width:0%; height:100%; background:var(--accent); transition:width 0.1s linear; }
+
+#introVideoOverlay {
+  position:fixed; inset:0; display:none; z-index:9997; overflow:hidden; background:black;
+}
+#introVideoOverlay iframe {
+  width:120%; height:120%; position:absolute; top:-10%; left:-10%; transform:scale(1.2);
+}
+
+/* Main content */
 .wrap { max-width:var(--max-width); margin:36px auto; padding:28px; }
 header { display:flex; align-items:center; gap:18px; justify-content:space-between; margin-bottom:18px; }
 header .left { display:flex; align-items:center; gap:18px; }
@@ -76,6 +101,7 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
 </head>
 <body>
 
+<!-- Password -->
 <div id="passwordOverlay">
   <div class="logo">GTIC</div>
   <h2>Enter Password to Access GTIC Movie Hub</h2>
@@ -83,6 +109,20 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
   <button id="pwBtn">Enter</button>
 </div>
 
+<!-- Intro Overlay -->
+<div id="introOverlay">
+  <div class="logo">GTIC</div>
+  <div id="loadingBarContainer">
+    <div id="loadingBar"></div>
+  </div>
+</div>
+
+<!-- Intro Video Overlay -->
+<div id="introVideoOverlay">
+  <iframe id="introVideo" src="https://www.youtube.com/embed/oD3Yzw-cv30?autoplay=1&controls=0&rel=0&modestbranding=1&disablekb=1&loop=0&mute=0"></iframe>
+</div>
+
+<!-- Main Content -->
 <div class="wrap" id="mainContent" style="display:none;">
   <header>
     <div class="left">
@@ -120,12 +160,14 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
   <footer>Powered by GTIC • Movies for our community only.</footer>
 </div>
 
+<!-- Player Overlay -->
 <div id="playerOverlay">
   <iframe id="movieFrame" allowfullscreen></iframe>
   <button id="closePlayer">✖ Close</button>
 </div>
 
 <script>
+// Password and dev access
 const correctPassword = "GTICMOVIES6741";
 const devPassword = "GTICDEVS89";
 const overlay = document.getElementById('passwordOverlay');
@@ -134,20 +176,44 @@ const pwInput = document.getElementById('pwInput');
 const pwBtn = document.getElementById('pwBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
+const introOverlay = document.getElementById("introOverlay");
+const loadingBar = document.getElementById("loadingBar");
+const introVideoOverlay = document.getElementById("introVideoOverlay");
+
+function playIntroThenShowContent() {
+  introOverlay.style.display = "flex";
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += 1;
+    loadingBar.style.width = progress + "%";
+    if (progress >= 100) {
+      clearInterval(interval);
+      introOverlay.style.display = "none";
+      introVideoOverlay.style.display = "block";
+
+      setTimeout(() => {
+        introVideoOverlay.style.display = "none";
+        mainContent.style.display = "block";
+      }, 5000); // show 5 seconds
+    }
+  }, 30);
+}
+
+// If dev has access
 if (localStorage.getItem("gtic_dev_access") === "true") {
   overlay.classList.add("hidden");
-  mainContent.style.display = "block";
+  playIntroThenShowContent();
 }
 
 pwBtn.addEventListener("click", () => {
   const val = pwInput.value;
   if (val === correctPassword) {
     overlay.classList.add("hidden");
-    mainContent.style.display = "block";
+    playIntroThenShowContent();
   } else if (val === devPassword) {
     localStorage.setItem("gtic_dev_access", "true");
     overlay.classList.add("hidden");
-    mainContent.style.display = "block";
+    playIntroThenShowContent();
   } else {
     alert("Incorrect password. Access denied.");
     pwInput.value = "";
@@ -159,6 +225,7 @@ logoutBtn.addEventListener("click", () => {
   location.reload();
 });
 
+// Movies array and render functions (same as before)
 const movies = [
   { title:"Dog Man", rating:"PG", desc:"Animated chaos from the Captain Underpants universe.", link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview", category:"Family", img:"https://images.cinemaplus.com/ticketing/heroart/92ad959140254723df539e568b2c4ed9.jpg" },
   { title:"M3GAN", rating:"PG-13", desc:"Creepy doll meets comedy.", link:"https://gtic-home.short.gy/7oEn8H", category:"Halloween", img:"https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6402d394a80141001df76adf.jpg" },
@@ -192,49 +259,16 @@ function renderList(list){
   list.forEach(m=>{
     const card=document.createElement('article');
     card.className='card';
-
-    const poster=document.createElement('div');
-    poster.className='poster';
-    if(m.img){
-      const img = document.createElement('img');
-      img.src = m.img;
-      img.alt = m.title;
-      img.style.width = "100%";
-      img.style.height = "100%";
-      img.style.objectFit = "cover";
-      poster.appendChild(img);
-    } else {
-      poster.textContent = m.title;
-    }
-
-    const meta=document.createElement('div');
-    meta.className='meta';
-    const titleRow=document.createElement('div');
-    titleRow.className='title-row';
+    const poster=document.createElement('div'); poster.className='poster';
+    if(m.img){ const img = document.createElement('img'); img.src = m.img; img.alt = m.title; poster.appendChild(img); } else { poster.textContent = m.title; }
+    const meta=document.createElement('div'); meta.className='meta';
+    const titleRow=document.createElement('div'); titleRow.className='title-row';
     titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
-    const desc=document.createElement('div');
-    desc.className='desc';
-    desc.textContent=m.desc;
-    const actions=document.createElement('div');
-    actions.className='actions';
-
-    const watch=document.createElement('button');
-    watch.className='btn btn-watch';
-    watch.textContent='🎥 Watch';
-    watch.onclick = () => {
-      frame.src = m.link;
-      overlayPlayer.style.display = 'flex';
-    };
-
-    const info=document.createElement('button');
-    info.className='btn btn-info';
-    info.textContent='More info';
-    info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
-
-    actions.append(watch,info);
-    meta.append(titleRow,desc,actions);
-    card.append(poster,meta);
-    container.append(card);
+    const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc;
+    const actions=document.createElement('div'); actions.className='actions';
+    const watch=document.createElement('button'); watch.className='btn btn-watch'; watch.textContent='🎥 Watch'; watch.onclick = () => { frame.src = m.link; overlayPlayer.style.display = 'flex'; };
+    const info=document.createElement('button'); info.className='btn btn-info'; info.textContent='More info'; info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
+    actions.append(watch,info); meta.append(titleRow,desc,actions); card.append(poster,meta); container.append(card);
   });
 }
 renderList(movies);
@@ -244,7 +278,6 @@ const fEl=document.getElementById('filter');
 const cEl=document.getElementById('categoryFilter');
 const sBtn=document.getElementById('sortBtn');
 let sortAZ=true;
-
 function getFiltered(){
   const q=qEl.value.trim().toLowerCase();
   const f=fEl.value;
@@ -258,7 +291,6 @@ function getFiltered(){
   if(sortAZ) out=out.slice().sort((a,b)=>a.title.localeCompare(b.title));
   return out;
 }
-
 qEl.addEventListener('input',()=>renderList(getFiltered()));
 fEl.addEventListener('change',()=>renderList(getFiltered()));
 cEl.addEventListener('change',()=>renderList(getFiltered()));
