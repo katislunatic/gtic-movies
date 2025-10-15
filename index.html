@@ -41,7 +41,7 @@ html,body {
 #passwordOverlay input {padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:var(--glass);color:white;font-size:16px;outline:none;width:240px;text-align:center;margin-bottom:12px;}
 #passwordOverlay button {padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:700;cursor:pointer;font-size:16px;box-shadow:0 6px 16px rgba(229,9,20,0.4);}
 
-/* Intro Overlay */
+/* Intro Overlay with Logo + Loading */
 #introOverlay {
   position:fixed; inset:0;
   background:black;
@@ -52,17 +52,19 @@ html,body {
   flex-direction:column;
   display:none;
 }
+#introOverlay .introLogo {
+  width:200px;
+  height:auto;
+  margin-bottom:20px;
+}
 #loadingBarContainer {
-  width:60%; height:12px; background:rgba(255,255,255,0.1); border-radius:6px; overflow:hidden; margin-top:20px;
+  width:300px;
+  height:12px;
+  background:rgba(255,255,255,0.1);
+  border-radius:6px;
+  overflow:hidden;
 }
-#loadingBar { width:0%; height:100%; background:var(--accent); transition:width 0.1s linear; }
-
-#introVideoOverlay {
-  position:fixed; inset:0; display:none; z-index:9997; overflow:hidden; background:black;
-}
-#introVideoOverlay iframe {
-  width:120%; height:120%; position:absolute; top:-10%; left:-10%; transform:scale(1.2);
-}
+#loadingBar { width:0%; height:100%; background:var(--accent); transition:width 2s linear; }
 
 /* Main content */
 .wrap { max-width:var(--max-width); margin:36px auto; padding:28px; }
@@ -111,56 +113,11 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
 
 <!-- Intro Overlay -->
 <div id="introOverlay">
-  <div class="logo">GTIC</div>
+  <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" class="introLogo" />
   <div id="loadingBarContainer">
     <div id="loadingBar"></div>
   </div>
 </div>
-
-<!-- Intro Video Overlay -->
-<div id="introVideoOverlay">
-  <iframe id="introVideo" 
-          src="https://www.youtube.com/embed/oD3Yzw-cv30?autoplay=1&controls=0&rel=0&modestbranding=1&disablekb=1&loop=0&mute=0" 
-          allow="autoplay" 
-          frameborder="0"></iframe>
-</div>
-
-<style>
-#introVideoOverlay iframe {
-  width:110%; /* slight zoom */
-  height:110%;
-  position:absolute; top:-5%; left:-5%;
-  transform:scale(1.1); /* slight scale to hide watermark */
-}
-</style>
-
-<script>
-function playIntroThenShowContent() {
-  introOverlay.style.display = "flex";
-  let progress = 0;
-  const totalDuration = 2000; // 2 seconds
-  const intervalTime = 20; // update every 20ms
-  const increment = (intervalTime / totalDuration) * 100;
-  
-  const interval = setInterval(() => {
-    progress += increment;
-    loadingBar.style.width = progress + "%";
-    if (progress >= 100) {
-      clearInterval(interval);
-      introOverlay.style.display = "none";
-      introVideoOverlay.style.display = "block";
-
-      const video = document.getElementById("introVideo");
-      video.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-
-      setTimeout(() => {
-        introVideoOverlay.style.display = "none";
-        mainContent.style.display = "block";
-      }, 5000); // show video for 5 seconds
-    }
-  }, intervalTime);
-}
-</script>
 
 <!-- Main Content -->
 <div class="wrap" id="mainContent" style="display:none;">
@@ -218,25 +175,14 @@ const logoutBtn = document.getElementById('logoutBtn');
 
 const introOverlay = document.getElementById("introOverlay");
 const loadingBar = document.getElementById("loadingBar");
-const introVideoOverlay = document.getElementById("introVideoOverlay");
 
 function playIntroThenShowContent() {
   introOverlay.style.display = "flex";
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += 1;
-    loadingBar.style.width = progress + "%";
-    if (progress >= 100) {
-      clearInterval(interval);
-      introOverlay.style.display = "none";
-      introVideoOverlay.style.display = "block";
-
-      setTimeout(() => {
-        introVideoOverlay.style.display = "none";
-        mainContent.style.display = "block";
-      }, 5000); // show 5 seconds
-    }
-  }, 30);
+  loadingBar.style.width = "100%"; // triggers 2s CSS transition
+  setTimeout(() => {
+    introOverlay.style.display = "none";
+    mainContent.style.display = "block";
+  }, 2000); // match loading bar duration
 }
 
 // If dev has access
@@ -297,8 +243,7 @@ const closeBtn = document.getElementById("closePlayer");
 function renderList(list){
   container.innerHTML = '';
   list.forEach(m=>{
-    const card=document.createElement('article');
-    card.className='card';
+    const card=document.createElement('article'); card.className='card';
     const poster=document.createElement('div'); poster.className='poster';
     if(m.img){ const img = document.createElement('img'); img.src = m.img; img.alt = m.title; poster.appendChild(img); } else { poster.textContent = m.title; }
     const meta=document.createElement('div'); meta.className='meta';
