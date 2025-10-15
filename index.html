@@ -57,6 +57,7 @@ p.lead {margin:4px 0 0;color:var(--muted);font-size:14px;}
 .card { background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.02); display:flex; flex-direction:column; transition: transform .18s ease, box-shadow .18s ease; }
 .card:hover {transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.8);}
 .poster { height:180px; background:linear-gradient(135deg,#0f1720,#111827); display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:600; font-size:18px; }
+.poster img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px 14px 0 0; }
 .meta {padding:14px;display:flex;gap:12px;flex-direction:column;}
 .title-row {display:flex;justify-content:space-between;align-items:center;gap:12px;}
 .title {font-size:16px;font-weight:700;margin:0;}
@@ -159,26 +160,26 @@ logoutBtn.addEventListener("click", () => {
 });
 
 const movies = [
-  { title:"Dog Man",rating:"PG",desc:"Animated chaos from the Captain Underpants universe.",link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview",category:"Family"},
-  { title:"M3GAN",rating:"PG-13",desc:"Creepy doll meets comedy.",link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview",category:"Halloween"},
-  { title:"M3GAN 2.0",rating:"PG-13",desc:"Sequel with more chaos.",link:"https://gtic-home.short.gy/cHbEJq",category:"Halloween"},
-  { title:"The Black Phone",rating:"R",desc:"Dark thriller from Blumhouse.",link:"https://gtic-home.short.gy/9JmW8h",category:"Halloween"},
-  { title:"Coco",rating:"PG",desc:"A colorful journey through music and memory.",link:"https://drive.google.com/file/d/194M4dGCwh1hTxVM1-_axnLSdt4trnbK2/preview",category:"Family"},
-  { title:"The Lorax",rating:"PG",desc:"Bright colors and a 'save the trees' message.",link:"https://drive.google.com/file/d/1g6ZVlbeJ05SY5jleCqn_PMUMzevqPX6Y/preview",category:"Family"},
-  { title:"Captain Underpants",rating:"PG",desc:"Classic humor and school mischief.",link:"https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/preview",category:"Comedy"},
-  { title:"Five Nights at Freddy's",rating:"PG-13",desc:"Creepy animatronics.",link:"https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/preview",category:"Halloween"},
-  { title:"KPop Demon Hunters", rating:"PG-13", desc:"High-energy K-Pop heroes fight demons in epic battles.", link:"https://gtic-home.short.gy/0TCvNH", category:"Action"},
-  { title:"A Minecraft Movie", rating:"PG", desc:"Blocky adventures come to life in a cinematic journey.", link:"https://gtic-home.short.gy/MUcD5Y", category:"Family"},
-  { title:"Super Mario Bros. Movie",rating:"PG",desc:"Action, nostalgia, and fun.",link:"https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/preview",category:"Action"},
-  { title:"A Charlie Brown Christmas",rating:"G",desc:"Classic comfort movie.",link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview",category:"Christmas"},
-  { title:"Dear Santa", rating:"PG", desc:"Jack Black stars in this festive comedy.", link:"https://gtic-home.short.gy/1zJ5Hu",category:"Christmas"},
-  { title:"Red One", rating:"PG-13", desc:"Action-packed holiday adventure with Dwayne Johnson and Chris Evans.", link:"https://gtic-home.short.gy/CgaE2Y",category:"Christmas"},
-  { title:"Sonic the Hedgehog", rating:"PG", desc:"Sonic joins the adventure in a live-action film with heart and speed.", link:"https://gtic-home.short.gy/xL1ftq", category:"Action"},
-  { title:"Sonic the Hedgehog 2", rating:"PG", desc:"Sonic teams up with Tails for an epic adventure.", link:"https://gtic-home.short.gy/e68XtB", category:"Action"},
-  { title:"Sonic the Hedgehog 3", rating:"PG", desc:"Sonic faces his biggest challenge yet.", link:"https://gtic-home.short.gy/BQ9ZoC", category:"Action"},
-  { title:"Cars", rating:"G", desc:"Lightning McQueen learns about life, friendship, and racing in Radiator Springs.", link:"https://gtic-home.short.gy/734Nd9",category:"Family"},
-  { title:"Cars 2", rating:"G", desc:"McQueen and Mater go international in a spy-themed racing adventure.", link:"https://gtic-home.short.gy/PFW9BQ",category:"Action"},
-  { title:"Cars 3", rating:"G", desc:"A comeback story as McQueen faces a new generation of racers.", link:"https://gtic-home.short.gy/T2sq4p",category:"Family"}
+  { title:"Dog Man", rating:"PG", desc:"Animated chaos from the Captain Underpants universe.", link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview", category:"Family", img:"https://images.cinemaplus.com/ticketing/heroart/92ad959140254723df539e568b2c4ed9.jpg" },
+  { title:"M3GAN", rating:"PG-13", desc:"Creepy doll meets comedy.", link:"https://drive.google.com/file/d/1MMl1EYr_OYdc9R-va2IIdPUmkqcj1UpR/preview", category:"Halloween", img:"link_to_m3gan_image.jpg" },
+  { title:"M3GAN 2.0", rating:"PG-13", desc:"Sequel with more chaos.", link:"https://gtic-home.short.gy/cHbEJq", category:"Halloween", img:"link_to_m3gan2_image.jpg" },
+  { title:"The Black Phone", rating:"R", desc:"Dark thriller from Blumhouse.", link:"https://gtic-home.short.gy/9JmW8h", category:"Halloween", img:"link_to_blackphone_image.jpg" },
+  { title:"Coco", rating:"PG", desc:"A colorful journey through music and memory.", link:"https://drive.google.com/file/d/194M4dGCwh1hTxVM1-_axnLSdt4trnbK2/preview", category:"Family", img:"link_to_coco_image.jpg" },
+  { title:"The Lorax", rating:"PG", desc:"Bright colors and a 'save the trees' message.", link:"https://drive.google.com/file/d/1g6ZVlbeJ05SY5jleCqn_PMUMzevqPX6Y/preview", category:"Family", img:"link_to_lorax_image.jpg" },
+  { title:"Captain Underpants", rating:"PG", desc:"Classic humor and school mischief.", link:"https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/preview", category:"Comedy", img:"link_to_underpants_image.jpg" },
+  { title:"Five Nights at Freddy's", rating:"PG-13", desc:"Creepy animatronics.", link:"https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/preview", category:"Halloween", img:"link_to_fnaf_image.jpg" },
+  { title:"KPop Demon Hunters", rating:"PG-13", desc:"High-energy K-Pop heroes fight demons in epic battles.", link:"https://gtic-home.short.gy/0TCvNH", category:"Action", img:"link_to_kpop_image.jpg" },
+  { title:"A Minecraft Movie", rating:"PG", desc:"Blocky adventures come to life in a cinematic journey.", link:"https://gtic-home.short.gy/MUcD5Y", category:"Family", img:"link_to_minecraft_image.jpg" },
+  { title:"Super Mario Bros. Movie", rating:"PG", desc:"Action, nostalgia, and fun.", link:"https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/preview", category:"Action", img:"link_to_mario_image.jpg" },
+  { title:"A Charlie Brown Christmas", rating:"G", desc:"Classic comfort movie.", link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview", category:"Christmas", img:"link_to_charliebrown_image.jpg" },
+  { title:"Dear Santa", rating:"PG", desc:"Jack Black stars in this festive comedy.", link:"https://gtic-home.short.gy/1zJ5Hu", category:"Christmas", img:"link_to_dearsanta_image.jpg" },
+  { title:"Red One", rating:"PG-13", desc:"Action-packed holiday adventure with Dwayne Johnson and Chris Evans.", link:"https://gtic-home.short.gy/CgaE2Y", category:"Christmas", img:"link_to_redone_image.jpg" },
+  { title:"Sonic the Hedgehog", rating:"PG", desc:"Sonic joins the adventure in a live-action film with heart and speed.", link:"https://gtic-home.short.gy/xL1ftq", category:"Action", img:"link_to_sonic1_image.jpg" },
+  { title:"Sonic the Hedgehog 2", rating:"PG", desc:"Sonic teams up with Tails for an epic adventure.", link:"https://gtic-home.short.gy/e68XtB", category:"Action", img:"link_to_sonic2_image.jpg" },
+  { title:"Sonic the Hedgehog 3", rating:"PG", desc:"Sonic faces his biggest challenge yet.", link:"https://gtic-home.short.gy/BQ9ZoC", category:"Action", img:"link_to_sonic3_image.jpg" },
+  { title:"Cars", rating:"G", desc:"Lightning McQueen learns about life, friendship, and racing in Radiator Springs.", link:"https://gtic-home.short.gy/734Nd9", category:"Family", img:"link_to_cars_image.jpg" },
+  { title:"Cars 2", rating:"G", desc:"McQueen and Mater go international in a spy-themed racing adventure.", link:"https://gtic-home.short.gy/PFW9BQ", category:"Action", img:"link_to_cars2_image.jpg" },
+  { title:"Cars 3", rating:"G", desc:"A comeback story as McQueen faces a new generation of racers.", link:"https://gtic-home.short.gy/T2sq4p", category:"Family", img:"link_to_cars3_image.jpg" }
 ];
 
 const container = document.getElementById("movies");
@@ -191,9 +192,21 @@ function renderList(list){
   list.forEach(m=>{
     const card=document.createElement('article');
     card.className='card';
+
     const poster=document.createElement('div');
     poster.className='poster';
-    poster.textContent=m.title;
+    if(m.img){
+      const img = document.createElement('img');
+      img.src = m.img;
+      img.alt = m.title;
+      img.style.width = "100%";
+      img.style.height = "100%";
+      img.style.objectFit = "cover";
+      poster.appendChild(img);
+    } else {
+      poster.textContent = m.title;
+    }
+
     const meta=document.createElement('div');
     meta.className='meta';
     const titleRow=document.createElement('div');
