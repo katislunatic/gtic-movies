@@ -119,8 +119,48 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
 
 <!-- Intro Video Overlay -->
 <div id="introVideoOverlay">
-  <iframe id="introVideo" src="https://www.youtube.com/embed/oD3Yzw-cv30?autoplay=1&controls=0&rel=0&modestbranding=1&disablekb=1&loop=0&mute=0"></iframe>
+  <iframe id="introVideo" 
+          src="https://www.youtube.com/embed/oD3Yzw-cv30?autoplay=1&controls=0&rel=0&modestbranding=1&disablekb=1&loop=0&mute=0" 
+          allow="autoplay" 
+          frameborder="0"></iframe>
 </div>
+
+<style>
+#introVideoOverlay iframe {
+  width:110%; /* slight zoom */
+  height:110%;
+  position:absolute; top:-5%; left:-5%;
+  transform:scale(1.1); /* slight scale to hide watermark */
+}
+</style>
+
+<script>
+function playIntroThenShowContent() {
+  introOverlay.style.display = "flex";
+  let progress = 0;
+  const totalDuration = 2000; // 2 seconds
+  const intervalTime = 20; // update every 20ms
+  const increment = (intervalTime / totalDuration) * 100;
+  
+  const interval = setInterval(() => {
+    progress += increment;
+    loadingBar.style.width = progress + "%";
+    if (progress >= 100) {
+      clearInterval(interval);
+      introOverlay.style.display = "none";
+      introVideoOverlay.style.display = "block";
+
+      const video = document.getElementById("introVideo");
+      video.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+
+      setTimeout(() => {
+        introVideoOverlay.style.display = "none";
+        mainContent.style.display = "block";
+      }, 5000); // show video for 5 seconds
+    }
+  }, intervalTime);
+}
+</script>
 
 <!-- Main Content -->
 <div class="wrap" id="mainContent" style="display:none;">
