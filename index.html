@@ -56,6 +56,11 @@ html,body {
   width:200px;
   height:auto;
   margin-bottom:20px;
+  transition: transform 1s ease, opacity 1s ease;
+}
+#introOverlay.zoomLogo .introLogo {
+  transform: scale(3);
+  opacity:0;
 }
 #loadingBarContainer {
   width:300px;
@@ -64,7 +69,7 @@ html,body {
   border-radius:6px;
   overflow:hidden;
 }
-#loadingBar { width:0%; height:100%; background:var(--accent); transition:width 2s linear; }
+#loadingBar { width:0%; height:100%; background:red; transition:width 2s linear; }
 
 /* Main content */
 .wrap { max-width:var(--max-width); margin:36px auto; padding:28px; }
@@ -175,17 +180,21 @@ const logoutBtn = document.getElementById('logoutBtn');
 
 const introOverlay = document.getElementById("introOverlay");
 const loadingBar = document.getElementById("loadingBar");
+const introLogo = document.querySelector("#introOverlay .introLogo");
 
 function playIntroThenShowContent() {
   introOverlay.style.display = "flex";
-  loadingBar.style.width = "100%"; // triggers 2s CSS transition
+  loadingBar.style.width = "100%"; // trigger CSS transition
   setTimeout(() => {
-    introOverlay.style.display = "none";
-    mainContent.style.display = "block";
-  }, 2000); // match loading bar duration
+    introOverlay.classList.add("zoomLogo"); // logo zoom animation
+    setTimeout(() => {
+      introOverlay.style.display = "none";
+      mainContent.style.display = "block";
+    }, 1000); // zoom duration
+  }, 2000); // loading bar duration
 }
 
-// If dev has access
+// Dev access
 if (localStorage.getItem("gtic_dev_access") === "true") {
   overlay.classList.add("hidden");
   playIntroThenShowContent();
@@ -211,7 +220,7 @@ logoutBtn.addEventListener("click", () => {
   location.reload();
 });
 
-// Movies array and render functions (same as before)
+// Movies array and rendering
 const movies = [
   { title:"Dog Man", rating:"PG", desc:"Animated chaos from the Captain Underpants universe.", link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview", category:"Family", img:"https://images.cinemaplus.com/ticketing/heroart/92ad959140254723df539e568b2c4ed9.jpg" },
   { title:"M3GAN", rating:"PG-13", desc:"Creepy doll meets comedy.", link:"https://gtic-home.short.gy/7oEn8H", category:"Halloween", img:"https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6402d394a80141001df76adf.jpg" },
