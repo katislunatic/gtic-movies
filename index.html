@@ -41,7 +41,7 @@ html,body {
 #passwordOverlay input {padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:var(--glass);color:white;font-size:16px;outline:none;width:240px;text-align:center;margin-bottom:12px;}
 #passwordOverlay button {padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:700;cursor:pointer;font-size:16px;box-shadow:0 6px 16px rgba(229,9,20,0.4);}
 
-/* Intro Overlay with Logo + Loading */
+/* Intro Overlay with Logo only */
 #introOverlay {
   position:fixed; inset:0;
   background:black;
@@ -50,35 +50,30 @@ html,body {
   justify-content:center;
   z-index:9998;
   flex-direction:column;
-  display:none;
 }
+#introOverlay.hidden { display:none; }
 #introOverlay .introLogo {
   width:200px;
   height:auto;
-  margin-bottom:20px;
-  transition: transform 1s ease, opacity 1s ease;
-}
-#introOverlay.zoomLogo .introLogo {
-  transform: scale(3);
   opacity:0;
+  animation: fadeInOut 3s forwards;
 }
-#loadingBarContainer {
-  width:300px;
-  height:12px;
-  background:rgba(255,255,255,0.1);
-  border-radius:6px;
-  overflow:hidden;
+@keyframes fadeInOut {
+  0% { opacity:0; transform: scale(0.8);}
+  20% { opacity:1; transform: scale(1);}
+  80% { opacity:1; transform: scale(1);}
+  100% { opacity:0; transform: scale(1.2);}
 }
-#loadingBar { width:0%; height:100%; background:red; transition:width 2s linear; }
 
 /* Main content */
-.wrap { max-width:var(--max-width); margin:36px auto; padding:28px; }
+.wrap { max-width:var(--max-width); margin:36px auto; padding:28px; display:none; }
 header { display:flex; align-items:center; gap:18px; justify-content:space-between; margin-bottom:18px; }
 header .left { display:flex; align-items:center; gap:18px; }
 .logo { width:64px;height:64px;border-radius:10px; background:linear-gradient(135deg,#ff6b6b,#ff9a9e); display:flex;align-items:center;justify-content:center; font-weight:700;color:#111;font-size:20px; box-shadow:0 6px 18px rgba(0,0,0,0.6); }
 .logout-btn { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.1); padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:600; transition:0.2s; }
 .logout-btn:hover { background:var(--accent); color:white; border-color:var(--accent); }
 
+/* Movies & layout styling (same as before) */
 h1 {margin:0;font-size:26px;letter-spacing:0.2px}
 p.lead {margin:4px 0 0;color:var(--muted);font-size:14px;}
 .controls { display:flex; gap:12px; margin:22px 0; flex-wrap:wrap; align-items:center; }
@@ -119,13 +114,10 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
 <!-- Intro Overlay -->
 <div id="introOverlay">
   <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" class="introLogo" />
-  <div id="loadingBarContainer">
-    <div id="loadingBar"></div>
-  </div>
 </div>
 
 <!-- Main Content -->
-<div class="wrap" id="mainContent" style="display:none;">
+<div class="wrap" id="mainContent">
   <header>
     <div class="left">
       <div class="logo">GTIC</div>
@@ -169,7 +161,7 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
 </div>
 
 <script>
-// Password and dev access
+// Password handling
 const correctPassword = "GTICMOVIES6741";
 const devPassword = "GTICDEVS89";
 const overlay = document.getElementById('passwordOverlay');
@@ -179,19 +171,13 @@ const pwBtn = document.getElementById('pwBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
 const introOverlay = document.getElementById("introOverlay");
-const loadingBar = document.getElementById("loadingBar");
-const introLogo = document.querySelector("#introOverlay .introLogo");
 
 function playIntroThenShowContent() {
-  introOverlay.style.display = "flex";
-  loadingBar.style.width = "100%"; // trigger CSS transition
+  introOverlay.classList.remove("hidden");
   setTimeout(() => {
-    introOverlay.classList.add("zoomLogo"); // logo zoom animation
-    setTimeout(() => {
-      introOverlay.style.display = "none";
-      mainContent.style.display = "block";
-    }, 1000); // zoom duration
-  }, 2000); // loading bar duration
+    introOverlay.classList.add("hidden");
+    mainContent.style.display = "block";
+  }, 3000); // 3s matches fadeInOut animation
 }
 
 // Dev access
@@ -220,7 +206,7 @@ logoutBtn.addEventListener("click", () => {
   location.reload();
 });
 
-// Movies array and rendering
+// Movies rendering (same as previous)
 const movies = [
   { title:"Dog Man", rating:"PG", desc:"Animated chaos from the Captain Underpants universe.", link:"https://drive.google.com/file/d/1sy0E41GNhba6yPMdC62cvjaTl_VtjJaz/preview", category:"Family", img:"https://images.cinemaplus.com/ticketing/heroart/92ad959140254723df539e568b2c4ed9.jpg" },
   { title:"M3GAN", rating:"PG-13", desc:"Creepy doll meets comedy.", link:"https://gtic-home.short.gy/7oEn8H", category:"Halloween", img:"https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6402d394a80141001df76adf.jpg" },
