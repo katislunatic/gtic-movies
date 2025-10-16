@@ -254,7 +254,7 @@ function renderList(list){
     const poster=document.createElement('div'); poster.className='poster';
     if(m.img){ const img = document.createElement('img'); img.src = m.img; img.alt = m.title; poster.appendChild(img); } else { poster.textContent = m.title; }
     const meta=document.createElement('div'); meta.className='meta';
-    const titow=document.createElement('div'); titleRow.className='title-row';
+    const titleRow=document.createElement('div'); titleRow.className='title-row';
     titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
     const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc;
     const actions=document.createElement('div'); actions.className='actions';
