@@ -269,8 +269,7 @@ const qEl=document.getElementById('q');
 const fEl=document.getElementById('filter');
 const cEl=document.getElementById('categoryFilter');
 const sBtn=document.getElementById('sortBtn');
-let sortAZ=true; // ✅ Start A→Z by default
-sBtn.textContent='Sort A→Z'; // ✅ Make sure button shows correct label on load
+let sortAZ=true;
 function getFiltered(){
   const q=qEl.value.trim().toLowerCase();
   const f=fEl.value;
