@@ -254,7 +254,7 @@ function renderList(list){
     const poster=document.createElement('div'); poster.className='poster';
     if(m.img){ const img = document.createElement('img'); img.src = m.img; img.alt = m.title; poster.appendChild(img); } else { poster.textContent = m.title; }
     const meta=document.createElement('div'); meta.className='meta';
-    const titleRow=document.createElement('div'); titleRow.className='title-row';
+    const titow=document.createElement('div'); titleRow.className='title-row';
     titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
     const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc;
     const actions=document.createElement('div'); actions.className='actions';
@@ -269,7 +269,8 @@ const qEl=document.getElementById('q');
 const fEl=document.getElementById('filter');
 const cEl=document.getElementById('categoryFilter');
 const sBtn=document.getElementById('sortBtn');
-let sortAZ=true;
+let sortAZ=true; // ✅ Start A→Z by default
+sBtn.textContent='Sort A→Z'; // ✅ Make sure button shows correct label on load
 function getFiltered(){
   const q=qEl.value.trim().toLowerCase();
   const f=fEl.value;
