@@ -20,6 +20,7 @@
   font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 html,body {height:100%; margin:0; background:radial-gradient(1200px 600px at 10% 10%, rgba(229,9,20,0.06), transparent 6%), linear-gradient(180deg, #071018 0%, var(--bg) 100%); color:#f7f7f7; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+
 /* Password Overlay */
 #passwordOverlay {position:fixed; inset:0; background:rgba(0,0,0,0.95); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999;}
 #passwordOverlay.hidden { display:none; }
@@ -72,7 +73,7 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
 #playerOverlay { position:fixed; inset:0; background:rgba(0,0,0,0.95); display:none; align-items:center; justify-content:center; z-index:9999; flex-direction:column; }
 #playerOverlay iframe { width:90%; height:80%; border:0; border-radius:10px; box-shadow:0 0 40px rgba(0,0,0,0.8); background:black; }
 #closePlayer { margin-top:20px; background:var(--accent); color:white; border:0; padding:10px 20px; border-radius:10px; font-weight:700; cursor:pointer; }
-#seasonSelect { margin-bottom:18px; padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.2); background:var(--glass); color:white; font-size:14px; }
+
 @media(max-width:520px){ .poster{height:160px;} h1{font-size:20px;} #playerOverlay iframe {width:95%;height:70%;} }
 </style>
 </head>
@@ -130,9 +131,6 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
     <button class="tab-btn active" data-tab="movies">Movies</button>
     <button class="tab-btn" data-tab="shows">Shows</button>
   </div>
-
-  <!-- Season selector (shows only) -->
-  <select id="seasonSelect" style="display:none;"></select>
 
   <main id="movies" class="movies"></main>
   <footer>Powered by GTIC • Movies for our community only.</footer>
@@ -199,31 +197,84 @@ const movies = [
 ];
 
 const shows = [
-  {
-    title:"The Last of Us", rating:"TV-MA", category:"Drama", img:"https://i.ibb.co/4d4D4d4/TLOU.jpg",
+  { 
+    title:"The Last of Us", 
+    rating:"TV-MA", 
+    desc:"Survivors navigate a post-apocalyptic world.", 
+    category:"Drama", 
+    img:"https://i.ibb.co/4d4D4d4/TLOU.jpg",
     seasons:[
-      { season:1, episodes:[
-        {title:"Episode 1", desc:"Joel and Ellie start their journey.", link:"https://gtic-home.short.gy/TLOU-s1e1"},
-        {title:"Episode 2", desc:"Ellie learns survival.", link:"https://gtic-home.short.gy/TLOU-s1e2"}
+      { title:"Season 1", episodes:[
+        {title:"Episode 1", link:"https://vidnest.fun/tv/100088/1/1"},
+        {title:"Episode 2", link:"https://vidnest.fun/tv/100088/1/2"}
       ]},
-      { season:2, episodes:[
-        {title:"Episode 1", desc:"New threats appear.", link:"https://gtic-home.short.gy/TLOU-s2e1"},
-        {title:"Episode 2", desc:"The story continues.", link:"https://gtic-home.short.gy/TLOU-s2e2"}
+      { title:"Season 2", episodes:[
+        {title:"Episode 1", link:"https://gtic-home.short.gy/TLOU_S2E1"},
+        {title:"Episode 2", link:"https://gtic-home.short.gy/TLOU_S2E2"}
       ]}
     ]
   }
 ];
 
+// DOM Elements
 const container = document.getElementById("movies");
 const overlayPlayer = document.getElementById("playerOverlay");
 const frame = document.getElementById("movieFrame");
 const closeBtn = document.getElementById("closePlayer");
-const seasonSelect = document.getElementById("seasonSelect");
 let currentTab = "movies";
 let sortAZ = true;
 
-// Render functions
-function renderMovies(list){
+// Show overlay
+const showOverlay = document.createElement('div');
+showOverlay.id = 'showOverlay';
+showOverlay.style.cssText = `
+  position:fixed; inset:0; background:rgba(0,0,0,0.95); 
+  display:none; flex-direction:column; overflow-y:auto; padding:20px; z-index:10000;
+`;
+document.body.appendChild(showOverlay);
+
+function openShowDetail(show) {
+  showOverlay.innerHTML = `<button id="closeShow" style="align-self:flex-end;margin-bottom:20px;padding:10px 16px;border:none;border-radius:10px;background:var(--accent);color:white;font-weight:700;cursor:pointer;">✖ Close</button>`;
+  
+  show.seasons.forEach(season => {
+    const seasonDiv = document.createElement('div');
+    seasonDiv.style.cssText = 'margin-bottom:32px;';
+    const seasonTitle = document.createElement('h2');
+    seasonTitle.textContent = season.title;
+    seasonTitle.style.cssText = 'font-size:24px; font-weight:700; margin-bottom:16px; text-align:center;';
+    seasonDiv.appendChild(seasonTitle);
+
+    const episodesGrid = document.createElement('div');
+    episodesGrid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;';
+    
+    season.episodes.forEach(ep => {
+      const epBtn = document.createElement('button');
+      epBtn.textContent = ep.title;
+      epBtn.style.cssText = `
+        padding:20px; font-size:16px; font-weight:700; border-radius:12px;
+        border:none; cursor:pointer; background:var(--accent); color:white;
+        transition:0.2s;
+      `;
+      epBtn.onmouseover = () => epBtn.style.background = '#b30612';
+      epBtn.onmouseout = () => epBtn.style.background = 'var(--accent)';
+      epBtn.onclick = () => {
+        frame.src = ep.link;
+        overlayPlayer.style.display = 'flex';
+        showOverlay.style.display = 'none';
+      };
+      episodesGrid.appendChild(epBtn);
+    });
+
+    seasonDiv.appendChild(episodesGrid);
+    showOverlay.appendChild(seasonDiv);
+  });
+
+  document.getElementById('closeShow').onclick = () => { showOverlay.style.display = 'none'; };
+  showOverlay.style.display = 'flex';
+}
+
+// Render movies/shows
+function renderList(list){
   container.innerHTML="";
   list.forEach(m=>{
     const card=document.createElement('article'); card.className='card';
@@ -232,46 +283,21 @@ function renderMovies(list){
     const meta=document.createElement('div'); meta.className='meta';
     const titleRow=document.createElement('div'); titleRow.className='title-row';
     titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
-    const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc||"";
+    const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc;
     const actions=document.createElement('div'); actions.className='actions';
-    const watch=document.createElement('button'); watch.className='btn btn-watch'; watch.textContent='🎥 Watch';
-    watch.onclick=()=>{frame.src=m.link; overlayPlayer.style.display='flex';};
-    const info=document.createElement('button'); info.className='btn btn-info'; info.textContent='More info';
-    info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc||""}`);
+    const watch=document.createElement('button'); watch.className='btn btn-watch'; 
+    watch.textContent = currentTab==='movies' ? '🎥 Watch' : '📺 View Seasons';
+    watch.onclick = () => {
+      if(currentTab==='movies'){
+        frame.src=m.link;
+        overlayPlayer.style.display='flex';
+      } else {
+        openShowDetail(m);
+      }
+    };
+    const info=document.createElement('button'); info.className='btn btn-info'; 
+    info.textContent='More info'; info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
     actions.append(watch,info); meta.append(titleRow,desc,actions); card.append(poster,meta); container.append(card);
-  });
-}
-
-// Render shows with season
-function renderShows(list){
-  container.innerHTML="";
-  if(list.length===0){ container.textContent="No shows found."; seasonSelect.style.display="none"; return; }
-  const show = list[0]; // Only The Last of Us for now
-  seasonSelect.style.display="block";
-  seasonSelect.innerHTML="";
-  show.seasons.forEach(s=>{
-    const opt=document.createElement('option'); opt.value=s.season; opt.textContent="Season "+s.season; seasonSelect.appendChild(opt);
-  });
-  renderEpisodes(show.seasons[0].episodes);
-
-  seasonSelect.onchange=()=>{ 
-    const season = show.seasons.find(s=>s.season==seasonSelect.value);
-    renderEpisodes(season.episodes);
-  };
-}
-
-function renderEpisodes(episodes){
-  container.innerHTML="";
-  episodes.forEach(ep=>{
-    const card=document.createElement('article'); card.className='card';
-    const poster=document.createElement('div'); poster.className='poster'; poster.textContent=ep.title;
-    const meta=document.createElement('div'); meta.className='meta';
-    const desc=document.createElement('div'); desc.className='desc'; desc.textContent=ep.desc;
-    const actions=document.createElement('div'); actions.className='actions';
-    const watch=document.createElement('button'); watch.className='btn btn-watch'; watch.textContent='🎥 Watch';
-    watch.onclick=()=>{frame.src=ep.link; overlayPlayer.style.display='flex';};
-    actions.appendChild(watch);
-    meta.append(desc,actions); card.append(poster,meta); container.append(card);
   });
 }
 
@@ -284,9 +310,9 @@ function getFiltered(){
   const q=qEl.value.trim().toLowerCase();
   const f=fEl.value;
   const c=cEl.value;
-  let list=currentTab==="movies"?movies:shows;
+  const list=currentTab==="movies"?movies:shows;
   let out=list.filter(m=>{
-    const matchesQ=m.title.toLowerCase().includes(q)||(m.desc&&(m.desc.toLowerCase().includes(q)));
+    const matchesQ=m.title.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
     const matchesF=(f==="all")||m.rating===f;
     const matchesC=(c==="all")||m.category===c;
     return matchesQ&&matchesF&&matchesC;
@@ -295,15 +321,8 @@ function getFiltered(){
   return out;
 }
 
-[qEl,fEl,cEl].forEach(el=>el.addEventListener('input',()=>{ 
-  if(currentTab==="movies") renderMovies(getFiltered());
-  else renderShows(getFiltered());
-}));
-document.getElementById('sortBtn').addEventListener('click',()=>{
-  sortAZ=!sortAZ; document.getElementById('sortBtn').textContent=sortAZ?'Sort A→Z':'Sort Z→A'; 
-  if(currentTab==="movies") renderMovies(getFiltered());
-  else renderShows(getFiltered());
-});
+[qEl,fEl,cEl].forEach(el=>el.addEventListener('input',()=>renderList(getFiltered())));
+document.getElementById('sortBtn').addEventListener('click',()=>{ sortAZ=!sortAZ; document.getElementById('sortBtn').textContent=sortAZ?'Sort A→Z':'Sort Z→A'; renderList(getFiltered()); });
 closeBtn.onclick=()=>{ overlayPlayer.style.display='none'; frame.src=''; };
 
 // Tab buttons
@@ -312,13 +331,12 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
     document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
     btn.classList.add("active");
     currentTab=btn.dataset.tab;
-    if(currentTab==="movies") renderMovies(getFiltered());
-    else renderShows(getFiltered());
+    renderList(getFiltered());
   });
 });
 
 // Initial render
-renderMovies(movies);
+renderList(movies);
 </script>
 </body>
 </html>
