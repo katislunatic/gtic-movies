@@ -349,6 +349,26 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
 
 // Initial render
 renderList(movies);
+
+// iOS web app fullscreen subtitle fix
+function isiOSWebApp() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) && window.navigator.standalone;
+}
+
+if(isiOSWebApp()){
+  // Add a small button overlay for forcing English subtitles
+  const subtitleFixBtn = document.createElement("button");
+  subtitleFixBtn.textContent = "Fix English Subtitles";
+  subtitleFixBtn.style.cssText = `
+    position:fixed; bottom:20px; right:20px; z-index:10001; 
+    padding:10px 16px; border:none; border-radius:10px; 
+    background:var(--accent); color:white; font-weight:700; cursor:pointer;
+  `;
+  subtitleFixBtn.onclick = () => {
+    alert("Due to iOS web app limitations, fullscreen subtitles may not show. Please switch to Safari for full subtitle support.");
+  };
+  document.body.appendChild(subtitleFixBtn);
+}
 </script>
 </body>
 </html>
