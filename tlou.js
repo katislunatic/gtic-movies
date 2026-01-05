@@ -1,31 +1,33 @@
-// tlou.js
-const tlouEpisodes = [
-  { 
-    title: "The Last of Us S1E1", 
-    rating: "TV-MA", 
-    desc: "Joel and Ellie meet amidst chaos.", 
-    category: "Action", 
-    img: "https://upload.wikimedia.org/wikipedia/en/c/c3/The_Last_of_Us_Season_1.jpg", 
-    link: "https://example.com/tlou/s1e1" 
+const movies = [
+  {
+    title: "The Last of Us",
+    rating: "R",
+    category: "Action",
+    seasons: [
+      {
+        season: 1,
+        episodes: [
+          { title: "Episode 1", link: "https://link-to-ep1.com" },
+          { title: "Episode 2", link: "https://link-to-ep2.com" },
+          { title: "Episode 3", link: "https://link-to-ep3.com" },
+        ]
+      },
+      {
+        season: 2,
+        episodes: [
+          { title: "Episode 1", link: "https://link-to-s2-ep1.com" },
+          { title: "Episode 2", link: "https://link-to-s2-ep2.com" },
+        ]
+      }
+    ],
+    img: "https://image-of-tlou-poster.jpg"
   },
-  { 
-    title: "The Last of Us S1E2", 
-    rating: "TV-MA", 
-    desc: "A journey through the infected world continues.", 
-    category: "Action", 
-    img: "https://upload.wikimedia.org/wikipedia/en/c/c3/The_Last_of_Us_Season_1.jpg", 
-    link: "https://example.com/tlou/s1e2" 
-  },
-  { 
-    title: "The Last of Us S1E3", 
-    rating: "TV-MA", 
-    desc: "Long, Long Time — a story of love and survival.", 
-    category: "Action", 
-    img: "https://upload.wikimedia.org/wikipedia/en/c/c3/The_Last_of_Us_Season_1.jpg", 
-    link: "https://example.com/tlou/s1e3" 
+  {
+    title: "Zootopia 2",
+    rating: "PG",
+    category: "Family",
+    desc: "Judy and Nick return to crack a wild mystery.",
+    link: "https://vidnest.fun/movie/1084242",
+    img: "https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200"
   }
 ];
-
-// Merge with main movies array
-movies.push(...tlouEpisodes);
-renderList(getFiltered());
