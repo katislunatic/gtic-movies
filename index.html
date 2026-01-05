@@ -1,172 +1,151 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>GTIC Movie Hub</title>
-
-<!-- Favicon -->
-<link rel="icon" type="image/png" href="https://i.ibb.co/C3kwF5SC/gtic-logo.png" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Streaming App</title>
 
 <style>
 :root {
-  --bg:#0b0b0d;
-  --card:#0f1113;
-  --muted:#9aa3ad;
-  --accent:#e50914;
-  --glass: rgba(255,255,255,0.03);
-  --radius:14px;
-  --max-width:1100px;
-  font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --accent: #e50914;
+  --bg: #0f0f0f;
+  --card: #1a1a1a;
+  --text: #ffffff;
+  --muted: #b3b3b3;
 }
-html,body {height:100%; margin:0; background:radial-gradient(1200px 600px at 10% 10%, rgba(229,9,20,0.06), transparent 6%), linear-gradient(180deg, #071018 0%, var(--bg) 100%); color:#f7f7f7; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
 
-/* Password Overlay */
-#passwordOverlay {position:fixed; inset:0; background:rgba(0,0,0,0.95); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999;}
-#passwordOverlay.hidden { display:none; }
-#passwordOverlay .logo img { width:120px; border-radius:14px; margin-bottom:20px; }
-#passwordOverlay h2 {margin:0 0 16px 0;font-size:24px;font-weight:700;color:white;text-align:center;}
-#passwordOverlay input {padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:var(--glass);color:white;font-size:16px;outline:none;width:240px;text-align:center;margin-bottom:12px;}
-#passwordOverlay button {padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:700;cursor:pointer;font-size:16px;box-shadow:0 6px 16px rgba(229,9,20,0.4);}
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
 
-/* Intro Overlay */
-#introOverlay { position:fixed; inset:0; background:black; display:flex; align-items:center; justify-content:center; z-index:9998; flex-direction:column; }
-#introOverlay.hidden { display:none; }
-#introOverlay .introLogo { width:320px; opacity:0; animation: fadeInOut 2s forwards; }
-@keyframes fadeInOut { 0% {opacity:0; transform:scale(0.7);} 25%{opacity:1; transform:scale(1);} 75%{opacity:1; transform:scale(1);} 100%{opacity:0; transform:scale(1.8);} }
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
 
-/* Main content */
-.wrap { max-width:var(--max-width); margin:36px auto; padding:28px; display:none; }
-header { display:flex; align-items:center; gap:18px; justify-content:space-between; margin-bottom:18px; }
-header .left { display:flex; align-items:center; gap:18px; }
-.logo img { width:64px;height:auto;border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.6); }
-.logout-btn { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.1); padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:600; transition:0.2s; }
-.logout-btn:hover { background:var(--accent); color:white; border-color:var(--accent); }
+/* ================= TABS ================= */
+.tabs {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
 
-/* Controls */
-.controls { display:flex; gap:12px; margin:22px 0; flex-wrap:wrap; align-items:center; }
-.search { flex:1; min-width:220px; display:flex; align-items:center; gap:8px; background:var(--glass); padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); }
-.search input { background:transparent; border:0; outline:0; color:inherit; width:100%; font-size:14px; }
-.select { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04); padding:8px 10px; border-radius:10px; font-size:14px; }
+.tab-btn {
+  padding: 12px 32px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  color: var(--muted);
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
 
-/* Tabs */
-.tabs { display:flex; gap:12px; margin-bottom:16px; justify-content: center; }
-.tab-btn { padding:8px 48px; border:0; border-radius:12px; background: rgba(255,255,255,0.05); color: var(--muted); font-weight:600; cursor:pointer; transition:0.2s; }
-.tab-btn.active { background: var(--accent); color:white; }
+.tab-btn.active {
+  color: white;
+}
 
-/* Movie cards */
-.movies { display:grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap:18px; margin-top:12px; }
-.card { background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.02); display:flex; flex-direction:column; transition: transform .18s ease, box-shadow .18s ease; }
-.card:hover {transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.8);}
-.poster { height:180px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:600; font-size:18px; background:linear-gradient(135deg,#0f1720,#111827); }
-.poster img { width:100%; height:100%; object-fit:cover; border-radius:14px 14px 0 0; }
-.meta {padding:14px;display:flex;gap:12px;flex-direction:column;}
-.title-row {display:flex;justify-content:space-between;align-items:center;gap:12px;}
-.title {font-size:16px;font-weight:700;margin:0;}
-.rating { background:rgba(255,255,255,0.04); padding:6px 8px;border-radius:8px; font-weight:700;font-size:13px;color:var(--muted); }
-.desc {margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.35;}
-.actions {display:flex;gap:10px;margin-top:12px;}
-.btn {padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;font-size:14px;}
-.btn-watch {background:var(--accent);color:white;box-shadow:0 8px 18px rgba(229,9,20,0.18);}
-.btn-info {background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);}
-footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
-#playerOverlay { position:fixed; inset:0; background:rgba(0,0,0,0.95); display:none; align-items:center; justify-content:center; z-index:9999; flex-direction:column; }
-#playerOverlay iframe { width:90%; height:80%; border:0; border-radius:10px; box-shadow:0 0 40px rgba(0,0,0,0.8); background:black; }
-#closePlayer { margin-top:20px; background:var(--accent); color:white; border:0; padding:10px 20px; border-radius:10px; font-weight:700; cursor:pointer; }
+.tab-indicator {
+  position: absolute;
+  bottom: -6px;
+  height: 4px;
+  width: 0;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: transform 0.35s ease, width 0.35s ease;
+}
 
-@media(max-width:520px){ .poster{height:160px;} h1{font-size:20px;} #playerOverlay iframe {width:95%;height:70%;} }
+/* ================= GRID ================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+
+.card-info {
+  padding: 10px;
+}
+
+/* ================= SHOW VIEW ================= */
+.back-btn {
+  margin-bottom: 16px;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.season-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: rgba(255,255,255,0.05);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.episode-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
 </style>
 </head>
+
 <body>
+<div class="container">
 
-<!-- Password -->
-<div id="passwordOverlay">
-  <div class="logo"><img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" alt="GTIC Logo"></div>
-  <h2>Enter Password to Access GTIC Movie Hub</h2>
-  <input type="password" id="pwInput" placeholder="Password" />
-  <button id="pwBtn">Enter</button>
-</div>
-
-<!-- Intro -->
-<div id="introOverlay" class="hidden">
-  <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" class="introLogo" />
-</div>
-
-<div class="wrap" id="mainContent">
-  <header>
-    <div class="left">
-      <div class="logo"><img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" alt="GTIC Logo"></div>
-      <div>
-        <h1>🎬 GTIC Movie Hub</h1>
-        <p class="lead">Watch and enjoy — no ads, no redirects.</p>
-      </div>
-    </div>
-    <button id="logoutBtn" class="logout-btn">Logout</button>
-  </header>
-
-  <div class="controls">
-    <div class="search"><input id="q" placeholder="Search title or description..." /></div>
-    <select id="filter" class="select">
-      <option value="all">All ratings</option>
-      <option value="G">G</option>
-      <option value="PG">PG</option>
-      <option value="PG-13">PG-13</option>
-      <option value="R">R</option>
-      <option value="TV-PG">TV-PG</option>
-      <option value="TV-MA">TV-MA</option>
-    </select>
-    <select id="categoryFilter" class="select">
-      <option value="all">All categories</option>
-      <option value="Family">Family</option>
-      <option value="Christmas">Christmas</option>
-      <option value="Halloween">Halloween</option>
-      <option value="Action">Action</option>
-      <option value="Comedy">Comedy</option>
-      <option value="Drama">Drama</option>
-      <option value="Crime">Crime</option>
-    </select>
-    <button id="sortBtn" class="select">Sort A→Z</button>
-  </div>
-
-  <!-- Tabs -->
+  <!-- TABS -->
   <div class="tabs">
     <button class="tab-btn active" data-tab="movies">Movies</button>
     <button class="tab-btn" data-tab="shows">Shows</button>
+    <div class="tab-indicator"></div>
   </div>
 
-  <main id="movies" class="movies"></main>
-  <footer>Powered by GTIC • Movies for our community only.</footer>
-</div>
+  <!-- CONTENT -->
+  <div id="content" class="grid"></div>
 
-<!-- Player Overlay -->
-<div id="playerOverlay">
-  <iframe id="movieFrame" allowfullscreen sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
-  <button id="closePlayer">✖ Close</button>
 </div>
 
 <script>
-// Password handling
-const correctPassword = "GTICMOVIES6741";
-const devPassword = "GTICDEVS89";
-const overlay = document.getElementById('passwordOverlay');
-const mainContent = document.getElementById('mainContent');
-const pwInput = document.getElementById('pwInput');
-const pwBtn = document.getElementById('pwBtn');
-const logoutBtn = document.getElementById('logoutBtn');
-const introOverlay = document.getElementById("introOverlay");
+/* ================= DATA ================= */
 
-function playIntroThenShowContent() {
-  introOverlay.classList.remove("hidden");
-  setTimeout(()=>{introOverlay.classList.add("hidden"); mainContent.style.display="block";},2000);
-}
-
-if(localStorage.getItem("gtic_dev_access")==="true"){ overlay.classList.add("hidden"); playIntroThenShowContent(); }
-
-pwBtn.addEventListener("click",()=>{ const val=pwInput.value; if(val===correctPassword||val===devPassword){ if(val===devPassword)localStorage.setItem("gtic_dev_access","true"); overlay.classList.add("hidden"); playIntroThenShowContent(); } else{alert("Incorrect password"); pwInput.value="";} });
-pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
-logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
-
-// Movies & Shows
+// 🔥 ADD / EDIT YOUR MOVIES HERE
 const movies = [
   { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia when a new reptilian stranger shakes things up.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
   { title:"The Parent Trap", rating:"PG", desc:"Twice the Fun, Double the Trouble.", link:"https://vidnest.fun/movie/9820", category:"Family", img:"https://ntvb.tmsimg.com/assets/p21442_v_h10_ab.jpg?w=1280&h=720" },
@@ -300,127 +279,99 @@ const shows = [
   }
 ];
 
-// DOM Elements
-const container = document.getElementById("movies");
-const overlayPlayer = document.getElementById("playerOverlay");
-const frame = document.getElementById("movieFrame");
-const closeBtn = document.getElementById("closePlayer");
+/* ================= LOGIC ================= */
+
 let currentTab = "movies";
-let sortAZ = true;
+const content = document.getElementById("content");
 
-// Show overlay
-const showOverlay = document.createElement('div');
-showOverlay.id = 'showOverlay';
-showOverlay.style.cssText = `
-  position:fixed; inset:0; background:rgba(0,0,0,0.95); 
-  display:none; flex-direction:column; overflow-y:auto; padding:20px; z-index:10000;
-`;
-document.body.appendChild(showOverlay);
+/* ----- Render Movies / Shows ----- */
+function renderList() {
+  content.innerHTML = "";
+  content.className = "grid";
 
-function openShowDetail(show) {
-  showOverlay.innerHTML = `<button id="closeShow" style="align-self:flex-end;margin-bottom:20px;padding:10px 16px;border:none;border-radius:10px;background:var(--accent);color:white;font-weight:700;cursor:pointer;">✖ Close</button>`;
-  
-  show.seasons.forEach(season => {
-    const seasonDiv = document.createElement('div');
-    seasonDiv.style.cssText = 'margin-bottom:32px;';
-    const seasonTitle = document.createElement('h2');
-    seasonTitle.textContent = season.title;
-    seasonTitle.style.cssText = 'font-size:24px; font-weight:700; margin-bottom:16px; text-align:center;';
-    seasonDiv.appendChild(seasonTitle);
+  const list = currentTab === "movies" ? movies : shows;
 
-    const episodesGrid = document.createElement('div');
-    episodesGrid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;';
-    
-    season.episodes.forEach(ep => {
-      const epBtn = document.createElement('button');
-      epBtn.textContent = ep.title;
-      epBtn.style.cssText = `
-        padding:20px; font-size:16px; font-weight:700; border-radius:12px;
-        border:none; cursor:pointer; background:var(--accent); color:white;
-        transition:0.2s;
-      `;
-      epBtn.onmouseover = () => epBtn.style.background = '#b30612';
-      epBtn.onmouseout = () => epBtn.style.background = 'var(--accent)';
-      epBtn.onclick = () => {
-        frame.src = ep.link;
-        overlayPlayer.style.display = 'flex';
-        showOverlay.style.display = 'none';
-      };
-      episodesGrid.appendChild(epBtn);
-    });
-
-    seasonDiv.appendChild(episodesGrid);
-    showOverlay.appendChild(seasonDiv);
-  });
-
-  document.getElementById('closeShow').onclick = () => { showOverlay.style.display = 'none'; };
-  showOverlay.style.display = 'flex';
-}
-
-// Render movies/shows
-function renderList(list){
-  container.innerHTML="";
-  list.forEach(m=>{
-    const card=document.createElement('article'); card.className='card';
-    const poster=document.createElement('div'); poster.className='poster';
-    if(m.img){ const img=document.createElement('img'); img.src=m.img; img.alt=m.title; poster.appendChild(img); } else { poster.textContent=m.title; }
-    const meta=document.createElement('div'); meta.className='meta';
-    const titleRow=document.createElement('div'); titleRow.className='title-row';
-    titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
-    const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc;
-    const actions=document.createElement('div'); actions.className='actions';
-    const watch=document.createElement('button'); watch.className='btn btn-watch'; 
-    watch.textContent = currentTab==='movies' ? '🎥 Watch' : '📺 View Seasons';
-    watch.onclick = () => {
-      if(currentTab==='movies'){
-        frame.src=m.link;
-        overlayPlayer.style.display='flex';
-      } else {
-        openShowDetail(m);
-      }
+  list.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${item.img}">
+      <div class="card-info">
+        <strong>${item.title}</strong>
+      </div>
+    `;
+    card.onclick = () => {
+      currentTab === "movies"
+        ? window.open(item.link, "_blank")
+        : openShow(item);
     };
-    const info=document.createElement('button'); info.className='btn btn-info'; 
-    info.textContent='More info'; info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
-    actions.append(watch,info); meta.append(titleRow,desc,actions); card.append(poster,meta); container.append(card);
+    content.appendChild(card);
   });
 }
 
-// Filtering & Sorting
-const qEl=document.getElementById('q');
-const fEl=document.getElementById('filter');
-const cEl=document.getElementById('categoryFilter');
+/* ----- Show Page ----- */
+function openShow(show) {
+  content.className = "";
+  content.innerHTML = `
+    <button class="back-btn">← Back</button>
+    <h2>${show.title}</h2>
+  `;
 
-function getFiltered(){
-  const q=qEl.value.trim().toLowerCase();
-  const f=fEl.value;
-  const c=cEl.value;
-  const list=currentTab==="movies"?movies:shows;
-  let out=list.filter(m=>{
-    const matchesQ=m.title.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
-    const matchesF=(f==="all")||m.rating===f;
-    const matchesC=(c==="all")||m.category===c;
-    return matchesQ&&matchesF&&matchesC;
+  content.querySelector(".back-btn").onclick = renderList;
+
+  show.seasons.forEach(season => {
+    const sBtn = document.createElement("button");
+    sBtn.className = "season-btn";
+    sBtn.textContent = season.title;
+    sBtn.onclick = () => openSeason(season, show);
+    content.appendChild(sBtn);
   });
-  if(sortAZ) out=out.slice().sort((a,b)=>a.title.localeCompare(b.title));
-  return out;
 }
 
-[qEl,fEl,cEl].forEach(el=>el.addEventListener('input',()=>renderList(getFiltered())));
-document.getElementById('sortBtn').addEventListener('click',()=>{ sortAZ=!sortAZ; document.getElementById('sortBtn').textContent=sortAZ?'Sort A→Z':'Sort Z→A'; renderList(getFiltered()); });
-closeBtn.onclick=()=>{ overlayPlayer.style.display='none'; frame.src=''; };
+function openSeason(season, show) {
+  content.innerHTML = `
+    <button class="back-btn">← Back</button>
+    <h2>${show.title} – ${season.title}</h2>
+  `;
+  content.querySelector(".back-btn").onclick = () => openShow(show);
 
-// Tab buttons
-document.querySelectorAll(".tab-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  season.episodes.forEach(ep => {
+    const eBtn = document.createElement("button");
+    eBtn.className = "episode-btn";
+    eBtn.textContent = ep.title;
+    eBtn.onclick = () => window.open(ep.link, "_blank");
+    content.appendChild(eBtn);
+  });
+}
+
+/* ================= TAB SLIDE INDICATOR ================= */
+
+const indicator = document.querySelector(".tab-indicator");
+const tabs = document.querySelectorAll(".tab-btn");
+const tabsWrap = document.querySelector(".tabs");
+
+function moveIndicator(btn) {
+  const btnRect = btn.getBoundingClientRect();
+  const wrapRect = tabsWrap.getBoundingClientRect();
+  indicator.style.width = btnRect.width + "px";
+  indicator.style.transform =
+    `translateX(${btnRect.left - wrapRect.left}px)`;
+}
+
+tabs.forEach(btn => {
+  btn.onclick = () => {
+    tabs.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-    currentTab=btn.dataset.tab;
-    renderList(getFiltered());
-  });
+    currentTab = btn.dataset.tab;
+    moveIndicator(btn);
+    renderList();
+  };
 });
 
-// Initial render
-renderList(movies);
-</script> 
-</body> 
+window.onload = () => {
+  moveIndicator(document.querySelector(".tab-btn.active"));
+  renderList();
+};
+</script>
+</body>
 </html>
