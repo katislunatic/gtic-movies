@@ -10,104 +10,124 @@
 <style>
 :root{
   --bg:#0b0b0d;
-  --card:#0f1113;
-  --muted:#9aa3ad;
+  --card:#121418;
   --accent:#e50914;
-  --glass:rgba(255,255,255,0.03);
+  --muted:#9aa3ad;
   --radius:14px;
-  --max-width:1100px;
-  font-family:Inter,system-ui;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;
 }
-html,body{
-  margin:0;
-  background:linear-gradient(180deg,#071018,var(--bg));
-  color:#fff;
+html,body{margin:0;background:var(--bg);color:#fff}
+
+/* overlays */
+#passwordOverlay,#introOverlay,#playerOverlay{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#000;z-index:9999
 }
-.wrap{max-width:var(--max-width);margin:36px auto;padding:28px;display:none;}
-header{display:flex;justify-content:space-between;align-items:center;}
-header .left{display:flex;gap:16px;align-items:center;}
-.logo img{width:64px;border-radius:10px;}
-.logout-btn{background:transparent;border:1px solid #333;color:#aaa;padding:8px 16px;border-radius:8px;cursor:pointer}
-.controls{display:flex;gap:12px;margin:20px 0;flex-wrap:wrap}
-.search{flex:1;background:var(--glass);padding:8px 12px;border-radius:10px}
-.search input{background:transparent;border:0;color:white;width:100%}
-.select{background:transparent;color:#aaa;border:1px solid #333;padding:8px 10px;border-radius:10px}
+#introOverlay.hidden{display:none}
+#passwordOverlay{flex-direction:column;gap:12px}
+#passwordOverlay input{padding:10px;border-radius:8px;border:none}
+#passwordOverlay button{padding:10px 16px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-weight:700}
 
-.tabs{display:flex;gap:12px;justify-content:center;margin-bottom:16px}
-.tab-btn{padding:8px 48px;border-radius:12px;border:0;background:#222;color:#aaa;cursor:pointer}
-.tab-btn.active{background:var(--accent);color:white}
+/* layout */
+.wrap{max-width:1200px;margin:auto;padding:20px;display:none}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+header .left{display:flex;gap:12px;align-items:center}
+header img{height:50px}
+.logout-btn{background:#222;border:none;color:#fff;padding:8px 14px;border-radius:8px}
 
-#continueWatching{
+/* controls */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.controls input,.controls select,.controls button{
+  background:#1a1d22;color:#fff;border:none;padding:10px;border-radius:10px
+}
+
+/* tabs */
+.tabs{display:flex;gap:10px;margin-bottom:14px}
+.tab-btn{
+  background:#1a1d22;border:none;color:#fff;padding:10px 16px;border-radius:10px;cursor:pointer
+}
+.tab-btn.active{background:var(--accent)}
+
+/* grid */
+.movies{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.card{
+  background:var(--card);border-radius:var(--radius);overflow:hidden;cursor:pointer
+}
+.card img{width:100%;height:260px;object-fit:cover}
+.card .info{padding:10px}
+.card h3{margin:0;font-size:16px}
+.card p{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+/* resume */
+#resumeBanner{
   display:none;
-  background:var(--glass);
-  padding:12px 18px;
-  border-radius:14px;
+  background:#16181d;
+  padding:14px;
+  border-radius:12px;
   margin-bottom:16px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  font-weight:700;
+}
+#resumeBanner button{
+  background:var(--accent);border:none;color:#fff;
+  padding:8px 12px;border-radius:8px;font-weight:700
 }
 
-.movies{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.card{background:#111;border-radius:14px;overflow:hidden}
-.poster img{width:100%;height:180px;object-fit:cover}
-.meta{padding:14px}
-.title-row{display:flex;justify-content:space-between}
-.actions{display:flex;gap:10px;margin-top:10px}
-.btn{padding:10px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
-.btn-watch{background:var(--accent);color:white}
-.btn-info{background:#222;color:#aaa}
-
-#playerOverlay{
-  position:fixed;inset:0;
-  background:black;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  z-index:9999;
+/* player */
+#playerOverlay{display:none;flex-direction:column;background:#000}
+#playerOverlay iframe{width:100%;height:100%;border:none}
+#closePlayer{
+  position:absolute;top:20px;right:20px;
+  background:#000;color:#fff;border:1px solid #fff;
+  padding:8px 14px;border-radius:10px
 }
-#playerOverlay iframe{width:90%;height:80%;border:0}
-#closePlayer{margin-top:16px;padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:white}
 
-#passwordOverlay{
-  position:fixed;inset:0;background:black;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000;
-}
-#passwordOverlay input{padding:12px;border-radius:10px;border:0;margin-bottom:12px}
-#passwordOverlay button{padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:white}
+footer{text-align:center;color:var(--muted);margin:40px 0}
 </style>
 </head>
 <body>
 
+<!-- PASSWORD -->
 <div id="passwordOverlay">
-  <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" width="120">
+  <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" height="80">
   <h2>Enter Password</h2>
   <input type="password" id="pwInput">
   <button id="pwBtn">Enter</button>
 </div>
 
+<!-- INTRO -->
+<div id="introOverlay" class="hidden">
+  <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" height="120">
+</div>
+
 <div class="wrap" id="mainContent">
 <header>
   <div class="left">
-    <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" width="64">
+    <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png">
     <div>
       <h1>🎬 GTIC Movie Hub</h1>
-      <p>No ads • No redirects</p>
+      <p style="color:var(--muted)">Watch and enjoy — no ads</p>
     </div>
   </div>
-  <button class="logout-btn" id="logoutBtn">Logout</button>
+  <button id="logoutBtn" class="logout-btn">Logout</button>
 </header>
 
-<div id="continueWatching">
-  <span id="continueText"></span>
-  <button class="btn-watch" id="continueBtn">▶ Resume</button>
+<div id="resumeBanner">
+  <span id="resumeText"></span>
+  <button id="resumeBtn">Resume</button>
 </div>
 
 <div class="controls">
-  <div class="search"><input id="q" placeholder="Search..."></div>
-  <button id="sortBtn" class="select">Sort A→Z</button>
+  <input id="q" placeholder="Search...">
+  <select id="filter">
+    <option value="all">All ratings</option>
+    <option>PG</option>
+    <option>PG-13</option>
+    <option>R</option>
+    <option>TV-MA</option>
+  </select>
+  <button id="sortBtn">Sort A–Z</button>
 </div>
 
 <div class="tabs">
@@ -115,26 +135,36 @@ header .left{display:flex;gap:16px;align-items:center;}
   <button class="tab-btn" data-tab="shows">Shows</button>
 </div>
 
-<main class="movies" id="movies"></main>
+<main id="movies" class="movies"></main>
+
+<footer>Powered by GTIC</footer>
 </div>
 
+<!-- PLAYER -->
 <div id="playerOverlay">
   <iframe id="movieFrame" allowfullscreen></iframe>
-  <button id="closePlayer">✖ Close</button>
+  <button id="closePlayer">Close</button>
 </div>
 
 <script>
-// PASSWORD
-const pw="GTICMOVIES6741";
+/* PASSWORD */
+const correctPassword="GTICMOVIES6741";
+const overlay=document.getElementById("passwordOverlay");
+const intro=document.getElementById("introOverlay");
+const main=document.getElementById("mainContent");
+
 pwBtn.onclick=()=>{
-  if(pwInput.value===pw){
-    passwordOverlay.style.display="none";
-    mainContent.style.display="block";
+  if(pwInput.value===correctPassword){
+    overlay.style.display="none";
+    intro.classList.remove("hidden");
+    setTimeout(()=>{
+      intro.classList.add("hidden");
+      main.style.display="block";
+    },1500);
   } else alert("Wrong password");
 };
-logoutBtn.onclick=()=>location.reload();
 
-// DATA
+/* DATA */
 const movies = [
   { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia when a new reptilian stranger shakes things up.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
   { title:"The Parent Trap", rating:"PG", desc:"Twice the Fun, Double the Trouble.", link:"https://vidnest.fun/movie/9820", category:"Family", img:"https://ntvb.tmsimg.com/assets/p21442_v_h10_ab.jpg?w=1280&h=720" },
@@ -269,55 +299,27 @@ const shows = [
 ];
 
 let currentTab="movies";
-let sortAZ=true;
 
-// CONTINUE WATCHING
-function saveWatch(data){
-  localStorage.setItem("gtic_last",JSON.stringify(data));
-  loadContinue();
-}
-function loadContinue(){
-  const d=JSON.parse(localStorage.getItem("gtic_last"));
-  if(!d)return;
-  continueWatching.style.display="flex";
-  continueText.textContent=`Continue Watching: ${d.title}`;
-  continueBtn.onclick=()=>{
-    movieFrame.src=d.link;
-    playerOverlay.style.display="flex";
-  };
-}
-loadContinue();
-
-// RENDER
+/* RENDER */
 function render(){
   moviesEl.innerHTML="";
   const list=currentTab==="movies"?movies:shows;
   list.forEach(m=>{
     const c=document.createElement("div");
     c.className="card";
-    c.innerHTML=`
-      <div class="poster"><img src="${m.img}"></div>
-      <div class="meta">
-        <div class="title-row"><b>${m.title}</b></div>
-        <p>${m.desc}</p>
-        <div class="actions">
-          <button class="btn btn-watch">Watch</button>
-        </div>
-      </div>
-    `;
-    c.querySelector(".btn-watch").onclick=()=>{
-      if(currentTab==="movies"){
-        movieFrame.src=m.link;
-        playerOverlay.style.display="flex";
-        saveWatch({title:m.title,link:m.link});
-      }
+    c.innerHTML=`<img src="${m.img}"><div class="info"><h3>${m.title}</h3><p>${m.desc}</p></div>`;
+    c.onclick=()=>{
+      localStorage.setItem("resume",JSON.stringify(m));
+      movieFrame.src=m.link;
+      playerOverlay.style.display="flex";
+      loadResume();
     };
     moviesEl.appendChild(c);
   });
 }
-render();
+const moviesEl=document.getElementById("movies");
 
-// TABS
+/* TABS */
 document.querySelectorAll(".tab-btn").forEach(b=>{
   b.onclick=()=>{
     document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
@@ -327,11 +329,26 @@ document.querySelectorAll(".tab-btn").forEach(b=>{
   };
 });
 
-closePlayer.onclick=()=>{
-  movieFrame.src="";
-  playerOverlay.style.display="none";
-};
-</script>
+/* RESUME */
+function loadResume(){
+  const r=JSON.parse(localStorage.getItem("resume"));
+  if(!r)return;
+  resumeBanner.style.display="flex";
+  resumeText.textContent="Continue watching: "+r.title;
+  resumeBtn.onclick=()=>{
+    movieFrame.src=r.link;
+    playerOverlay.style.display="flex";
+  };
+}
+loadResume();
 
+/* PLAYER */
+closePlayer.onclick=()=>{
+  playerOverlay.style.display="none";
+  movieFrame.src="";
+};
+
+render();
+</script>
 </body>
 </html>
