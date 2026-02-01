@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WWE Events</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root {
+  --bg:#0b0b0d;
+  --card:#0f1113;
+  --accent:#e50914;
+  font-family:Inter, system-ui;
+}
+body {
+  margin:0;
+  background:var(--bg);
+  color:white;
+}
+.wrap {
+  max-width:1100px;
+  margin:40px auto;
+  padding:20px;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
+}
+.card {
+  background:var(--card);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+.card img {
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+.meta {
+  padding:16px;
+}
+button {
+  margin-top:12px;
+  padding:10px 14px;
+  border:none;
+  border-radius:10px;
+  background:var(--accent);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+.back {
+  margin-bottom:20px;
+  display:inline-block;
+  color:#aaa;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <a class="back" href="sports.html">← Back to Sports</a>
+  <h1>🤼 WWE Events</h1>
+
+  <div class="grid">
+
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/en/0/02/WrestleMania_40_logo.png">
+      <div class="meta">
+        <h3>WrestleMania</h3>
+        <button onclick="location.href='PASTE_EVENT_LINK_HERE'">▶ Watch</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/en/9/9c/Royal_Rumble_2024_logo.png">
+      <div class="meta">
+        <h3>Royal Rumble</h3>
+        <button onclick="location.href='PASTE_EVENT_LINK_HERE'">▶ Watch</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/SummerSlam_2023_logo.png">
+      <div class="meta">
+        <h3>SummerSlam</h3>
+        <button onclick="location.href='PASTE_EVENT_LINK_HERE'">▶ Watch</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
