@@ -132,6 +132,7 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
   <div class="tabs">
     <button class="tab-btn active" data-tab="movies">Movies</button>
     <button class="tab-btn" data-tab="shows">Shows</button>
+    <button class="tab-btn" data-tab="sports">Sports</button>
   </div>
 
   <main id="movies" class="movies"></main>
@@ -302,6 +303,33 @@ const shows = [
   }
 ];
 
+const sports = [
+  {
+    title: "WrestleMania 40",
+    rating: "LIVE",
+    desc: "The biggest WWE event of the year.",
+    category: "WWE",
+    img: "https://upload.wikimedia.org/wikipedia/en/0/02/WrestleMania_40_logo.png",
+    link: "PASTE_EVENT_LINK_HERE"
+  },
+  {
+    title: "Royal Rumble 2024",
+    rating: "LIVE",
+    desc: "30 superstars enter. One winner.",
+    category: "WWE",
+    img: "https://upload.wikimedia.org/wikipedia/en/9/9c/Royal_Rumble_2024_logo.png",
+    link: "PASTE_EVENT_LINK_HERE"
+  },
+  {
+    title: "SummerSlam",
+    rating: "LIVE",
+    desc: "WWE’s biggest party of the summer.",
+    category: "WWE",
+    img: "https://upload.wikimedia.org/wikipedia/en/f/f3/SummerSlam_2023_logo.png",
+    link: "PASTE_EVENT_LINK_HERE"
+  }
+];
+
 // DOM Elements
 const container = document.getElementById("movies");
 const overlayPlayer = document.getElementById("playerOverlay");
@@ -372,14 +400,17 @@ function renderList(list){
     const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc;
     const actions=document.createElement('div'); actions.className='actions';
     const watch=document.createElement('button'); watch.className='btn btn-watch'; 
-    watch.textContent = currentTab==='movies' ? '🎥 Watch' : '📺 View Seasons';
+watch.textContent =
+  currentTab === 'movies' ? '🎥 Watch' :
+  currentTab === 'shows'  ? '📺 View Seasons' :
+  '▶ Watch Event';
     watch.onclick = () => {
-      if(currentTab==='movies'){
-        frame.src=m.link;
-        overlayPlayer.style.display='flex';
-      } else {
-        openShowDetail(m);
-      }
+if (currentTab === 'movies' || currentTab === 'sports') {
+  frame.src = m.link;
+  overlayPlayer.style.display = 'flex';
+} else {
+  openShowDetail(m);
+}
     };
     const info=document.createElement('button'); info.className='btn btn-info'; 
     info.textContent='More info'; info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
@@ -396,7 +427,10 @@ function getFiltered(){
   const q=qEl.value.trim().toLowerCase();
   const f=fEl.value;
   const c=cEl.value;
-  const list=currentTab==="movies"?movies:shows;
+const list =
+  currentTab === "movies" ? movies :
+  currentTab === "shows"  ? shows  :
+  sports;
   let out=list.filter(m=>{
     const matchesQ=m.title.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
     const matchesF=(f==="all")||m.rating===f;
