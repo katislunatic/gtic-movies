@@ -305,20 +305,26 @@ const shows = [
 
 const sports = [
   {
-    title: "WrestleMania 41: Sunday",
-    rating: "LIVE",
-    desc: "The biggest WWE event of the year.",
-    category: "WWE",
-    img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329",
-    link: "https://vidnest.fun/movie/1285199"
-  },
-  {
-    title: "WrestleMania 41: Saturday",
-    rating: "LIVE",
-    desc: "The biggest WWE event of the year.",
-    category: "WWE",
-    img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329",
-    link: "https://vidnest.fun/movie/1285198"
+    title: "WWE",          // Category title
+    rating: "SPORTS",
+    desc: "WWE premium live events and weekly shows",
+    img: "https://insidepulse.com/wp-content/uploads/2017/12/WWE-logo-banner.jpg",
+    events: [
+      {
+        title: "WrestleMania 41: Saturday",
+        rating: "LIVE",
+        desc: "The biggest WWE event of the year.",
+        img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329",
+        link: "https://vidnest.fun/movie/1285198"
+      },
+      {
+        title: "WrestleMania 41: Sunday",
+        rating: "LIVE",
+        desc: "The biggest WWE event of the year.",
+        img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329",
+        link: "https://vidnest.fun/movie/1285199"
+      }
+    ]
   }
 ];
 
@@ -379,6 +385,57 @@ function openShowDetail(show) {
   showOverlay.style.display = 'flex';
 }
 
+// ✅ PUT IT RIGHT HERE
+function openSportCategory(sport) {
+  showOverlay.innerHTML = `
+    <button id="closeShow" style="align-self:flex-end;margin-bottom:20px;padding:10px 16px;border:none;border-radius:10px;background:var(--accent);color:white;font-weight:700;cursor:pointer;">
+      ✖ Close
+    </button>
+    <h2 style="text-align:center;font-size:28px;margin-bottom:24px;">
+      ${sport.title}
+    </h2>
+  `;
+
+  const grid = document.createElement('div');
+  grid.style.cssText =
+    'display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;';
+
+  sport.events.forEach(ev => {
+    const card = document.createElement('article');
+    card.className = 'card';
+
+    card.innerHTML = `
+      <div class="poster"><img src="${ev.img}"></div>
+      <div class="meta">
+        <div class="title-row">
+          <h3 class="title">${ev.title}</h3>
+          <div class="rating">${ev.rating}</div>
+        </div>
+        <div class="desc">${ev.desc}</div>
+        <div class="actions">
+          <button class="btn btn-watch">▶ Watch</button>
+        </div>
+      </div>
+    `;
+
+    card.querySelector('.btn-watch').onclick = () => {
+      frame.src = ev.link;
+      overlayPlayer.style.display = 'flex';
+      showOverlay.style.display = 'none';
+    };
+
+    grid.appendChild(card);
+  });
+
+  showOverlay.appendChild(grid);
+
+  document.getElementById('closeShow').onclick = () => {
+    showOverlay.style.display = 'none';
+  };
+
+  showOverlay.style.display = 'flex';
+}
+  
 // Render movies/shows
 function renderList(list){
   container.innerHTML="";
@@ -395,15 +452,19 @@ function renderList(list){
 watch.textContent =
   currentTab === 'movies' ? '🎥 Watch' :
   currentTab === 'shows'  ? '📺 View Seasons' :
-  '▶ Watch Event';
-    watch.onclick = () => {
-if (currentTab === 'movies' || currentTab === 'sports') {
-  frame.src = m.link;
-  overlayPlayer.style.display = 'flex';
-} else {
-  openShowDetail(m);
-}
-    };
+  '▶ Show Events';
+watch.onclick = () => {
+  if (currentTab === 'movies') {
+    frame.src = m.link;
+    overlayPlayer.style.display = 'flex';
+  } 
+  else if (currentTab === 'shows') {
+    openShowDetail(m);
+  }
+  else if (currentTab === 'sports') {
+    openSportCategory(m);
+  }
+};
     const info=document.createElement('button'); info.className='btn btn-info'; 
     info.textContent='More info'; info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
     actions.append(watch,info); meta.append(titleRow,desc,actions); card.append(poster,meta); container.append(card);
