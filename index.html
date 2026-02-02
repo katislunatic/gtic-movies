@@ -159,6 +159,7 @@ const pwInput = document.getElementById('pwInput');
 const pwBtn = document.getElementById('pwBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 const introOverlay = document.getElementById("introOverlay");
+let allowPageExit = false;
 
 function playIntroThenShowContent() {
   introOverlay.classList.remove("hidden");
@@ -169,7 +170,7 @@ if(localStorage.getItem("gtic_dev_access")==="true"){ overlay.classList.add("hid
 
 pwBtn.addEventListener("click",()=>{ const val=pwInput.value; if(val===correctPassword||val===devPassword){ if(val===devPassword)localStorage.setItem("gtic_dev_access","true"); overlay.classList.add("hidden"); playIntroThenShowContent(); } else{alert("Incorrect password"); pwInput.value="";} });
 pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
-logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
+logoutBtn.addEventListener("click",()=>{ allowPageExit = true; localStorage.removeItem("gtic_dev_access"); location.reload(); });
 
 // Movies & Shows
 const movies = [
@@ -340,6 +341,13 @@ const closeBtn = document.getElementById("closePlayer");
 let currentTab = "movies";
 let sortAZ = true;
 
+window.addEventListener('beforeunload', (event) => {
+  if (!allowPageExit) {
+    event.preventDefault();
+    event.returnValue = '';
+  }
+});
+  
 // Show overlay
 const showOverlay = document.createElement('div');
 showOverlay.id = 'showOverlay';
