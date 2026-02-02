@@ -141,7 +141,7 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
 
 <!-- Player Overlay -->
 <div id="playerOverlay">
-  <iframe id="movieFrame" allowfullscreen></iframe>
+<iframe id="movieFrame" allowfullscreen></iframe>
   <button id="closePlayer">✖ Close</button>
 </div>
 
@@ -369,10 +369,11 @@ function openShowDetail(show) {
       `;
       epBtn.onmouseover = () => epBtn.style.background = '#b30612';
       epBtn.onmouseout = () => epBtn.style.background = 'var(--accent)';
-epBtn.onclick = () => {
-  window.open(ep.link, '_blank'); // opens the episode in a new browser tab
-  showOverlay.style.display = 'none'; // still closes the overlay
-};
+      epBtn.onclick = () => {
+        frame.src = ep.link;
+        overlayPlayer.style.display = 'flex';
+        showOverlay.style.display = 'none';
+      };
       episodesGrid.appendChild(epBtn);
     });
 
@@ -417,11 +418,11 @@ function openSportCategory(sport) {
       </div>
     `;
 
-card.querySelector('.btn-watch').onclick = () => {
-  // Open event in a new tab
-  window.open(ev.link, '_blank');
-  showOverlay.style.display = 'none';
-};
+    card.querySelector('.btn-watch').onclick = () => {
+      frame.src = ev.link;
+      overlayPlayer.style.display = 'flex';
+      showOverlay.style.display = 'none';
+    };
 
     grid.appendChild(card);
   });
@@ -454,14 +455,14 @@ watch.textContent =
   '▶ Show Events';
 watch.onclick = () => {
   if (currentTab === 'movies') {
-    // Open movie in a new tab
-    window.open(m.link, '_blank');
+    frame.src = m.link;
+    overlayPlayer.style.display = 'flex';
   } 
   else if (currentTab === 'shows') {
-    openShowDetail(m); // for shows, we’ll handle episodes separately
+    openShowDetail(m);
   }
   else if (currentTab === 'sports') {
-    openSportCategory(m); // for sports, handle events separately
+    openSportCategory(m);
   }
 };
     const info=document.createElement('button'); info.className='btn btn-info'; 
