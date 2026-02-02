@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>GTIC Movie Hubs</title>
+<title>GTIC Movie Hub</title>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data:; frame-src https:; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https:; connect-src 'self' https:; navigate-to 'self'; base-uri 'self'; form-action 'self';">
 
 <!-- Favicon -->
@@ -161,6 +161,41 @@ function playIntroThenShowContent() {
   introOverlay.classList.remove("hidden");
   setTimeout(()=>{introOverlay.classList.add("hidden"); mainContent.style.display="block";},2000);
 }
+
+function isExternalUrl(url) {
+  try {
+    return new URL(url, window.location.href).origin !== window.location.origin;
+  } catch (err) {
+    return false;
+  }
+}
+
+function blockExternalNavigation(event, url) {
+  event.preventDefault();
+  alert("External navigation is blocked.");
+  console.warn("Blocked external navigation to:", url);
+}
+
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("a");
+  if (!link) return;
+  if (link.target === "_blank") {
+    blockExternalNavigation(event, link.href);
+    return;
+  }
+  if (link.href && isExternalUrl(link.href)) {
+    blockExternalNavigation(event, link.href);
+  }
+});
+
+window.open = function(url) {
+  if (url && isExternalUrl(url)) {
+    alert("External navigation is blocked.");
+    console.warn("Blocked window.open to:", url);
+    return null;
+  }
+  return null;
+};
 
 if(localStorage.getItem("gtic_dev_access")==="true"){ overlay.classList.add("hidden"); playIntroThenShowContent(); }
 
