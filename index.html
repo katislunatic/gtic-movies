@@ -155,7 +155,42 @@ const pwInput = document.getElementById('pwInput');
 const pwBtn = document.getElementById('pwBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 const introOverlay = document.getElementById("introOverlay");
+const allowUnload = { value: false };
+const appOrigin = window.location.origin;
 
+function allowNextUnload() {
+  allowUnload.value = true;
+  setTimeout(() => {
+    allowUnload.value = false;
+  }, 0);
+}
+
+function closeSite(reason = "Redirect detected") {
+  document.body.innerHTML = "";
+  document.body.style.background = "black";
+  document.body.style.margin = "0";
+  const message = document.createElement("div");
+  message.style.cssText = "color:white; font-family:Inter, sans-serif; text-align:center; padding:40px;";
+  message.innerHTML = `<h1 style="margin-bottom:12px;">Site closed</h1><p>${reason}</p>`;
+  document.body.appendChild(message);
+  try {
+    window.close();
+  } catch (err) {
+    // Ignore close errors
+  }
+}
+
+window.addEventListener("beforeunload", () => {
+  if (allowUnload.value) {
+    return;
+  }
+  if (window.location.origin !== appOrigin) {
+    closeSite("Redirect attempt blocked.");
+  } else {
+    closeSite("Navigation away from this site is blocked.");
+  }
+});
+  
 function playIntroThenShowContent() {
   introOverlay.classList.remove("hidden");
   setTimeout(()=>{introOverlay.classList.add("hidden"); mainContent.style.display="block";},2000);
@@ -165,7 +200,7 @@ if(localStorage.getItem("gtic_dev_access")==="true"){ overlay.classList.add("hid
 
 pwBtn.addEventListener("click",()=>{ const val=pwInput.value; if(val===correctPassword||val===devPassword){ if(val===devPassword)localStorage.setItem("gtic_dev_access","true"); overlay.classList.add("hidden"); playIntroThenShowContent(); } else{alert("Incorrect password"); pwInput.value="";} });
 pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
-logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
+logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); allowNextUnload(); location.reload(); });
 
 // Movies & Shows
 const movies = [
