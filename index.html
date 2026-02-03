@@ -370,7 +370,7 @@ function openShowDetail(show) {
       epBtn.onmouseover = () => epBtn.style.background = '#b30612';
       epBtn.onmouseout = () => epBtn.style.background = 'var(--accent)';
       epBtn.onclick = () => {
-        frame.src = ep.link;
+frame.src = `/player.html?video=${encodeURIComponent(ep.link)}`;
         overlayPlayer.style.display = 'flex';
         showOverlay.style.display = 'none';
       };
@@ -419,7 +419,7 @@ function openSportCategory(sport) {
     `;
 
     card.querySelector('.btn-watch').onclick = () => {
-      frame.src = ev.link;
+frame.src = `/player.html?video=${encodeURIComponent(ep.link)}`; // NEW
       overlayPlayer.style.display = 'flex';
       showOverlay.style.display = 'none';
     };
@@ -455,7 +455,7 @@ watch.textContent =
   '▶ Show Events';
 watch.onclick = () => {
   if (currentTab === 'movies') {
-    frame.src = m.link;
+    frame.src = `/player.html?video=${encodeURIComponent(m.link)}`;
     overlayPlayer.style.display = 'flex';
   } 
   else if (currentTab === 'shows') {
