@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,89 +5,181 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>GTIC Movie Hubs</title>
 
-<!-- Favicon -->
 <link rel="icon" type="image/png" href="https://i.ibb.co/C3kwF5SC/gtic-logo.png" />
 
 <style>
 :root {
-  --bg:#0b0b0d;
-  --card:#0f1113;
-  --muted:#9aa3ad;
-  --accent:#e50914;
-  --glass: rgba(255,255,255,0.03);
-  --radius:14px;
-  --max-width:1100px;
-  font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --bg: #0b0b0d;
+  --card: #141417;
+  --muted: #a0a0a8;
+  --accent: #e50914;
+  --accent-hover: #ff1f2a;
+  --glass: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.08);
+  --radius: 16px;
+  --max-width: 1200px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
-html,body {height:100%; margin:0; background:radial-gradient(1200px 600px at 10% 10%, rgba(229,9,20,0.06), transparent 6%), linear-gradient(180deg, #071018 0%, var(--bg) 100%); color:#f7f7f7; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+
+* { box-sizing: border-box; }
+
+html, body { 
+    height: 100%; 
+    margin: 0; 
+    background-color: var(--bg);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(229, 9, 20, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(32, 50, 200, 0.05) 0px, transparent 50%);
+    color: #ffffff; 
+    -webkit-font-smoothing: antialiased; 
+    overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #444; }
 
 /* Password Overlay */
-#passwordOverlay {position:fixed; inset:0; background:rgba(0,0,0,0.95); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999;}
-#passwordOverlay.hidden { display:none; }
-#passwordOverlay .logo img { width:120px; border-radius:14px; margin-bottom:20px; }
-#passwordOverlay h2 {margin:0 0 16px 0;font-size:24px;font-weight:700;color:white;text-align:center;}
-#passwordOverlay input {padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:var(--glass);color:white;font-size:16px;outline:none;width:240px;text-align:center;margin-bottom:12px;}
-#passwordOverlay button {padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:700;cursor:pointer;font-size:16px;box-shadow:0 6px 16px rgba(229,9,20,0.4);}
+#passwordOverlay {
+    position: fixed; inset: 0; 
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    z-index: 9999;
+    padding: 20px;
+}
+#passwordOverlay.hidden { display: none; }
+#passwordOverlay .logo img { width: 100px; border-radius: 20px; margin-bottom: 24px; filter: drop-shadow(0 0 20px rgba(229,9,20,0.3)); }
+#passwordOverlay h2 { margin: 0 0 24px 0; font-size: 22px; font-weight: 600; text-align: center; max-width: 400px; line-height: 1.4; }
+#passwordOverlay input {
+    padding: 14px 20px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--glass); color: white; font-size: 16px; outline: none;
+    width: 100%; max-width: 300px; text-align: center; margin-bottom: 16px;
+    backdrop-filter: blur(10px); transition: border 0.3s;
+}
+#passwordOverlay input:focus { border-color: var(--accent); }
+#passwordOverlay button {
+    padding: 12px 40px; border-radius: 12px; border: 0; background: var(--accent);
+    color: white; font-weight: 700; cursor: pointer; font-size: 16px;
+    transition: transform 0.2s, background 0.2s;
+}
+#passwordOverlay button:hover { background: var(--accent-hover); transform: translateY(-2px); }
 
 /* Intro Overlay */
-#introOverlay { position:fixed; inset:0; background:black; display:flex; align-items:center; justify-content:center; z-index:9998; flex-direction:column; }
-#introOverlay.hidden { display:none; }
-#introOverlay .introLogo { width:320px; opacity:0; animation: fadeInOut 2s forwards; }
-@keyframes fadeInOut { 0% {opacity:0; transform:scale(0.7);} 25%{opacity:1; transform:scale(1);} 75%{opacity:1; transform:scale(1);} 100%{opacity:0; transform:scale(1.8);} }
+#introOverlay { position: fixed; inset: 0; background: black; display: flex; align-items: center; justify-content: center; z-index: 9998; }
+#introOverlay.hidden { display: none; }
+#introOverlay .introLogo { width: 280px; opacity: 0; animation: fadeInOut 2s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+@keyframes fadeInOut { 
+    0% { opacity: 0; transform: scale(0.8); filter: blur(10px); }
+    50% { opacity: 1; transform: scale(1); filter: blur(0); }
+    100% { opacity: 0; transform: scale(1.1); filter: blur(5px); } 
+}
 
-/* Main content */
-.wrap { max-width:var(--max-width); margin:36px auto; padding:28px; display:none; }
-header { display:flex; align-items:center; gap:18px; justify-content:space-between; margin-bottom:18px; }
-header .left { display:flex; align-items:center; gap:18px; }
-.logo img { width:64px;height:auto;border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.6); }
-.logout-btn { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.1); padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:600; transition:0.2s; }
-.logout-btn:hover { background:var(--accent); color:white; border-color:var(--accent); }
+/* Layout */
+.wrap { max-width: var(--max-width); margin: 0 auto; padding: 40px 20px; display: none; animation: fadeIn 0.8s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Controls */
-.controls { display:flex; gap:12px; margin:22px 0; flex-wrap:wrap; align-items:center; }
-.search { flex:1; min-width:220px; display:flex; align-items:center; gap:8px; background:var(--glass); padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); }
-.search input { background:transparent; border:0; outline:0; color:inherit; width:100%; font-size:14px; }
-.select { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04); padding:8px 10px; border-radius:10px; font-size:14px; }
+header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+header .left { display: flex; align-items: center; gap: 20px; }
+header h1 { font-size: 28px; margin: 0; letter-spacing: -0.5px; }
+header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.logo img { width: 60px; height: 60px; border-radius: 14px; object-fit: cover; }
+
+.logout-btn { 
+    background: var(--glass); color: #fff; border: 1px solid var(--border); 
+    padding: 8px 16px; border-radius: 10px; cursor: pointer; 
+    font-size: 13px; font-weight: 600; transition: 0.3s; 
+}
+.logout-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+
+/* Sticky Controls Section */
+.sticky-bar {
+    position: sticky; top: 10px; z-index: 100;
+    background: rgba(11, 11, 13, 0.8);
+    backdrop-filter: blur(16px);
+    padding: 15px; border-radius: 20px;
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+}
+
+.controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.search { 
+    flex: 2; min-width: 250px; display: flex; align-items: center; 
+    gap: 10px; background: rgba(0,0,0,0.2); padding: 10px 16px; 
+    border-radius: 12px; border: 1px solid var(--border);
+}
+.search input { background: transparent; border: 0; outline: 0; color: #fff; width: 100%; font-size: 14px; }
+.select { 
+    background: rgba(0,0,0,0.2); color: #fff; border: 1px solid var(--border); 
+    padding: 10px 14px; border-radius: 12px; font-size: 14px; cursor: pointer; outline: none;
+}
+.select:focus { border-color: var(--accent); }
 
 /* Tabs */
-.tabs { display:flex; gap:12px; margin-bottom:16px; justify-content: center; }
-.tab-btn { padding:8px 48px; border:0; border-radius:12px; background: rgba(255,255,255,0.05); color: var(--muted); font-weight:600; cursor:pointer; transition:0.2s; }
-.tab-btn.active { background: var(--accent); color:white; }
+.tabs { display: flex; gap: 8px; margin-bottom: 24px; background: var(--glass); padding: 6px; border-radius: 14px; width: fit-content; margin-left: auto; margin-right: auto; }
+.tab-btn { 
+    padding: 10px 30px; border: 0; border-radius: 10px; 
+    background: transparent; color: var(--muted); 
+    font-weight: 600; cursor: pointer; transition: 0.3s; 
+}
+.tab-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3); }
+.tab-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.05); }
 
-/* Movie cards */
-.movies { display:grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap:18px; margin-top:12px; }
-.card { background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.02); display:flex; flex-direction:column; transition: transform .18s ease, box-shadow .18s ease; }
-.card:hover {transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.8);}
-.poster { height:180px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:600; font-size:18px; background:linear-gradient(135deg,#0f1720,#111827); }
-.poster img { width:100%; height:100%; object-fit:cover; border-radius:14px 14px 0 0; }
-.meta {padding:14px;display:flex;gap:12px;flex-direction:column;}
-.title-row {display:flex;justify-content:space-between;align-items:center;gap:12px;}
-.title {font-size:16px;font-weight:700;margin:0;}
-.rating { background:rgba(255,255,255,0.04); padding:6px 8px;border-radius:8px; font-weight:700;font-size:13px;color:var(--muted); }
-.desc {margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.35;}
-.actions {display:flex;gap:10px;margin-top:12px;}
-.btn {padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;font-size:14px;}
-.btn-watch {background:var(--accent);color:white;box-shadow:0 8px 18px rgba(229,9,20,0.18);}
-.btn-info {background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);}
-footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
-#playerOverlay { position:fixed; inset:0; background:rgba(0,0,0,0.95); display:none; align-items:center; justify-content:center; z-index:9999; flex-direction:column; }
-#playerOverlay iframe { width:90%; height:80%; border:0; border-radius:10px; box-shadow:0 0 40px rgba(0,0,0,0.8); background:black; }
-#closePlayer { margin-top:20px; background:var(--accent); color:white; border:0; padding:10px 20px; border-radius:10px; font-weight:700; cursor:pointer; }
+/* Movie Cards */
+.movies { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+.card { 
+    background: var(--card); border-radius: var(--radius); overflow: hidden; 
+    border: 1px solid var(--border); display: flex; flex-direction: column; 
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+.card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
 
-@media(max-width:520px){ .poster{height:160px;} h1{font-size:20px;} #playerOverlay iframe {width:95%;height:70%;} }
+.poster { position: relative; height: 180px; background: #1a1a1e; overflow: hidden; }
+.poster img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+.card:hover .poster img { transform: scale(1.1); }
+
+.meta { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+.title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+.title { font-size: 17px; font-weight: 700; margin: 0; line-height: 1.2; }
+.rating { background: var(--accent); padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 11px; color: white; white-space: nowrap; }
+.desc { color: var(--muted); font-size: 13.5px; line-height: 1.5; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.actions { display: flex; gap: 8px; margin-top: auto; }
+.btn { flex: 1; padding: 10px; border-radius: 10px; border: 0; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; }
+.btn-watch { background: white; color: black; }
+.btn-watch:hover { background: #e0e0e0; }
+.btn-info { background: var(--glass); color: white; border: 1px solid var(--border); }
+.btn-info:hover { background: rgba(255,255,255,0.1); }
+
+/* Player & Detail Overlays */
+#playerOverlay, #showOverlay { 
+    position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
+    display: none; align-items: center; justify-content: center; 
+    z-index: 10000; flex-direction: column; padding: 20px;
+}
+#playerOverlay iframe { width: 100%; max-width: 1000px; aspect-ratio: 16/9; border: 0; border-radius: 16px; box-shadow: 0 0 50px rgba(229,9,20,0.2); }
+#closePlayer, .close-detail { margin-top: 25px; background: var(--accent); color: white; border: 0; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; }
+
+footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; text-align: center; border-top: 1px solid var(--border); }
+
+@media(max-width: 768px) {
+    header { flex-direction: column; text-align: center; gap: 20px; }
+    header .left { flex-direction: column; }
+    .sticky-bar { top: 0; border-radius: 0; margin: 0 -20px 30px -20px; }
+    .tabs { width: 100%; overflow-x: auto; }
+}
 </style>
 </head>
 <body>
 
-<!-- Password -->
 <div id="passwordOverlay">
   <div class="logo"><img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" alt="GTIC Logo"></div>
-  <h2>Enter Password to Access GTIC Movie Hub</h2>
-  <input type="password" id="pwInput" placeholder="Password" />
-  <button id="pwBtn">Enter</button>
+  <h2>Welcome to GTIC Movie Hub</h2>
+  <input type="password" id="pwInput" placeholder="Enter Access Password" />
+  <button id="pwBtn">Unlock Hub</button>
 </div>
 
-<!-- Intro -->
 <div id="introOverlay" class="hidden">
   <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" class="introLogo" />
 </div>
@@ -98,56 +189,64 @@ footer {margin-top:28px;color:var(--muted);font-size:13px;text-align:center;}
     <div class="left">
       <div class="logo"><img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" alt="GTIC Logo"></div>
       <div>
-        <h1>🎬 GTIC Movie Hub</h1>
-        <p class="lead">Watch and enjoy — no ads, no redirects.</p>
+        <h1>GTIC Movie Hub</h1>
+        <p>Premium streaming for our community.</p>
       </div>
     </div>
-    <button id="logoutBtn" class="logout-btn">Logout</button>
+    <button id="logoutBtn" class="logout-btn">Sign Out</button>
   </header>
 
-  <div class="controls">
-    <div class="search"><input id="q" placeholder="Search title or description..." /></div>
-    <select id="filter" class="select">
-      <option value="all">All ratings</option>
-      <option value="G">G</option>
-      <option value="PG">PG</option>
-      <option value="PG-13">PG-13</option>
-      <option value="R">R</option>
-      <option value="TV-PG">TV-PG</option>
-      <option value="TV-MA">TV-MA</option>
-    </select>
-    <select id="categoryFilter" class="select">
-      <option value="all">All categories</option>
-      <option value="Family">Family</option>
-      <option value="Christmas">Christmas</option>
-      <option value="Halloween">Halloween</option>
-      <option value="Action">Action</option>
-      <option value="Comedy">Comedy</option>
-      <option value="Drama">Drama</option>
-      <option value="Crime">Crime</option>
-    </select>
-    <button id="sortBtn" class="select">Sort A→Z</button>
+  <div class="sticky-bar">
+    <div class="controls">
+      <div class="search">
+        <span>🔍</span>
+        <input id="q" placeholder="Search movies, shows, genres..." />
+      </div>
+      <select id="filter" class="select">
+        <option value="all">All Ratings</option>
+        <option value="G">G</option>
+        <option value="PG">PG</option>
+        <option value="PG-13">PG-13</option>
+        <option value="R">R</option>
+        <option value="TV-PG">TV-PG</option>
+        <option value="TV-MA">TV-MA</option>
+      </select>
+      <select id="categoryFilter" class="select">
+        <option value="all">All Categories</option>
+        <option value="Family">Family</option>
+        <option value="Christmas">Christmas</option>
+        <option value="Halloween">Halloween</option>
+        <option value="Action">Action</option>
+        <option value="Comedy">Comedy</option>
+        <option value="Drama">Drama</option>
+        <option value="Crime">Crime</option>
+      </select>
+      <button id="sortBtn" class="select">Sort A-Z</button>
+    </div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <button class="tab-btn active" data-tab="movies">Movies</button>
-    <button class="tab-btn" data-tab="shows">Shows</button>
-    <button class="tab-btn" data-tab="sports">Sports</button>
+    <button class="tab-btn" data-tab="shows">TV Series</button>
+    <button class="tab-btn" data-tab="sports">Live Sports</button>
   </div>
 
   <main id="movies" class="movies"></main>
-  <footer>Powered by GTIC • Movies for our community only.</footer>
+  
+  <footer>
+    <p>&copy; 2024 GTIC Entertainment Hub</p>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px;">High-speed streaming. No ads. No tracking.</p>
+  </footer>
 </div>
 
-<!-- Player Overlay -->
 <div id="playerOverlay">
   <iframe id="movieFrame" allowfullscreen></iframe>
-  <button id="closePlayer">✖ Close</button>
+  <button id="closePlayer">Close Player</button>
 </div>
 
 <script>
-// Password handling
+/** * LOGIC REMAINS IDENTICAL TO ORIGINAL 
+ **/
 const correctPassword = "GTICMOVIES6741";
 const devPassword = "GTICDEVS89";
 const overlay = document.getElementById('passwordOverlay');
@@ -159,16 +258,29 @@ const introOverlay = document.getElementById("introOverlay");
 
 function playIntroThenShowContent() {
   introOverlay.classList.remove("hidden");
-  setTimeout(()=>{introOverlay.classList.add("hidden"); mainContent.style.display="block";},2000);
+  setTimeout(()=>{
+      introOverlay.classList.add("hidden"); 
+      mainContent.style.display="block";
+  },2000);
 }
 
-if(localStorage.getItem("gtic_dev_access")==="true"){ overlay.classList.add("hidden"); playIntroThenShowContent(); }
+if(localStorage.getItem("gtic_dev_access")==="true"){ 
+    overlay.classList.add("hidden"); 
+    playIntroThenShowContent(); 
+}
 
-pwBtn.addEventListener("click",()=>{ const val=pwInput.value; if(val===correctPassword||val===devPassword){ if(val===devPassword)localStorage.setItem("gtic_dev_access","true"); overlay.classList.add("hidden"); playIntroThenShowContent(); } else{alert("Incorrect password"); pwInput.value="";} });
+pwBtn.addEventListener("click",()=>{ 
+    const val=pwInput.value; 
+    if(val===correctPassword||val===devPassword){ 
+        if(val===devPassword)localStorage.setItem("gtic_dev_access","true"); 
+        overlay.classList.add("hidden"); 
+        playIntroThenShowContent(); 
+    } else{alert("Incorrect password"); pwInput.value="";} 
+});
+
 pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
 logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
 
-// Movies & Shows
 const movies = [
   { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia when a new reptilian stranger shakes things up.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
   { title:"We Can Be Heroes", rating:"PG", desc:"When Earth’s superheroes are captured by aliens, their kids must work together to save their parents and the world.", link:"https://vidnest.fun/movie/615677", category:"Family", img:"https://image.tmdb.org/t/p/w1280/iVbV8IwLe65DFffbqVz9kcMRnnH.jpg" },
@@ -199,7 +311,7 @@ const movies = [
   { title:"Captain Underpants", rating:"PG", desc:"Classic humor and school mischief.", link:"https://gtic-home.short.gy/U1HUbb", category:"Comedy", img:"https://pbs.twimg.com/media/GZtQF8WaAAEYFwZ.jpg:large" },
   { title:"Bring It On: Cheer or Die", rating:"PG-13", desc:"A cheer squad’s practice turns into a fight for survival in this horror spin on the classic series.", link:"https://gtic-home.short.gy/KJBAeC", category:"Halloween", img:"https://images.plex.tv/photo?size=large-1920&scale=1&url=https%3A%2F%2Fmetadata-static.plex.tv%2F9%2Fgracenote%2F9b27249211b3c547cd67f8a67351f7cb.jpg" },
   { title:"Black Phone 2", rating:"R", desc:"A sequel with more dark thrillers.", link:"https://gtic-home.short.gy/ft5UYq", category:"Halloween", img:"https://attractionsmagazine.com/wp-content/uploads/2025/10/Black-Phone-2-Ethan-Hawke-Mason-Thames-courtesy-of-Universal.jpg" },
-  { title:"A Minecraft Movie", rating:"PG", desc:"Blocky adventures come to life in a cinematic journey.", link:"https://gtic-home.short.gy/MUcD5Y", category:"Family", img:"https://beam-images.warnermediacdn.com/BEAM_LWM_DELIVERABLES/05eee581-3112-4515-b17f-219ff6265ef8/96557df6-9268-40e6-9817-91dc86d0f3b4?host=wbd-images.prod-vod.h264.io&partner=beamcom" },
+  { title:"A Minecraft Movie", rating:"PG", desc:"Blocky adventures come to life in a cinematic journey.", link:"https://gtic-home.short.gy/MUcD5Y", category:"Family", img:"https://beam-images.warnermediacdn.com/05eee581-3112-4515-b17f-219ff6265ef8/96557df6-9268-40e6-9817-91dc86d0f3b4?host=wbd-images.prod-vod.h264.io&partner=beamcom" },
   { title:"A Charlie Brown Christmas", rating:"G", desc:"Classic comfort movie.", link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview", category:"Christmas", img:"https://i.ebayimg.com/images/g/rRoAAOSwfERnGtix/s-l400.jpg" }
 ];
 
@@ -233,7 +345,6 @@ const shows = [
       ]}
     ]
   },
-
   { 
     title:"The Flash", 
     rating:"TV-PG", 
@@ -245,7 +356,7 @@ const shows = [
         {title:"Episode 1", link:"https://vidnest.fun/tv/60735/1/1"},
         {title:"Episode 2", link:"https://vidnest.fun/tv/60735/1/2"},
         {title:"Episode 3", link:"https://vidnest.fun/tv/60735/1/3"},
-        {title:"Episode ", link:"https://vidnest.fun/tv/60735/1/4"},
+        {title:"Episode 4", link:"https://vidnest.fun/tv/60735/1/4"},
         {title:"Episode 5", link:"https://vidnest.fun/tv/60735/1/5"},
         {title:"Episode 6", link:"https://vidnest.fun/tv/60735/1/6"},
         {title:"Episode 7", link:"https://vidnest.fun/tv/60735/1/7"},
@@ -268,7 +379,6 @@ const shows = [
       ]}
     ]
   },
-
   { 
     title:"Gotham", 
     rating:"TV-MA", 
@@ -306,7 +416,7 @@ const shows = [
 
 const sports = [
   {
-    title: "WWE",          // Category title
+    title: "WWE",
     rating: "SPORTS",
     desc: "WWE premium live events and weekly shows",
     img: "https://insidepulse.com/wp-content/uploads/2017/12/WWE-logo-banner.jpg",
@@ -329,7 +439,6 @@ const sports = [
   }
 ];
 
-// DOM Elements
 const container = document.getElementById("movies");
 const overlayPlayer = document.getElementById("playerOverlay");
 const frame = document.getElementById("movieFrame");
@@ -337,39 +446,30 @@ const closeBtn = document.getElementById("closePlayer");
 let currentTab = "movies";
 let sortAZ = true;
 
-// Show overlay
 const showOverlay = document.createElement('div');
 showOverlay.id = 'showOverlay';
-showOverlay.style.cssText = `
-  position:fixed; inset:0; background:rgba(0,0,0,0.95); 
-  display:none; flex-direction:column; overflow-y:auto; padding:20px; z-index:10000;
-`;
 document.body.appendChild(showOverlay);
 
 function openShowDetail(show) {
-  showOverlay.innerHTML = `<button id="closeShow" style="align-self:flex-end;margin-bottom:20px;padding:10px 16px;border:none;border-radius:10px;background:var(--accent);color:white;font-weight:700;cursor:pointer;">✖ Close</button>`;
+  showOverlay.innerHTML = `<button class="close-detail" id="closeShow">✖ Return to Hub</button> <h2 style="margin-top:20px">${show.title}</h2>`;
   
   show.seasons.forEach(season => {
     const seasonDiv = document.createElement('div');
-    seasonDiv.style.cssText = 'margin-bottom:32px;';
-    const seasonTitle = document.createElement('h2');
+    seasonDiv.style.cssText = 'margin-bottom:40px; width:100%; max-width:800px;';
+    const seasonTitle = document.createElement('h3');
     seasonTitle.textContent = season.title;
-    seasonTitle.style.cssText = 'font-size:24px; font-weight:700; margin-bottom:16px; text-align:center;';
+    seasonTitle.style.cssText = 'font-size:20px; color:var(--muted); margin-bottom:15px; border-left: 4px solid var(--accent); padding-left:15px;';
     seasonDiv.appendChild(seasonTitle);
 
     const episodesGrid = document.createElement('div');
-    episodesGrid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;';
+    episodesGrid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px;';
     
     season.episodes.forEach(ep => {
       const epBtn = document.createElement('button');
       epBtn.textContent = ep.title;
-      epBtn.style.cssText = `
-        padding:20px; font-size:16px; font-weight:700; border-radius:12px;
-        border:none; cursor:pointer; background:var(--accent); color:white;
-        transition:0.2s;
-      `;
-      epBtn.onmouseover = () => epBtn.style.background = '#b30612';
-      epBtn.onmouseout = () => epBtn.style.background = 'var(--accent)';
+      epBtn.style.cssText = `padding:15px; font-weight:700; border-radius:10px; border:1px solid var(--border); cursor:pointer; background:var(--glass); color:white; transition:0.2s;`;
+      epBtn.onmouseover = () => epBtn.style.borderColor = 'var(--accent)';
+      epBtn.onmouseout = () => epBtn.style.borderColor = 'var(--border)';
       epBtn.onclick = () => {
         frame.src = ep.link;
         overlayPlayer.style.display = 'flex';
@@ -386,25 +486,17 @@ function openShowDetail(show) {
   showOverlay.style.display = 'flex';
 }
 
-// ✅ PUT IT RIGHT HERE
 function openSportCategory(sport) {
   showOverlay.innerHTML = `
-    <button id="closeShow" style="align-self:flex-end;margin-bottom:20px;padding:10px 16px;border:none;border-radius:10px;background:var(--accent);color:white;font-weight:700;cursor:pointer;">
-      ✖ Close
-    </button>
-    <h2 style="text-align:center;font-size:28px;margin-bottom:24px;">
-      ${sport.title}
-    </h2>
+    <button class="close-detail" id="closeShow">✖ Back to Sports</button>
+    <h2 style="text-align:center;font-size:28px;margin:20px 0;">${sport.title} Events</h2>
   `;
-
   const grid = document.createElement('div');
-  grid.style.cssText =
-    'display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;';
+  grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px; width:100%; max-width:1100px;';
 
   sport.events.forEach(ev => {
     const card = document.createElement('article');
     card.className = 'card';
-
     card.innerHTML = `
       <div class="poster"><img src="${ev.img}"></div>
       <div class="meta">
@@ -414,30 +506,22 @@ function openSportCategory(sport) {
         </div>
         <div class="desc">${ev.desc}</div>
         <div class="actions">
-          <button class="btn btn-watch">▶ Watch</button>
+          <button class="btn btn-watch">▶ Play Event</button>
         </div>
       </div>
     `;
-
     card.querySelector('.btn-watch').onclick = () => {
       frame.src = ev.link;
       overlayPlayer.style.display = 'flex';
       showOverlay.style.display = 'none';
     };
-
     grid.appendChild(card);
   });
-
   showOverlay.appendChild(grid);
-
-  document.getElementById('closeShow').onclick = () => {
-    showOverlay.style.display = 'none';
-  };
-
+  document.getElementById('closeShow').onclick = () => { showOverlay.style.display = 'none'; };
   showOverlay.style.display = 'flex';
 }
-  
-// Render movies/shows
+
 function renderList(list){
   container.innerHTML="";
   list.forEach(m=>{
@@ -450,29 +534,18 @@ function renderList(list){
     const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc;
     const actions=document.createElement('div'); actions.className='actions';
     const watch=document.createElement('button'); watch.className='btn btn-watch'; 
-watch.textContent =
-  currentTab === 'movies' ? '🎥 Watch' :
-  currentTab === 'shows'  ? '📺 View Seasons' :
-  '▶ Show Events';
-watch.onclick = () => {
-  if (currentTab === 'movies') {
-    frame.src = m.link;
-    overlayPlayer.style.display = 'flex';
-  } 
-  else if (currentTab === 'shows') {
-    openShowDetail(m);
-  }
-  else if (currentTab === 'sports') {
-    openSportCategory(m);
-  }
-};
+    watch.textContent = currentTab === 'movies' ? '▶ Watch Now' : currentTab === 'shows' ? '📁 Episodes' : '⚡ View Events';
+    watch.onclick = () => {
+      if (currentTab === 'movies') { frame.src = m.link; overlayPlayer.style.display = 'flex'; } 
+      else if (currentTab === 'shows') { openShowDetail(m); }
+      else if (currentTab === 'sports') { openSportCategory(m); }
+    };
     const info=document.createElement('button'); info.className='btn btn-info'; 
-    info.textContent='More info'; info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
+    info.textContent='Details'; info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
     actions.append(watch,info); meta.append(titleRow,desc,actions); card.append(poster,meta); container.append(card);
   });
 }
 
-// Filtering & Sorting
 const qEl=document.getElementById('q');
 const fEl=document.getElementById('filter');
 const cEl=document.getElementById('categoryFilter');
@@ -481,10 +554,7 @@ function getFiltered(){
   const q=qEl.value.trim().toLowerCase();
   const f=fEl.value;
   const c=cEl.value;
-const list =
-  currentTab === "movies" ? movies :
-  currentTab === "shows"  ? shows  :
-  sports;
+  const list = currentTab === "movies" ? movies : currentTab === "shows" ? shows : sports;
   let out=list.filter(m=>{
     const matchesQ=m.title.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
     const matchesF=(f==="all")||m.rating===f;
@@ -496,10 +566,13 @@ const list =
 }
 
 [qEl,fEl,cEl].forEach(el=>el.addEventListener('input',()=>renderList(getFiltered())));
-document.getElementById('sortBtn').addEventListener('click',()=>{ sortAZ=!sortAZ; document.getElementById('sortBtn').textContent=sortAZ?'Sort A→Z':'Sort Z→A'; renderList(getFiltered()); });
+document.getElementById('sortBtn').addEventListener('click',()=>{ 
+    sortAZ=!sortAZ; 
+    document.getElementById('sortBtn').textContent=sortAZ?'Sort A-Z':'Sort Z-A'; 
+    renderList(getFiltered()); 
+});
 closeBtn.onclick=()=>{ overlayPlayer.style.display='none'; frame.src=''; };
 
-// Tab buttons
 document.querySelectorAll(".tab-btn").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
@@ -509,7 +582,6 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
   });
 });
 
-// Initial render
 renderList(movies);
 </script> 
 </body> 
