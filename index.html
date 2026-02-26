@@ -240,13 +240,11 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
 </div>
 
 <div id="playerOverlay">
-  <iframe id="movieFrame" allowfullscreen></iframe>
+  <iframe id="movieFrame" sandbox="allow-forms allow-scripts allow-same-origin" allowfullscreen></iframe>
   <button id="closePlayer">Close Player</button>
 </div>
 
 <script>
-/** * LOGIC REMAINS IDENTICAL TO ORIGINAL 
- **/
 const correctPassword = "GTICMOVIES6741";
 const devPassword = "GTICDEVS89";
 const overlay = document.getElementById('passwordOverlay');
@@ -261,6 +259,7 @@ function playIntroThenShowContent() {
   setTimeout(()=>{
       introOverlay.classList.add("hidden"); 
       mainContent.style.display="block";
+      initHub();
   },2000);
 }
 
@@ -546,43 +545,48 @@ function renderList(list){
   });
 }
 
-const qEl=document.getElementById('q');
-const fEl=document.getElementById('filter');
-const cEl=document.getElementById('categoryFilter');
+function initHub() {
+  const q = document.getElementById("q");
+  const filter = document.getElementById("filter");
+  const catFilter = document.getElementById("categoryFilter");
+  const sortBtn = document.getElementById("sortBtn");
+  const tabBtns = document.querySelectorAll(".tab-btn");
 
-function getFiltered(){
-  const q=qEl.value.trim().toLowerCase();
-  const f=fEl.value;
-  const c=cEl.value;
-  const list = currentTab === "movies" ? movies : currentTab === "shows" ? shows : sports;
-  let out=list.filter(m=>{
-    const matchesQ=m.title.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
-    const matchesF=(f==="all")||m.rating===f;
-    const matchesC=(c==="all")||m.category===c;
-    return matchesQ&&matchesF&&matchesC;
+  function update(){
+    let data = currentTab === 'movies' ? movies : currentTab === 'shows' ? shows : sports;
+    let val = q.value.toLowerCase();
+    let r = filter.value;
+    let c = catFilter.value;
+
+    let filtered = data.filter(m => 
+      (m.title.toLowerCase().includes(val) || m.desc.toLowerCase().includes(val)) &&
+      (r === "all" || m.rating === r) &&
+      (c === "all" || m.category === c)
+    );
+
+    if(sortAZ) filtered.sort((a,b)=>a.title.localeCompare(b.title));
+    else filtered.sort((a,b)=>b.title.localeCompare(a.title));
+
+    renderList(filtered);
+  }
+
+  q.oninput = update;
+  filter.onchange = update;
+  catFilter.onchange = update;
+  sortBtn.onclick = () => { sortAZ = !sortAZ; sortBtn.textContent = sortAZ ? "Sort A-Z" : "Sort Z-A"; update(); };
+
+  tabBtns.forEach(btn => {
+    btn.onclick = () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTab = btn.dataset.tab;
+      update();
+    };
   });
-  if(sortAZ) out=out.slice().sort((a,b)=>a.title.localeCompare(b.title));
-  return out;
+
+  closeBtn.onclick = () => { overlayPlayer.style.display = 'none'; frame.src = ""; };
+  update();
 }
-
-[qEl,fEl,cEl].forEach(el=>el.addEventListener('input',()=>renderList(getFiltered())));
-document.getElementById('sortBtn').addEventListener('click',()=>{ 
-    sortAZ=!sortAZ; 
-    document.getElementById('sortBtn').textContent=sortAZ?'Sort A-Z':'Sort Z-A'; 
-    renderList(getFiltered()); 
-});
-closeBtn.onclick=()=>{ overlayPlayer.style.display='none'; frame.src=''; };
-
-document.querySelectorAll(".tab-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    currentTab=btn.dataset.tab;
-    renderList(getFiltered());
-  });
-});
-
-renderList(movies);
-</script> 
-</body> 
+</script>
+</body>
 </html>
