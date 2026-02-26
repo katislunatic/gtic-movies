@@ -240,7 +240,7 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
 </div>
 
 <div id="playerOverlay">
-  <iframe id="movieFrame" src="" allowfullscreen></iframe>
+  <iframe id="movieFrame" src="" allow="autoplay; encrypted-media; clipboard-write; picture-in-picture" allowfullscreen></iframe>
   <button id="closePlayer">Close Player</button>
 </div>
 
@@ -280,6 +280,7 @@ pwBtn.addEventListener("click",()=>{
 pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
 logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
 
+// Movie, Show, and Sports Data (Keeping your existing data)
 const movies = [
   { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia when a new reptilian stranger shakes things up.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
   { title:"We Can Be Heroes", rating:"PG", desc:"When Earth’s superheroes are captured by aliens, their kids must work together to save their parents and the world.", link:"https://vidnest.fun/movie/615677", category:"Family", img:"https://image.tmdb.org/t/p/w1280/iVbV8IwLe65DFffbqVz9kcMRnnH.jpg" },
