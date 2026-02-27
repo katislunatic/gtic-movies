@@ -76,6 +76,28 @@ html, body {
     100% { opacity: 0; transform: scale(1.1); filter: blur(5px); } 
 }
 
+/* VPN Popup Styles */
+#vpnOverlay {
+    position: fixed; inset: 0; 
+    background: rgba(0, 0, 0, 0.85); 
+    backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center; 
+    z-index: 10001; padding: 20px;
+}
+.vpn-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 30px; border-radius: 20px; max-width: 450px; 
+    text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.vpn-card h2 { color: var(--accent); margin-top: 0; }
+.vpn-card p { color: var(--muted); line-height: 1.6; margin-bottom: 25px; }
+.vpn-btn {
+    background: var(--accent); color: white; border: 0; 
+    padding: 12px 25px; border-radius: 10px; font-weight: 700; 
+    cursor: pointer; width: 100%; transition: 0.3s;
+}
+.vpn-btn:hover { background: var(--accent-hover); }
+
 /* Layout */
 .wrap { max-width: var(--max-width); margin: 0 auto; padding: 40px 20px; display: none; animation: fadeIn 0.8s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -184,6 +206,15 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
   <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" class="introLogo" />
 </div>
 
+<div id="vpnOverlay">
+    <div class="vpn-card">
+        <div style="font-size: 50px; margin-bottom: 15px;">🛡️</div>
+        <h2>Privacy Protection</h2>
+        <p>To ensure a smooth and secure streaming experience on <b>GTIC Movie Hub</b>, we highly recommend using a VPN. This protects your connection and ensures high-speed access.</p>
+        <button class="vpn-btn" id="closeVpn">I Understand, Let's Watch</button>
+    </div>
+</div>
+
 <div class="wrap" id="mainContent">
   <header>
     <div class="left">
@@ -253,15 +284,22 @@ const pwInput = document.getElementById('pwInput');
 const pwBtn = document.getElementById('pwBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 const introOverlay = document.getElementById("introOverlay");
+const vpnOverlay = document.getElementById('vpnOverlay');
+const closeVpn = document.getElementById('closeVpn');
 
 function playIntroThenShowContent() {
   introOverlay.classList.remove("hidden");
   setTimeout(()=>{
       introOverlay.classList.add("hidden"); 
       mainContent.style.display="block";
+      vpnOverlay.style.display = "flex"; // Show VPN Popup
       initHub();
   },2000);
 }
+
+closeVpn.onclick = () => {
+    vpnOverlay.style.display = "none";
+};
 
 if(localStorage.getItem("gtic_dev_access")==="true"){ 
     overlay.classList.add("hidden"); 
@@ -280,7 +318,7 @@ pwBtn.addEventListener("click",()=>{
 pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
 logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
 
-// Movie, Show, and Sports Data (Keeping your existing data)
+// Movie, Show, and Sports Data
 const movies = [
   { title:"Backrooms", rating:"COMING SOON", desc:"A young cinematographer's descent into the eerie, endless yellow hallways of a blurring reality. Based on the viral horror phenomenon.", link:"#", category:"Halloween", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoLmtwlJmhqSrqTK0CmtLhc-9AF6kcgo8y8ORQVH7FLuzREvYdoph63RXb&s=10" },
   { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia when a new reptilian stranger shakes things up.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
@@ -547,63 +585,67 @@ function renderList(list){
             alert("The Backrooms is currently in production. Check back closer to the release date!");
         };
     } else {
-        watch.textContent = currentTab === 'movies' ? '▶ Watch Now' : currentTab === 'shows' ? '📁 Episodes' : '⚡ View Events';
+        watch.textContent = currentTab === 'movies' ? '▶ Play Movie' : (currentTab === 'shows' ? '📁 View Seasons' : '▶ Play Sports');
         watch.onclick = () => {
-          if (currentTab === 'movies') { frame.src = m.link; overlayPlayer.style.display = 'flex'; } 
-          else if (currentTab === 'shows') { openShowDetail(m); }
-          else if (currentTab === 'sports') { openSportCategory(m); }
+            if(currentTab === 'shows') openShowDetail(m);
+            else if(currentTab === 'sports') openSportCategory(m);
+            else { frame.src=m.link; overlayPlayer.style.display='flex'; }
         };
     }
-
-    const info=document.createElement('button'); info.className='btn btn-info'; 
-    info.textContent='Details'; info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
-    actions.append(watch,info); meta.append(titleRow,desc,actions); card.append(poster,meta); container.append(card);
+    
+    actions.appendChild(watch);
+    meta.appendChild(titleRow);
+    meta.appendChild(desc);
+    meta.appendChild(actions);
+    card.appendChild(poster);
+    card.appendChild(meta);
+    container.appendChild(card);
   });
 }
 
-function initHub() {
-  const q = document.getElementById("q");
-  const filter = document.getElementById("filter");
-  const catFilter = document.getElementById("categoryFilter");
-  const sortBtn = document.getElementById("sortBtn");
-  const tabs = document.querySelectorAll(".tab-btn");
+function initHub(){
+    const currentData = currentTab === 'movies' ? movies : (currentTab === 'shows' ? shows : sports);
+    renderList(currentData);
+}
 
-  function filterItems() {
-    let list = currentTab === 'movies' ? movies : currentTab === 'shows' ? shows : sports;
-    const query = q.value.toLowerCase();
-    const rating = filter.value;
-    const cat = catFilter.value;
+// Event Listeners for search and filtering
+document.getElementById('q').oninput = e => {
+    const val = e.target.value.toLowerCase();
+    const data = currentTab === 'movies' ? movies : (currentTab === 'shows' ? shows : sports);
+    renderList(data.filter(m => m.title.toLowerCase().includes(val) || m.desc.toLowerCase().includes(val)));
+};
 
-    let filtered = list.filter(m => 
-      (m.title.toLowerCase().includes(query) || m.desc.toLowerCase().includes(query)) &&
-      (rating === 'all' || m.rating === rating) &&
-      (cat === 'all' || m.category === cat)
-    );
+document.getElementById('filter').onchange = e => {
+    const val = e.target.value;
+    const data = currentTab === 'movies' ? movies : (currentTab === 'shows' ? shows : sports);
+    renderList(val === 'all' ? data : data.filter(m => m.rating === val));
+};
 
-    if(sortAZ) filtered.sort((a,b) => a.title.localeCompare(b.title));
-    else filtered.sort((a,b) => b.title.localeCompare(a.title));
+document.getElementById('categoryFilter').onchange = e => {
+    const val = e.target.value;
+    const data = currentTab === 'movies' ? movies : (currentTab === 'shows' ? shows : sports);
+    renderList(val === 'all' ? data : data.filter(m => m.category === val));
+};
 
-    renderList(filtered);
-  }
+document.getElementById('sortBtn').onclick = () => {
+    sortAZ = !sortAZ;
+    const data = currentTab === 'movies' ? movies : (currentTab === 'shows' ? shows : sports);
+    data.sort((a,b) => sortAZ ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title));
+    document.getElementById('sortBtn').textContent = sortAZ ? "Sort A-Z" : "Sort Z-A";
+    renderList(data);
+};
 
-  q.oninput = filterItems;
-  filter.onchange = filterItems;
-  catFilter.onchange = filterItems;
-  sortBtn.onclick = () => { sortAZ = !sortAZ; sortBtn.textContent = sortAZ ? "Sort A-Z" : "Sort Z-A"; filterItems(); };
-
-  tabs.forEach(t => {
-    t.onclick = () => {
-      tabs.forEach(btn => btn.classList.remove('active'));
-      t.classList.add('active');
-      currentTab = t.dataset.tab;
-      filterItems();
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.onclick = () => {
+        document.querySelector('.tab-btn.active').classList.remove('active');
+        btn.classList.add('active');
+        currentTab = btn.dataset.tab;
+        initHub();
     };
-  });
+});
 
-  filterItems();
-}
-
-closeBtn.onclick = () => { overlayPlayer.style.display = 'none'; frame.src = ""; };
+closeBtn.onclick = () => { overlayPlayer.style.display='none'; frame.src=''; };
 </script>
+
 </body>
 </html>
