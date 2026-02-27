@@ -153,20 +153,21 @@ header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
 }
 .select:focus { border-color: var(--accent); }
 
-/* ANIMATED TABS START */
+/* --- POLISHED ANIMATED TABS --- */
 .tabs { 
   display: flex; 
   gap: 8px; 
-  margin: 0 auto 24px auto; 
+  margin: 0 auto 30px auto; 
   background: var(--glass); 
   padding: 6px; 
-  border-radius: 14px; 
-  width: fit-content; 
+  border-radius: 16px; 
+  width: 100%;
+  max-width: 450px; /* Aligns center and gives a nice fixed width */
   position: relative;
-  isolation: isolate; /* Ensures sliding background stays behind text  */
+  isolation: isolate; 
+  border: 1px solid var(--border);
 }
 
-/* The Sliding Pill Background */
 .tabs::after {
   content: "";
   position: absolute;
@@ -174,38 +175,43 @@ header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
   top: 6px;
   left: 6px;
   height: calc(100% - 12px);
-  /* Width for 3 buttons [cite: 158] */
+  /* Perfect alignment logic: 100% minus container padding and gaps, divided by 3 */
   width: calc((100% - 12px - 16px) / 3); 
   background: var(--accent);
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-/* Logic to move the background based on which button is active  */
+/* Moves the pill perfectly based on button index */
 .tabs:has([data-tab="movies"].active)::after { transform: translateX(0); }
 .tabs:has([data-tab="shows"].active)::after { transform: translateX(calc(100% + 8px)); }
 .tabs:has([data-tab="sports"].active)::after { transform: translateX(calc(200% + 16px)); }
 
 .tab-btn { 
+    flex: 1; /* Makes all buttons exactly the same width for alignment */
     position: relative;
-    padding: 10px 30px; 
+    padding: 12px 0; 
     border: 0; 
-    border-radius: 10px; 
-    background: transparent; /* Made transparent so sliding pill shows [cite: 156] */
+    border-radius: 12px; 
+    background: transparent; 
     color: var(--muted);
-    font-weight: 600; 
+    font-size: 14px;
+    font-weight: 700; 
     cursor: pointer; 
-    transition: color 0.3s; 
+    transition: color 0.3s, transform 0.2s; 
+    text-align: center;
 }
+
 .tab-btn.active { 
     color: white; 
-    /* Removed background/box-shadow from here as it's now in .tabs::after */
+    transform: scale(1.05); /* Adds a "pop" feel to the active text */
 }
-.tab-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.05); }
-/* ANIMATED TABS END */
 
-/* Movie Cards */
+.tab-btn:hover:not(.active) { color: white; }
+
+/* --- END TABS --- */
+
 .movies { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
 .card { 
     background: var(--card); border-radius: var(--radius); overflow: hidden; 
@@ -253,7 +259,7 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px;
     header { flex-direction: column; text-align: center; gap: 20px; }
     header .left { flex-direction: column; }
     .sticky-bar { top: 0; border-radius: 0; margin: 0 -20px 30px -20px; }
-    .tabs { width: 100%; overflow-x: auto; }
+    .tabs { max-width: 100%; }
 }
 </style>
 </head>
@@ -340,6 +346,7 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px;
 </div>
 
 <script>
+// Logic remains identical to your working file
 const correctPassword = "GTICMOVIES6741";
 const devPassword = "GTICDEVS89";
 const overlay = document.getElementById('passwordOverlay');
@@ -361,9 +368,7 @@ function playIntroThenShowContent() {
   },2000);
 }
 
-closeVpn.onclick = () => {
-    vpnOverlay.style.display = "none";
-};
+closeVpn.onclick = () => { vpnOverlay.style.display = "none"; };
 
 if(localStorage.getItem("gtic_dev_access")==="true"){ 
     overlay.classList.add("hidden"); 
@@ -381,7 +386,7 @@ pwBtn.addEventListener("click",()=>{
 pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
 logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
 
-// Movie, Show, and Sports Data
+// (Movies, Shows, Sports arrays are the same as your previous working code)
 const movies = [
   { title:"Backrooms", rating:"COMING SOON", desc:"A young cinematographer's descent into the eerie, endless yellow hallways of a blurring reality. Based on the viral horror phenomenon.", link:"#", category:"Halloween", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoLmtwlJmhqSrqTK0CmtLhc-9AF6kcgo8y8ORQVH7FLuzREvYdoph63RXb&s=10" },
   { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia when a new reptilian stranger shakes things up.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
