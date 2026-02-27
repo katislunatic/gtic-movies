@@ -78,7 +78,7 @@ html, body {
     100% { opacity: 0; transform: scale(1.1); filter: blur(5px); } 
 }
 
-/* VPN Popup */
+/* AdBlock Popup */
 #vpnOverlay {
     position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
     display: none; align-items: center; justify-content: center; z-index: 10001; padding: 20px;
@@ -89,14 +89,14 @@ html, body {
 .vpn-btn { background: var(--accent); color: white; border: 0; padding: 12px 25px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 15px; }
 .vpn-btn:hover { background: var(--accent-hover); }
 
-/* VPN Link Buttons */
-.vpn-links { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-.vpn-link { 
-    background: var(--glass); color: white; text-decoration: none; padding: 10px; 
+/* Link Buttons */
+.ad-links { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.ad-link { 
+    background: var(--glass); color: white; text-decoration: none; padding: 12px; 
     border-radius: 10px; font-size: 14px; font-weight: 600; border: 1px solid var(--border);
-    transition: 0.3s;
+    transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
 }
-.vpn-link:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+.ad-link:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); transform: scale(1.02); }
 
 /* Layout */
 .wrap { max-width: var(--max-width); margin: 0 auto; padding: 40px 20px; display: none; animation: fadeIn 0.8s ease; }
@@ -133,7 +133,6 @@ header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
 .search:focus-within { border-color: var(--accent); background: rgba(255,255,255,0.06); }
 .search input { background: transparent; border: 0; outline: 0; color: #fff; width: 100%; font-size: 14px; }
 
-/* --- PREMIUM DROPDOWNS WITH ANIMATION --- */
 .select { 
     appearance: none;
     background: rgba(255,255,255,0.05); 
@@ -152,7 +151,6 @@ header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
     background-size: 16px;
 }
 
-/* Dropdown Animation Logic */
 @keyframes dropdownOpen {
   from { opacity: 0; transform: translateY(-10px) scale(0.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -166,7 +164,6 @@ header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
 }
 .select option { background: #1a1a1e; color: #fff; }
 
-/* Sort button specific (removes arrow) */
 #sortBtn { background-image: none; padding-right: 14px; }
 
 /* --- POLISHED ANIMATED TABS --- */
@@ -238,17 +235,16 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
 
 <div id="vpnOverlay">
     <div class="vpn-card">
-        <div style="font-size: 50px; margin-bottom: 15px;">🛡️</div>
-        <h2>Privacy Protection</h2>
-        <p>To ensure a smooth experience on <b>GTIC Movie Hub</b>, we highly recommend using a VPN to protect your connection.</p>
+        <div style="font-size: 50px; margin-bottom: 15px;">🚫</div>
+        <h2>Block Annoying Popups</h2>
+        <p>The video providers we use often show aggressive ads. For a <b>100% clean experience</b>, we highly recommend installing a free Ad Blocker.</p>
         
-        <div class="vpn-links">
-            <a href="https://www.protonvpn.com" target="_blank" class="vpn-link">ProtonVPN (Free & Secure)</a>
-            <a href="https://www.nordvpn.com" target="_blank" class="vpn-link">NordVPN (Premium Speed)</a>
-            <a href="https://www.expressvpn.com" target="_blank" class="vpn-link">ExpressVPN (Global Access)</a>
+        <div class="ad-links">
+            <a href="https://ublockorigin.com/" target="_blank" class="ad-link"><span>🛡️</span> uBlock Origin (Best Extension)</a>
+            <a href="https://brave.com/" target="_blank" class="ad-link"><span>🦁</span> Brave Browser (Built-in Blocker)</a>
         </div>
 
-        <button class="vpn-btn" id="closeVpn">I Understand, Let's Watch</button>
+        <button class="vpn-btn" id="closeVpn">I'm Ready to Watch</button>
     </div>
 </div>
   
