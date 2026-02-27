@@ -280,31 +280,39 @@ pwBtn.addEventListener("click",()=>{
 pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
 logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
 
-// Movie, Show, and Sports Data
+// Movie, Show, and Sports Data (Keeping your existing data)
 const movies = [
-  { title:"Backrooms", rating:"COMING SOON", desc:"A young cinematographer's descent into the eerie, endless yellow hallways of a blurring reality.", link:"#", category:"Halloween", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoLmtwlJmhqSrqTK0CmtLhc-9AF6kcgo8y8ORQVH7FLuzREvYdoph63RXb&s=10" },
-  { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
-  { title:"We Can Be Heroes", rating:"PG", desc:"When Earth’s superheroes are captured by aliens, their kids must save them.", link:"https://vidnest.fun/movie/615677", category:"Family", img:"https://image.tmdb.org/t/p/w1280/iVbV8IwLe65DFffbqVz9kcMRnnH.jpg" },
-  { title:"The Wrecking Crew", rating:"R", desc:"Two mismatched detectives take down a dangerous criminal conspiracy.", link:"https://vidnest.fun/movie/1168190", category:"Action", img:"https://preview.redd.it/the-wrecking-crew-2026-new-prime-video-movie-v0-l7311klm85gg1.jpeg?auto=webp&s=d2f8c3588197d6cff5202d9cb6f4d1e4b6c1c0bd" },
+  { title:"Backrooms", rating:"COMING SOON", desc:"A young cinematographer's descent into the eerie, endless yellow hallways of a blurring reality. Based on the viral horror phenomenon.", link:"#", category:"Halloween", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoLmtwlJmhqSrqTK0CmtLhc-9AF6kcgo8y8ORQVH7FLuzREvYdoph63RXb&s=10" },
+  { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia when a new reptilian stranger shakes things up.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
+  { title:"We Can Be Heroes", rating:"PG", desc:"When Earth’s superheroes are captured by aliens, their kids must work together to save their parents and the world.", link:"https://vidnest.fun/movie/615677", category:"Family", img:"https://image.tmdb.org/t/p/w1280/iVbV8IwLe65DFffbqVz9kcMRnnH.jpg" },
+  { title:"The Wrecking Crew", rating:"R", desc:"Two mismatched detectives are forced to work together to take down a dangerous criminal conspiracy, turning chaos into justice.", link:"https://vidnest.fun/movie/1168190", category:"Action", img:"https://preview.redd.it/the-wrecking-crew-2026-new-prime-video-movie-v0-l7311klm85gg1.jpeg?auto=webp&s=d2f8c3588197d6cff5202d9cb6f4d1e4b6c1c0bd" },
   { title:"The Parent Trap", rating:"PG", desc:"Twice the Fun, Double the Trouble.", link:"https://vidnest.fun/movie/9820", category:"Family", img:"https://ntvb.tmsimg.com/assets/p21442_v_h10_ab.jpg?w=1280&h=720" },
   { title:"The Lorax", rating:"PG", desc:"Bright colors and a 'save the trees' message.", link:"https://gtic-home.short.gy/Qz4XTe", category:"Family", img:"https://m.media-amazon.com/images/I/61xmDC+2x7L._UF894,1000_QL80_.jpg" },
-  { title:"The Curse of Bridge Hollow", rating:"PG-13", desc:"A Halloween adventure where a father and daughter must save their town.", link:"https://gtic-home.short.gy/tpUnyh", category:"Halloween", img:"https://i.ytimg.com/vi/f93J5Bhrf5Q/maxresdefault.jpg" },
+  { title:"The Curse of Bridge Hollow", rating:"PG-13", desc:"A Halloween adventure where a father and daughter must save their town from mischievous spirits.", link:"https://gtic-home.short.gy/tpUnyh", category:"Halloween", img:"https://i.ytimg.com/vi/f93J5Bhrf5Q/maxresdefault.jpg" },
   { title:"The Black Phone", rating:"R", desc:"Dark thriller from Blumhouse.", link:"https://gtic-home.short.gy/9JmW8h", category:"Halloween", img:"https://i0.wp.com/www.friendsofcc.com/wp-content/uploads/2022/06/02-bp-dm-mobile-banner-1080x745-rr-f01-052622-62902757c6bea-1-e1656788983973.jpg?fit=919%2C496&ssl=1" },
   { title:"Superman", rating:"PG-13", desc:"The new chapter in DC’s legacy as Superman rises to inspire hope once again.", link:"https://gtic-home.short.gy/Y3QXuR", category:"Action", img:"https://flixchatter.net/wp-content/uploads/2025/07/gunn-superman-2025.jpg" },
   { title:"Super Mario Bros. Movie", rating:"PG", desc:"Action, nostalgia, and fun.", link:"https://gtic-home.short.gy/RYrb3q", category:"Action", img:"https://i.ytimg.com/vi/PlBwcQic1vI/maxresdefault.jpg" },
   { title:"Sonic the Hedgehog 3", rating:"PG", desc:"Sonic faces his biggest challenge yet.", link:"https://gtic-home.short.gy/BQ9ZoC", category:"Action", img:"https://thecollision.org/wp-content/uploads/2024/12/sonic3.png" },
   { title:"Sonic the Hedgehog 2", rating:"PG", desc:"Sonic teams up with Tails for an epic adventure.", link:"https://gtic-home.short.gy/e68XtB", category:"Action", img:"https://static0.moviewebimages.com/wordpress/wp-content/uploads/2022/02/sonic-2-poster.jpg" },
-  { title:"Sonic the Hedgehog", rating:"PG", desc:"Sonic joins the adventure in a live-action film.", link:"https://gtic-home.short.gy/xL1ftq", category:"Action", img:"https://miro.medium.com/1*bjdQG6NqjdtpvMeb0OAVBQ.jpeg" },
-  { title:"Red One", rating:"PG-13", desc:"Action-packed holiday adventure.", link:"https://gtic-home.short.gy/CgaE2Y", category:"Christmas", img:"https://ntvb.tmsimg.com/assets/p26548425_v_h8_aa.jpg?w=1280&h=720" },
+  { title:"Sonic the Hedgehog", rating:"PG", desc:"Sonic joins the adventure in a live-action film with heart and speed.", link:"https://gtic-home.short.gy/xL1ftq", category:"Action", img:"https://miro.medium.com/1*bjdQG6NqjdtpvMeb0OAVBQ.jpeg" },
+  { title:"Red One", rating:"PG-13", desc:"Action-packed holiday adventure with Dwayne Johnson and Chris Evans.", link:"https://gtic-home.short.gy/CgaE2Y", category:"Christmas", img:"https://ntvb.tmsimg.com/assets/p26548425_v_h8_aa.jpg?w=1280&h=720" },
   { title:"M3GAN 2.0", rating:"PG-13", desc:"Sequel with more chaos.", link:"https://gtic-home.short.gy/cHbEJq", category:"Halloween", img:"https://i.ytimg.com/vi/6HInuht789U/maxresdefault.jpg" },
   { title:"M3GAN", rating:"PG-13", desc:"Creepy doll meets comedy.", link:"https://gtic-home.short.gy/7oEn8H", category:"Halloween", img:"https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6402d394a80141001df76adf.jpg" },
-  { title:"Mission: Impossible - The Final Reckoning", rating:"PG-13", desc:"Ethan Hunt faces his most dangerous mission yet.", link:"https://gtic-home.short.gy/6dxKAC", category:"Action", img:"https://img.englishcinemaparis.com/gvhsMT4MMV_MrmPc8kejNbesyIS9xsxDhMTETlqzcGo/resize:fill:800:450:1:0/gravity:sm/aHR0cHM6Ly9leHBhdGNpbmVtYXByb2QuYmxvYi5jb3JlLndpbmRvd3MubmV0L2ltYWdlcy9hNjdhNzUyZi0wNzAyLTQ3NmYtYjlhOC1hODc5ZjdmMTU0ZjEuanBn.jpg" },
-  { title:"Five Nights at Freddy's 2", rating:"PG-13", desc:"New animatronic nightmares awaken.", link:"https://gtic-home.short.gy/hnpEfD", category:"Halloween", img:"https://m.media-amazon.com/images/M/MV5BZjczNjMxYTgtZTMxOS00MTg5LWFiMjYtYzIwMDQ5MTQ3ODU0XkEyXkFqcGdeQWFybm8@._V1_.jpg" },
+  { title:"Mission: Impossible - The Final Reckoning", rating:"PG-13", desc:"Ethan Hunt faces his most dangerous mission yet in the explosive finale.", link:"https://gtic-home.short.gy/6dxKAC", category:"Action", img:"https://img.englishcinemaparis.com/gvhsMT4MMV_MrmPc8kejNbesyIS9xsxDhMTETlqzcGo/resize:fill:800:450:1:0/gravity:sm/aHR0cHM6Ly9leHBhdGNpbmVtYXByb2QuYmxvYi5jb3JlLndpbmRvd3MubmV0L2ltYWdlcy9hNjdhNzUyZi0wNzAyLTQ3NmYtYjlhOC1hODc5ZjdmMTU0ZjEuanBn.jpg" },
+  { title:"KPop Demon Hunters", rating:"PG-13", desc:"High-energy K-Pop heroes fight demons in epic battles.", link:"https://gtic-home.short.gy/0TCvNH", category:"Action", img:"https://thefilmlegacy.com/wp-content/uploads/2025/07/k-pop-demon-hunters.jpg?w=960" },
+  { title:"Five Nights at Freddy's 2", rating:"PG-13", desc:"New animatronic nightmares awaken at Fazbear’s — the terror returns.", link:"https://gtic-home.short.gy/hnpEfD", category:"Halloween", img:"https://m.media-amazon.com/images/M/MV5BZjczNjMxYTgtZTMxOS00MTg5LWFiMjYtYzIwMDQ5MTQ3ODU0XkEyXkFqcGdeQWFybm8@._V1_.jpg" },
   { title:"Five Nights at Freddy's", rating:"PG-13", desc:"Creepy animatronics.", link:"https://gtic-home.short.gy/GOFNw3", category:"Halloween", img:"https://4kwallpapers.com/images/wallpapers/five-nights-at-3840x2160-13263.jpg" },
-  { title:"Dog Man", rating:"PG", desc:"Animated chaos.", link:"https://gtic-home.short.gy/G4Q2Kq", category:"Family", img:"https://4kwallpapers.com/images/walls/thumbs_3t/21440.jpg" },
+  { title:"Fall", rating:"PG-13", desc:"When a high-climb goes wrong.", link:"https://gtic-home.short.gy/RF4Dxt", category:"Action", img:"https://www.cdcun.com/media/news/1102_thumb.jpg" },
+  { title:"Dog Man", rating:"PG", desc:"Animated chaos from the Captain Underpants universe.", link:"https://gtic-home.short.gy/G4Q2Kq", category:"Family", img:"https://4kwallpapers.com/images/walls/thumbs_3t/21440.jpg" },
   { title:"Dear Santa", rating:"PG", desc:"Jack Black stars in this festive comedy.", link:"https://gtic-home.short.gy/1zJ5Hu", category:"Christmas", img:"https://ntvb.tmsimg.com/assets/p28597719_v_h8_aa.jpg?w=960&h=540" },
-  { title:"Cars", rating:"G", desc:"Lightning McQueen learns about life and friendship.", link:"https://gtic-home.short.gy/734Nd9", category:"Family", img:"https://files.ekmcdn.com/allwallpapers/images/cars-characters-61x91-5cm-disney-movie-poster-37932-1-p.jpg?v=1E386C7A-4150-42FA-9679-082254DCFE1C" },
-  { title:"A Minecraft Movie", rating:"PG", desc:"Blocky adventures come to life.", link:"https://gtic-home.short.gy/MUcD5Y", category:"Family", img:"https://uhsswordandshield.com/wp-content/uploads/2025/05/film_feature_minecraft-movie-poster.jpg" },
+  { title:"Coco", rating:"PG", desc:"A colorful journey through music and memory.", link:"https://gtic-home.short.gy/8zA1fM", category:"Family", img:"https://stanleymovietheater.com/wp-content/uploads/2020/10/Coco-Family-Poster-Pixar.jpg" },
+  { title:"Cars 3", rating:"G", desc:"A comeback story as McQueen faces a new generation of racers.", link:"https://gtic-home.short.gy/T2sq4p", category:"Family", img:"https://thedisneydrivenlife.com/wp-content/uploads/2016/12/cars3internationalheader.jpg" },
+  { title:"Cars 2", rating:"G", desc:"McQueen and Mater go international in a spy-themed racing adventure.", link:"https://gtic-home.short.gy/PFW9BQ", category:"Action", img:"https://wallpapers.com/images/hd/cars-2-movie-poster-yz8huh9xd0z74hx3.jpg" },
+  { title:"Cars", rating:"G", desc:"Lightning McQueen learns about life, friendship, and racing in Radiator Springs.", link:"https://gtic-home.short.gy/734Nd9", category:"Family", img:"https://files.ekmcdn.com/allwallpapers/images/cars-characters-61x91-5cm-disney-movie-poster-37932-1-p.jpg?v=1E386C7A-4150-42FA-9679-082254DCFE1C" },
+  { title:"Captain Underpants", rating:"PG", desc:"Classic humor and school mischief.", link:"https://gtic-home.short.gy/U1HUbb", category:"Comedy", img:"https://pbs.twimg.com/media/GZtQF8WaAAEYFwZ.jpg:large" },
+  { title:"Bring It On: Cheer or Die", rating:"PG-13", desc:"A cheer squad’s practice turns into a fight for survival in this horror spin on the classic series.", link:"https://gtic-home.short.gy/KJBAeC", category:"Halloween", img:"https://images.plex.tv/photo?size=large-1920&scale=1&url=https%3A%2F%2Fmetadata-static.plex.tv%2F9%2Fgracenote%2F9b27249211b3c547cd67f8a67351f7cb.jpg" },
+  { title:"Black Phone 2", rating:"R", desc:"A sequel with more dark thrillers.", link:"https://gtic-home.short.gy/ft5UYq", category:"Halloween", img:"https://attractionsmagazine.com/wp-content/uploads/2025/10/Black-Phone-2-Ethan-Hawke-Mason-Thames-courtesy-of-Universal.jpg" },
+  { title:"A Minecraft Movie", rating:"PG", desc:"Blocky adventures come to life in a cinematic journey.", link:"https://gtic-home.short.gy/MUcD5Y", category:"Family", img:"https://uhsswordandshield.com/wp-content/uploads/2025/05/film_feature_minecraft-movie-poster.jpg" },
   { title:"A Charlie Brown Christmas", rating:"G", desc:"Classic comfort movie.", link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview", category:"Christmas", img:"https://i.ebayimg.com/images/g/rRoAAOSwfERnGtix/s-l400.jpg" }
 ];
 
@@ -318,7 +326,90 @@ const shows = [
     seasons:[
       { title:"Season 1", episodes:[
         {title:"Episode 1", link:"https://vidnest.fun/tv/100088/1/1"},
-        {title:"Episode 2", link:"https://vidnest.fun/tv/100088/1/2"}
+        {title:"Episode 2", link:"https://vidnest.fun/tv/100088/1/2"},
+        {title:"Episode 3", link:"https://vidnest.fun/tv/100088/1/3"},
+        {title:"Episode 4", link:"https://vidnest.fun/tv/100088/1/4"},
+        {title:"Episode 5", link:"https://vidnest.fun/tv/100088/1/5"},
+        {title:"Episode 6", link:"https://vidnest.fun/tv/100088/1/6"},
+        {title:"Episode 7", link:"https://vidnest.fun/tv/100088/1/7"},
+        {title:"Episode 8", link:"https://vidnest.fun/tv/100088/1/8"},
+        {title:"Episode 9", link:"https://vidnest.fun/tv/100088/1/9"}
+      ]},
+      { title:"Season 2", episodes:[
+        {title:"Episode 1", link:"https://vidnest.fun/tv/100088/2/1"},
+        {title:"Episode 2", link:"https://vidnest.fun/tv/100088/2/2"},
+        {title:"Episode 3", link:"https://vidnest.fun/tv/100088/2/3"},
+        {title:"Episode 4", link:"https://vidnest.fun/tv/100088/2/4"},
+        {title:"Episode 5", link:"https://vidnest.fun/tv/100088/2/5"},
+        {title:"Episode 6", link:"https://vidnest.fun/tv/100088/2/6"},
+        {title:"Episode 7", link:"https://vidnest.fun/tv/100088/2/7"}
+      ]}
+    ]
+  },
+  { 
+    title:"The Flash", 
+    rating:"TV-PG", 
+    desc:"Barry Allen becomes the fastest man alive after a freak accident.", 
+    category:"Action", 
+    img:"https://beam-images.warnermediacdn.com/BEAM_LWM_DELIVERABLES/c83bc8d3-c134-4b41-b744-150010a68b7c/6d8331d3-dc28-4f57-987c-243b6ffe9d0c?host=wbd-images.prod-vod.h264.io&partner=beamcom&w=500",
+    seasons:[
+      { title:"Season 1", episodes:[
+        {title:"Episode 1", link:"https://vidnest.fun/tv/60735/1/1"},
+        {title:"Episode 2", link:"https://vidnest.fun/tv/60735/1/2"},
+        {title:"Episode 3", link:"https://vidnest.fun/tv/60735/1/3"},
+        {title:"Episode 4", link:"https://vidnest.fun/tv/60735/1/4"},
+        {title:"Episode 5", link:"https://vidnest.fun/tv/60735/1/5"},
+        {title:"Episode 6", link:"https://vidnest.fun/tv/60735/1/6"},
+        {title:"Episode 7", link:"https://vidnest.fun/tv/60735/1/7"},
+        {title:"Episode 8", link:"https://vidnest.fun/tv/60735/1/8"},
+        {title:"Episode 9", link:"https://vidnest.fun/tv/60735/1/9"},
+        {title:"Episode 10", link:"https://vidnest.fun/tv/60735/1/10"},
+        {title:"Episode 11", link:"https://vidnest.fun/tv/60735/1/11"},
+        {title:"Episode 12", link:"https://vidnest.fun/tv/60735/1/12"},
+        {title:"Episode 13", link:"https://vidnest.fun/tv/60735/1/13"},
+        {title:"Episode 14", link:"https://vidnest.fun/tv/60735/1/14"},
+        {title:"Episode 15", link:"https://vidnest.fun/tv/60735/1/15"},
+        {title:"Episode 16", link:"https://vidnest.fun/tv/60735/1/16"},
+        {title:"Episode 17", link:"https://vidnest.fun/tv/60735/1/17"},
+        {title:"Episode 18", link:"https://vidnest.fun/tv/60735/1/18"},
+        {title:"Episode 19", link:"https://vidnest.fun/tv/60735/1/19"},
+        {title:"Episode 20", link:"https://vidnest.fun/tv/60735/1/22"},
+        {title:"Episode 21", link:"https://vidnest.fun/tv/60735/1/21"},
+        {title:"Episode 22", link:"https://vidnest.fun/tv/60735/1/22"},
+        {title:"Episode 23", link:"https://vidnest.fun/tv/60735/1/23"},
+      ]}
+    ]
+  },
+  { 
+    title:"Gotham", 
+    rating:"TV-MA", 
+    desc:"The rise of Gotham City and its most infamous villains.", 
+    category:"Crime", 
+    img:"https://i.ytimg.com/vi/RTmdpBB3XKY/maxresdefault.jpg",
+    seasons:[
+      { title:"Season 1", episodes:[
+        {title:"Episode 1", link:"https://vidnest.fun/tv/60708/1/1"},
+        {title:"Episode 2", link:"https://vidnest.fun/tv/60708/1/2"},
+        {title:"Episode 3", link:"https://vidnest.fun/tv/60708/1/3"},
+        {title:"Episode 4", link:"https://vidnest.fun/tv/60708/1/4"},
+        {title:"Episode 5", link:"https://vidnest.fun/tv/60708/1/5"},
+        {title:"Episode 6", link:"https://vidnest.fun/tv/60708/1/6"},
+        {title:"Episode 7", link:"https://vidnest.fun/tv/60708/1/7"},
+        {title:"Episode 8", link:"https://vidnest.fun/tv/60708/1/8"},
+        {title:"Episode 9", link:"https://vidnest.fun/tv/60708/1/9"},
+        {title:"Episode 10", link:"https://vidnest.fun/tv/60708/1/10"},
+        {title:"Episode 11", link:"https://vidnest.fun/tv/60708/1/11"},
+        {title:"Episode 12", link:"https://vidnest.fun/tv/60708/1/12"},
+        {title:"Episode 13", link:"https://vidnest.fun/tv/60708/1/13"},
+        {title:"Episode 14", link:"https://vidnest.fun/tv/60708/1/14"},
+        {title:"Episode 15", link:"https://vidnest.fun/tv/60708/1/15"},
+        {title:"Episode 16", link:"https://vidnest.fun/tv/60708/1/16"},
+        {title:"Episode 17", link:"https://vidnest.fun/tv/60708/1/17"},
+        {title:"Episode 18", link:"https://vidnest.fun/tv/60708/1/18"},
+        {title:"Episode 19", link:"https://vidnest.fun/tv/60708/1/19"},
+        {title:"Episode 20", link:"https://vidnest.fun/tv/60708/1/20"},
+        {title:"Episode 21", link:"https://vidnest.fun/tv/60708/1/21"},
+        {title:"Episode 22", link:"https://vidnest.fun/tv/60708/1/22"}
       ]}
     ]
   }
@@ -328,10 +419,23 @@ const sports = [
   {
     title: "WWE",
     rating: "SPORTS",
-    desc: "WWE premium live events",
+    desc: "WWE premium live events and weekly shows",
     img: "https://insidepulse.com/wp-content/uploads/2017/12/WWE-logo-banner.jpg",
     events: [
-      { title: "WrestleMania 41", rating: "LIVE", desc: "Biggest WWE event.", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285198" }
+      {
+        title: "WrestleMania 41: Saturday",
+        rating: "LIVE",
+        desc: "The biggest WWE event of the year.",
+        img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329",
+        link: "https://vidnest.fun/movie/1285198"
+      },
+      {
+        title: "WrestleMania 41: Sunday",
+        rating: "LIVE",
+        desc: "The biggest WWE event of the year.",
+        img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329",
+        link: "https://vidnest.fun/movie/1285199"
+      }
     ]
   }
 ];
@@ -341,63 +445,165 @@ const overlayPlayer = document.getElementById("playerOverlay");
 const frame = document.getElementById("movieFrame");
 const closeBtn = document.getElementById("closePlayer");
 let currentTab = "movies";
+let sortAZ = true;
 
 const showOverlay = document.createElement('div');
 showOverlay.id = 'showOverlay';
 document.body.appendChild(showOverlay);
 
-function initHub() {
-    renderList(movies);
+function openShowDetail(show) {
+  showOverlay.innerHTML = `<button class="close-detail" id="closeShow">✖ Return to Hub</button> <h2 style="margin-top:20px">${show.title}</h2>`;
+  
+  show.seasons.forEach(season => {
+    const seasonDiv = document.createElement('div');
+    seasonDiv.style.cssText = 'margin-bottom:40px; width:100%; max-width:800px;';
+    const seasonTitle = document.createElement('h3');
+    seasonTitle.textContent = season.title;
+    seasonTitle.style.cssText = 'font-size:20px; color:var(--muted); margin-bottom:15px; border-left: 4px solid var(--accent); padding-left:15px;';
+    seasonDiv.appendChild(seasonTitle);
+
+    const episodesGrid = document.createElement('div');
+    episodesGrid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px;';
+    
+    season.episodes.forEach(ep => {
+      const epBtn = document.createElement('button');
+      epBtn.textContent = ep.title;
+      epBtn.style.cssText = `padding:15px; font-weight:700; border-radius:10px; border:1px solid var(--border); cursor:pointer; background:var(--glass); color:white; transition:0.2s;`;
+      epBtn.onmouseover = () => epBtn.style.borderColor = 'var(--accent)';
+      epBtn.onmouseout = () => epBtn.style.borderColor = 'var(--border)';
+      epBtn.onclick = () => {
+        frame.src = ep.link;
+        overlayPlayer.style.display = 'flex';
+        showOverlay.style.display = 'none';
+      };
+      episodesGrid.appendChild(epBtn);
+    });
+
+    seasonDiv.appendChild(episodesGrid);
+    showOverlay.appendChild(seasonDiv);
+  });
+
+  document.getElementById('closeShow').onclick = () => { showOverlay.style.display = 'none'; };
+  showOverlay.style.display = 'flex';
+}
+
+function openSportCategory(sport) {
+  showOverlay.innerHTML = `
+    <button class="close-detail" id="closeShow">✖ Back to Sports</button>
+    <h2 style="text-align:center;font-size:28px;margin:20px 0;">${sport.title} Events</h2>
+  `;
+  const grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px; width:100%; max-width:1100px;';
+
+  sport.events.forEach(ev => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="poster"><img src="${ev.img}"></div>
+      <div class="meta">
+        <div class="title-row">
+          <h3 class="title">${ev.title}</h3>
+          <div class="rating">${ev.rating}</div>
+        </div>
+        <div class="desc">${ev.desc}</div>
+        <div class="actions">
+          <button class="btn btn-watch">▶ Play Event</button>
+        </div>
+      </div>
+    `;
+    card.querySelector('.btn-watch').onclick = () => {
+      frame.src = ev.link;
+      overlayPlayer.style.display = 'flex';
+      showOverlay.style.display = 'none';
+    };
+    grid.appendChild(card);
+  });
+  showOverlay.appendChild(grid);
+  document.getElementById('closeShow').onclick = () => { showOverlay.style.display = 'none'; };
+  showOverlay.style.display = 'flex';
 }
 
 function renderList(list){
   container.innerHTML="";
   list.forEach(m=>{
     const card=document.createElement('article'); card.className='card';
-    card.innerHTML = `
-        <div class="poster"><img src="${m.img}" alt="${m.title}"></div>
-        <div class="meta">
-            <div class="title-row">
-                <h3 class="title">${m.title}</h3>
-                <div class="rating">${m.rating}</div>
-            </div>
-            <p class="desc">${m.desc}</p>
-            <div class="actions">
-                <button class="btn btn-watch">${m.rating === "COMING SOON" ? "⏳ Coming Soon" : "▶ Watch Now"}</button>
-            </div>
-        </div>
-    `;
+    const poster=document.createElement('div'); poster.className='poster';
+    if(m.img){ const img=document.createElement('img'); img.src=m.img; img.alt=m.title; poster.appendChild(img); } else { poster.textContent=m.title; }
+    const meta=document.createElement('div'); meta.className='meta';
+    const titleRow=document.createElement('div'); titleRow.className='title-row';
+    titleRow.innerHTML=`<h3 class='title'>${m.title}</h3><div class='rating'>${m.rating}</div>`;
+    const desc=document.createElement('div'); desc.className='desc'; desc.textContent=m.desc;
+    const actions=document.createElement('div'); actions.className='actions';
+    const watch=document.createElement('button'); watch.className='btn btn-watch'; 
     
-    if(m.rating !== "COMING SOON") {
-        card.querySelector('.btn-watch').onclick = () => {
-            if(currentTab === "movies") {
-                frame.src = m.link;
-                overlayPlayer.style.display = 'flex';
-            } else if (currentTab === "shows") {
-                openShowDetail(m);
-            } else if (currentTab === "sports") {
-                openSportCategory(m);
-            }
+    // Check if movie is Coming Soon
+    if (m.rating === "COMING SOON") {
+        watch.textContent = '⏳ Coming Soon';
+        watch.style.background = '#333';
+        watch.style.color = '#888';
+        watch.style.cursor = 'not-allowed';
+        watch.onclick = (e) => {
+            e.stopPropagation();
+            alert("The Backrooms is currently in production. Check back closer to the release date!");
+        };
+    } else {
+        watch.textContent = currentTab === 'movies' ? '▶ Watch Now' : currentTab === 'shows' ? '📁 Episodes' : '⚡ View Events';
+        watch.onclick = () => {
+          if (currentTab === 'movies') { frame.src = m.link; overlayPlayer.style.display = 'flex'; } 
+          else if (currentTab === 'shows') { openShowDetail(m); }
+          else if (currentTab === 'sports') { openSportCategory(m); }
         };
     }
-    container.appendChild(card);
+
+    const info=document.createElement('button'); info.className='btn btn-info'; 
+    info.textContent='Details'; info.onclick=()=>alert(`${m.title}\n\nRating: ${m.rating}\nCategory: ${m.category}\n\n${m.desc}`);
+    actions.append(watch,info); meta.append(titleRow,desc,actions); card.append(poster,meta); container.append(card);
   });
 }
 
-// Tab Switching
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.onclick = () => {
-        document.querySelector('.tab-btn.active').classList.remove('active');
-        btn.classList.add('active');
-        currentTab = btn.dataset.tab;
-        if(currentTab === "movies") renderList(movies);
-        if(currentTab === "shows") renderList(shows);
-        if(currentTab === "sports") renderList(sports);
+function initHub() {
+  const q = document.getElementById("q");
+  const filter = document.getElementById("filter");
+  const catFilter = document.getElementById("categoryFilter");
+  const sortBtn = document.getElementById("sortBtn");
+  const tabs = document.querySelectorAll(".tab-btn");
+
+  function filterItems() {
+    let list = currentTab === 'movies' ? movies : currentTab === 'shows' ? shows : sports;
+    const query = q.value.toLowerCase();
+    const rating = filter.value;
+    const cat = catFilter.value;
+
+    let filtered = list.filter(m => 
+      (m.title.toLowerCase().includes(query) || m.desc.toLowerCase().includes(query)) &&
+      (rating === 'all' || m.rating === rating) &&
+      (cat === 'all' || m.category === cat)
+    );
+
+    if(sortAZ) filtered.sort((a,b) => a.title.localeCompare(b.title));
+    else filtered.sort((a,b) => b.title.localeCompare(a.title));
+
+    renderList(filtered);
+  }
+
+  q.oninput = filterItems;
+  filter.onchange = filterItems;
+  catFilter.onchange = filterItems;
+  sortBtn.onclick = () => { sortAZ = !sortAZ; sortBtn.textContent = sortAZ ? "Sort A-Z" : "Sort Z-A"; filterItems(); };
+
+  tabs.forEach(t => {
+    t.onclick = () => {
+      tabs.forEach(btn => btn.classList.remove('active'));
+      t.classList.add('active');
+      currentTab = t.dataset.tab;
+      filterItems();
     };
-});
+  });
+
+  filterItems();
+}
 
 closeBtn.onclick = () => { overlayPlayer.style.display = 'none'; frame.src = ""; };
-
 </script>
 </body>
 </html>
