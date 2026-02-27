@@ -76,6 +76,28 @@ html, body {
     100% { opacity: 0; transform: scale(1.1); filter: blur(5px); } 
 }
 
+/* VPN Popup Styles */
+#vpnOverlay {
+    position: fixed; inset: 0; 
+    background: rgba(0, 0, 0, 0.85); 
+    backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center; 
+    z-index: 10001; padding: 20px;
+}
+.vpn-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 30px; border-radius: 20px; max-width: 450px; 
+    text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.vpn-card h2 { color: var(--accent); margin-top: 0; }
+.vpn-card p { color: var(--muted); line-height: 1.6; margin-bottom: 25px; }
+.vpn-btn {
+    background: var(--accent); color: white; border: 0; 
+    padding: 12px 25px; border-radius: 10px; font-weight: 700; 
+    cursor: pointer; width: 100%; transition: 0.3s;
+}
+.vpn-btn:hover { background: var(--accent-hover); }
+  
 /* Layout */
 .wrap { max-width: var(--max-width); margin: 0 auto; padding: 40px 20px; display: none; animation: fadeIn 0.8s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -180,6 +202,15 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
   <button id="pwBtn">Unlock Hub</button>
 </div>
 
+<div id="vpnOverlay">
+    <div class="vpn-card">
+        <div style="font-size: 50px; margin-bottom: 15px;">🛡️</div>
+        <h2>Privacy Protection</h2>
+        <p>To ensure a smooth and secure streaming experience on <b>GTIC Movie Hub</b>, we highly recommend using a VPN. This protects your connection and ensures high-speed access.</p>
+        <button class="vpn-btn" id="closeVpn">I Understand, Let's Watch</button>
+    </div>
+</div>
+  
 <div id="introOverlay" class="hidden">
   <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" class="introLogo" />
 </div>
@@ -253,15 +284,22 @@ const pwInput = document.getElementById('pwInput');
 const pwBtn = document.getElementById('pwBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 const introOverlay = document.getElementById("introOverlay");
+const vpnOverlay = document.getElementById('vpnOverlay');
+const closeVpn = document.getElementById('closeVpn');
 
 function playIntroThenShowContent() {
   introOverlay.classList.remove("hidden");
   setTimeout(()=>{
       introOverlay.classList.add("hidden"); 
       mainContent.style.display="block";
+      vpnOverlay.style.display = "flex"; // Show VPN Popup
       initHub();
   },2000);
 }
+
+closeVpn.onclick = () => {
+    vpnOverlay.style.display = "none";
+};
 
 if(localStorage.getItem("gtic_dev_access")==="true"){ 
     overlay.classList.add("hidden"); 
