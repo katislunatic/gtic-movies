@@ -4,7 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>GTIC Movie Hubs</title>
+
 <link rel="icon" type="image/png" href="https://i.ibb.co/C3kwF5SC/gtic-logo.png" />
+
 <style>
 :root {
   --bg: #0b0b0d;
@@ -20,7 +22,18 @@
 }
 
 * { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; background-color: var(--bg); background-image: radial-gradient(at 0% 0%, rgba(229, 9, 20, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(32, 50, 200, 0.05) 0px, transparent 50%); color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+html, body { 
+    height: 100%; 
+    margin: 0;
+    background-color: var(--bg);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(229, 9, 20, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(32, 50, 200, 0.05) 0px, transparent 50%);
+    color: #ffffff; 
+    -webkit-font-smoothing: antialiased; 
+    overflow-x: hidden;
+}
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar { width: 8px; }
@@ -28,134 +41,298 @@ html, body { height: 100%; margin: 0; background-color: var(--bg); background-im
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: #444; }
 
-/* Overlays */
-#passwordOverlay, #playerOverlay, #showOverlay, #vpnOverlay { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
-#passwordOverlay { background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%); }
+/* Password Overlay */
+#passwordOverlay {
+    position: fixed;
+    inset: 0; 
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    z-index: 9999;
+    padding: 20px;
+}
 #passwordOverlay.hidden { display: none; }
-#vpnOverlay { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: none; z-index: 10001; }
-.vpn-card { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: 20px; max-width: 450px; text-align: center; }
+#passwordOverlay .logo img { width: 100px; border-radius: 20px; margin-bottom: 24px; filter: drop-shadow(0 0 20px rgba(229,9,20,0.3)); }
+#passwordOverlay h2 { margin: 0 0 24px 0; font-size: 22px; font-weight: 600; text-align: center; max-width: 400px; line-height: 1.4; }
+#passwordOverlay input {
+    padding: 14px 20px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--glass); color: white; font-size: 16px; outline: none;
+    width: 100%; max-width: 300px; text-align: center; margin-bottom: 16px;
+    backdrop-filter: blur(10px);
+    transition: border 0.3s;
+}
+#passwordOverlay input:focus { border-color: var(--accent); }
+#passwordOverlay button {
+    padding: 12px 40px; border-radius: 12px;
+    border: 0; background: var(--accent);
+    color: white; font-weight: 700; cursor: pointer; font-size: 16px; transition: transform 0.2s, background 0.2s;
+}
+#passwordOverlay button:hover { background: var(--accent-hover); transform: translateY(-2px); }
+
+/* Intro Overlay */
 #introOverlay { position: fixed; inset: 0; background: black; display: flex; align-items: center; justify-content: center; z-index: 9998; }
 #introOverlay.hidden { display: none; }
-.introLogo { width: 280px; opacity: 0; animation: fadeInOut 2s forwards; }
+#introOverlay .introLogo { width: 280px; opacity: 0; animation: fadeInOut 2s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+@keyframes fadeInOut { 
+    0% { opacity: 0; transform: scale(0.8); filter: blur(10px); }
+    50% { opacity: 1; transform: scale(1); filter: blur(0); }
+    100% { opacity: 0; transform: scale(1.1); filter: blur(5px); } 
+}
 
-@keyframes fadeInOut { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.1); } }
-
+/* VPN Popup */
+#vpnOverlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center; z-index: 10001; padding: 20px;
+}
+.vpn-card { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: 20px; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+.vpn-card h2 { color: var(--accent); margin-top: 0; }
+.vpn-card p { color: var(--muted); line-height: 1.6; margin-bottom: 25px; }
+.vpn-btn { background: var(--accent); color: white; border: 0; padding: 12px 25px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
+.vpn-btn:hover { background: var(--accent-hover); }
+  
 /* Layout */
-.wrap { max-width: var(--max-width); margin: 0 auto; padding: 40px 20px; display: none; }
+.wrap { max-width: var(--max-width); margin: 0 auto; padding: 40px 20px; display: none; animation: fadeIn 0.8s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
 header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+header .left { display: flex; align-items: center; gap: 20px; }
+header h1 { font-size: 28px; margin: 0; letter-spacing: -0.5px; }
+header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
 .logo img { width: 60px; height: 60px; border-radius: 14px; object-fit: cover; }
 
-/* Custom Selects */
-.sticky-bar { position: sticky; top: 10px; z-index: 100; background: rgba(11, 11, 13, 0.8); backdrop-filter: blur(16px); padding: 15px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 30px; }
+.logout-btn { background: var(--glass); color: #fff; border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.3s; }
+.logout-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+
+/* Sticky Controls Section */
+.sticky-bar {
+    position: sticky; top: 10px; z-index: 100;
+    background: rgba(11, 11, 13, 0.8);
+    backdrop-filter: blur(16px);
+    padding: 15px; border-radius: 20px;
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+}
+
 .controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-.search { flex: 2; min-width: 250px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.03); padding: 10px 16px; border-radius: 12px; border: 1px solid var(--border); }
+
+/* SEARCH BAR POLISH */
+.search { 
+    flex: 2; min-width: 250px; display: flex; align-items: center; 
+    gap: 10px; background: rgba(255,255,255,0.03);
+    padding: 10px 16px; border-radius: 12px; border: 1px solid var(--border);
+    transition: 0.3s;
+}
+.search:focus-within { border-color: var(--accent); background: rgba(255,255,255,0.06); }
 .search input { background: transparent; border: 0; outline: 0; color: #fff; width: 100%; font-size: 14px; }
 
-.custom-select { position: relative; min-width: 160px; flex: 1; }
-.select-trigger { background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 10px 16px; border-radius: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 600; transition: 0.3s; }
-.select-trigger::after { content: '▼'; font-size: 10px; transition: 0.3s; color: var(--muted); }
-.custom-select.open .select-trigger::after { transform: rotate(180deg); }
-.options-menu { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: #1a1a1e; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; z-index: 200; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: 0.3s; }
-.custom-select.open .options-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
-.option { padding: 12px 16px; font-size: 14px; cursor: pointer; }
-.option:hover { background: var(--accent); }
+/* --- PREMIUM DROPDOWNS --- */
+.select { 
+    appearance: none;
+    background: rgba(255,255,255,0.05); 
+    color: #fff; 
+    border: 1px solid var(--border);
+    padding: 10px 35px 10px 14px; 
+    border-radius: 12px; 
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer; 
+    outline: none;
+    transition: all 0.3s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+.select:hover { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+.select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2); }
+.select option { background: #1a1a1e; color: #fff; }
 
-#sortBtn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: white; padding: 10px 16px; border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; }
+/* Sort button specific (removes arrow) */
+#sortBtn { background-image: none; padding-right: 14px; }
 
-/* Tabs */
-.tabs { display: flex; gap: 8px; margin: 0 auto 30px auto; background: var(--glass); padding: 6px; border-radius: 16px; width: 100%; max-width: 450px; position: relative; border: 1px solid var(--border); }
-.tab-btn { flex: 1; padding: 12px 0; border: 0; background: transparent; color: var(--muted); font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; transition: 0.3s; z-index: 2; }
-.tab-btn.active { color: white; }
-.tab-indicator { position: absolute; top: 6px; left: 6px; height: calc(100% - 12px); width: calc((100% - 12px - 16px) / 3); background: var(--accent); border-radius: 12px; transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1); z-index: 1; }
+/* --- POLISHED ANIMATED TABS --- */
+.tabs { 
+  display: flex; gap: 8px; margin: 0 auto 30px auto;
+  background: var(--glass); padding: 6px; border-radius: 16px; 
+  width: 100%; max-width: 450px; position: relative; isolation: isolate; border: 1px solid var(--border);
+}
+.tabs::after {
+  content: ""; position: absolute; z-index: -1; top: 6px; left: 6px;
+  height: calc(100% - 12px);
+  width: calc((100% - 12px - 16px) / 3); 
+  background: var(--accent); border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.tabs:has([data-tab="movies"].active)::after { transform: translateX(0); }
+.tabs:has([data-tab="shows"].active)::after { transform: translateX(calc(100% + 8px)); }
+.tabs:has([data-tab="sports"].active)::after { transform: translateX(calc(200% + 16px)); }
 
-/* Cards */
+.tab-btn { flex: 1; position: relative; padding: 12px 0; border: 0; border-radius: 12px;
+background: transparent; color: var(--muted); font-size: 14px; font-weight: 700; cursor: pointer; transition: color 0.3s, transform 0.2s; text-align: center; }
+.tab-btn.active { color: white; transform: scale(1.05); }
+.tab-btn:hover:not(.active) { color: white; }
+
+/* Movie Cards */
 .movies { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
-.card { background: var(--card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); transition: 0.4s; }
-.card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); }
-.poster { height: 180px; background: #1a1a1e; }
-.poster img { width: 100%; height: 100%; object-fit: cover; }
-.meta { padding: 20px; }
-.rating { background: var(--accent); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; }
-.btn-watch { width: 100%; background: white; color: black; padding: 10px; border-radius: 10px; border: 0; cursor: pointer; font-weight: 700; margin-top: 10px; }
+.card { background: var(--card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); display: flex;
+flex-direction: column; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+.poster { position: relative; height: 180px; background: #1a1a1e; overflow: hidden; }
+.poster img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+.card:hover .poster img { transform: scale(1.1); }
+.meta { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+.title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+.title { font-size: 17px; font-weight: 700; margin: 0; line-height: 1.2; }
+.rating { background: var(--accent); padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 11px; color: white; white-space: nowrap; }
+.desc { color: var(--muted); font-size: 13.5px; line-height: 1.5; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.actions { display: flex; gap: 8px; margin-top: auto; }
+.btn { flex: 1; padding: 10px; border-radius: 10px; border: 0; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; }
+.btn-watch { background: white; color: black; }
+.btn-watch:hover { background: #e0e0e0; }
+.btn-info { background: var(--glass); color: white; border: 1px solid var(--border); }
+.btn-info:hover { background: rgba(255,255,255,0.1); }
 
-#playerOverlay iframe { width: 100%; max-width: 1000px; aspect-ratio: 16/9; border-radius: 16px; border: 0; }
-#showOverlay { background: rgba(0,0,0,0.95); display: none; overflow-y: auto; }
+/* Overlays */
+#playerOverlay, #showOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; align-items: center; justify-content: center; z-index: 10000; flex-direction: column; padding: 20px; }
+#playerOverlay iframe { width: 100%; max-width: 1000px; aspect-ratio: 16/9; border: 0; border-radius: 16px; box-shadow: 0 0 50px rgba(229,9,20,0.2); }
+#closePlayer, .close-detail { margin-top: 25px; background: var(--accent); color: white; border: 0; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; }
+
+footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; text-align: center; border-top: 1px solid var(--border); }
+
+@media(max-width: 768px) {
+    header { flex-direction: column; text-align: center; gap: 20px; }
+    header .left { flex-direction: column; }
+    .sticky-bar { top: 0; border-radius: 0; margin: 0 -20px 30px -20px; }
+    .tabs { max-width: 100%; }
+}
 </style>
 </head>
 <body>
 
 <div id="passwordOverlay">
-  <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" style="width:100px; margin-bottom:20px;">
-  <h2>GTIC Movie Hub</h2>
-  <input type="password" id="pwInput" placeholder="Enter Password" style="padding:12px; border-radius:10px; border:0; text-align:center;">
-  <button id="pwBtn" style="padding:10px 40px; background:var(--accent); color:white; border:0; border-radius:10px; cursor:pointer; font-weight:700; margin-top:10px;">Unlock</button>
+  <div class="logo"><img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" alt="GTIC Logo"></div>
+  <h2>Welcome to GTIC Movie Hub</h2>
+  <input type="password" id="pwInput" placeholder="Enter Access Password" />
+  <button id="pwBtn">Unlock Hub</button>
 </div>
 
-<div id="vpnOverlay"><div class="vpn-card"><h2>Privacy Protection</h2><p>We recommend a VPN for the best experience.</p><button id="closeVpn" style="background:var(--accent); color:white; border:0; padding:12px; width:100%; border-radius:10px; cursor:pointer;">I Understand</button></div></div>
-<div id="introOverlay" class="hidden"><img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" class="introLogo"></div>
+<div id="vpnOverlay">
+    <div class="vpn-card">
+        <div style="font-size: 50px; margin-bottom: 15px;">🛡️</div>
+        <h2>Privacy Protection</h2>
+        <p>To ensure a smooth and secure streaming experience on <b>GTIC Movie Hub</b>, we highly recommend using a VPN. This protects your connection and ensures high-speed access.</p>
+        <button class="vpn-btn" id="closeVpn">I Understand, Let's Watch</button>
+    </div>
+</div>
+  
+<div id="introOverlay" class="hidden">
+  <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" class="introLogo" />
+</div>
 
 <div class="wrap" id="mainContent">
   <header>
-    <div class="logo"><img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png"></div>
-    <h1>GTIC Movie Hub</h1>
-    <button id="logoutBtn" style="background:var(--glass); border:1px solid var(--border); color:white; padding:8px 15px; border-radius:10px; cursor:pointer;">Sign Out</button>
+    <div class="left">
+      <div class="logo"><img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" alt="GTIC Logo"></div>
+      <div>
+        <h1>GTIC Movie Hub</h1>
+        <p>Premium streaming for our community.</p>
+      </div>
+    </div>
+    <button id="logoutBtn" class="logout-btn">Sign Out</button>
   </header>
 
   <div class="sticky-bar">
     <div class="controls">
-      <div class="search">🔍 <input id="q" placeholder="Search movies, shows, genres..." /></div>
-      
-      <div class="custom-select" id="ratingSelect">
-        <div class="select-trigger">All Ratings</div>
-        <div class="options-menu">
-            <div class="option" data-value="all">All Ratings</div>
-            <div class="option" data-value="G">G</div>
-            <div class="option" data-value="PG">PG</div>
-            <div class="option" data-value="PG-13">PG-13</div>
-            <div class="option" data-value="R">R</div>
-            <div class="option" data-value="TV-PG">TV-PG</div>
-            <div class="option" data-value="TV-MA">TV-MA</div>
-        </div>
+      <div class="search">
+        <span>🔍</span>
+        <input id="q" placeholder="Search movies, shows, genres..." />
       </div>
-
-      <div class="custom-select" id="catSelect">
-        <div class="select-trigger">All Categories</div>
-        <div class="options-menu">
-            <div class="option" data-value="all">All Categories</div>
-            <div class="option" data-value="Family">Family</div>
-            <div class="option" data-value="Christmas">Christmas</div>
-            <div class="option" data-value="Halloween">Halloween</div>
-            <div class="option" data-value="Action">Action</div>
-            <div class="option" data-value="Comedy">Comedy</div>
-            <div class="option" data-value="Drama">Drama</div>
-        </div>
-      </div>
-
-      <button id="sortBtn">Sort A-Z</button>
+      <select id="filter" class="select">
+        <option value="all">All Ratings</option>
+        <option value="G">G</option>
+        <option value="PG">PG</option>
+        <option value="PG-13">PG-13</option>
+        <option value="R">R</option>
+        <option value="TV-PG">TV-PG</option>
+        <option value="TV-MA">TV-MA</option>
+      </select>
+      <select id="categoryFilter" class="select">
+        <option value="all">All Categories</option>
+        <option value="Family">Family</option>
+        <option value="Christmas">Christmas</option>
+        <option value="Halloween">Halloween</option>
+        <option value="Action">Action</option>
+        <option value="Comedy">Comedy</option>
+        <option value="Drama">Drama</option>
+        <option value="Crime">Crime</option>
+      </select>
+      <button id="sortBtn" class="select">Sort A-Z</button>
     </div>
   </div>
 
   <div class="tabs">
-    <div class="tab-indicator" id="indicator"></div>
     <button class="tab-btn active" data-tab="movies">Movies</button>
     <button class="tab-btn" data-tab="shows">TV Series</button>
     <button class="tab-btn" data-tab="sports">Live Sports</button>
   </div>
 
   <main id="movies" class="movies"></main>
+  
+  <footer>
+    <p>&copy; 2026 GTIC Entertainment Hub</p>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px;">High-speed streaming. No ads. No tracking.</p>
+  </footer>
 </div>
 
-<div id="playerOverlay" style="display:none;">
-    <iframe id="movieFrame" src="" allowfullscreen></iframe>
-    <button id="closePlayer" style="margin-top:20px; background:var(--accent); color:white; border:0; padding:10px 30px; border-radius:50px; cursor:pointer;">Close</button>
+<div id="playerOverlay">
+  <iframe id="movieFrame" src="" allow="autoplay; encrypted-media; clipboard-write; picture-in-picture" allowfullscreen></iframe>
+  <button id="closePlayer">Close Player</button>
 </div>
-
-<div id="showOverlay"></div>
 
 <script>
-// FULL MOVIE DATA RESTORED
+// Password & VPN Logic
+const correctPassword = "GTICMOVIES6741";
+const devPassword = "GTICDEVS89";
+const overlay = document.getElementById('passwordOverlay');
+const mainContent = document.getElementById('mainContent');
+const pwInput = document.getElementById('pwInput');
+const pwBtn = document.getElementById('pwBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const introOverlay = document.getElementById("introOverlay");
+const vpnOverlay = document.getElementById('vpnOverlay');
+const closeVpn = document.getElementById('closeVpn');
+
+function playIntroThenShowContent() {
+  introOverlay.classList.remove("hidden");
+  setTimeout(()=>{
+      introOverlay.classList.add("hidden"); 
+      mainContent.style.display="block";
+      vpnOverlay.style.display = "flex"; 
+      initHub();
+  },2000);
+}
+
+closeVpn.onclick = () => { vpnOverlay.style.display = "none"; };
+
+if(localStorage.getItem("gtic_dev_access")==="true"){ 
+    overlay.classList.add("hidden"); 
+    playIntroThenShowContent();
+}
+
+pwBtn.addEventListener("click",()=>{ 
+    const val=pwInput.value; 
+    if(val===correctPassword||val===devPassword){ 
+        if(val===devPassword)localStorage.setItem("gtic_dev_access","true"); 
+        overlay.classList.add("hidden"); 
+        playIntroThenShowContent(); 
+    } else{alert("Incorrect password"); pwInput.value="";} 
+});
+pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
+logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
+
+// Content Data
 const movies = [
-  { title:"Backrooms", rating:"COMING SOON", desc:"A young cinematographer's descent into the eerie reality.", link:"#", category:"Halloween", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoLmtwlJmhqSrqTK0CmtLhc-9AF6kcgo8y8ORQVH7FLuzREvYdoph63RXb&s=10" },
+  { title:"Backrooms", rating:"COMING SOON", desc:"A young cinematographer's descent into the eerie reality. Based on the viral horror phenomenon.", link:"#", category:"Halloween", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoLmtwlJmhqSrqTK0CmtLhc-9AF6kcgo8y8ORQVH7FLuzREvYdoph63RXb&s=10" },
   { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
   { title:"We Can Be Heroes", rating:"PG", desc:"Kids of superheroes must save their parents and the world.", link:"https://vidnest.fun/movie/615677", category:"Family", img:"https://image.tmdb.org/t/p/w1280/iVbV8IwLe65DFffbqVz9kcMRnnH.jpg" },
   { title:"The Wrecking Crew", rating:"R", desc:"Two mismatched detectives take down a criminal conspiracy.", link:"https://vidnest.fun/movie/1168190", category:"Action", img:"https://preview.redd.it/the-wrecking-crew-2026-new-prime-video-movie-v0-l7311klm85gg1.jpeg?auto=webp&s=d2f8c3588197d6cff5202d9cb6f4d1e4b6c1c0bd" },
@@ -189,7 +366,6 @@ const movies = [
   { title:"A Charlie Brown Christmas", rating:"G", desc:"Classic holiday comfort.", link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview", category:"Christmas", img:"https://i.ebayimg.com/images/g/rRoAAOSwfERnGtix/s-l400.jpg" }
 ];
 
-// FULL TV SERIES DATA RESTORED
 const shows = [
   { 
     title:"The Last of Us", rating:"TV-MA", desc:"Survivors navigate a fungal apocalypse.", category:"Drama", 
@@ -222,128 +398,118 @@ const shows = [
   }
 ];
 
-// FULL SPORTS DATA RESTORED
 const sports = [
   {
-    title: "WWE", rating: "SPORTS", desc: "Premium live events.", img: "https://insidepulse.com/wp-content/uploads/2017/12/WWE-logo-banner.jpg",
+    title: "WWE", rating: "SPORTS", desc: "Premium live events and weekly shows.", img: "https://insidepulse.com/wp-content/uploads/2017/12/WWE-logo-banner.jpg",
     events: [
-      { title: "WrestleMania 41: Sat", rating: "LIVE", desc: "Night 1", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285198" },
-      { title: "WrestleMania 41: Sun", rating: "LIVE", desc: "Night 2", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285199" }
+      { title: "WrestleMania 41: Sat", rating: "LIVE", desc: "Night 1 of the Showcase of the Immortals.", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285198" },
+      { title: "WrestleMania 41: Sun", rating: "LIVE", desc: "Night 2 of the Showcase of the Immortals.", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285199" }
     ]
   }
 ];
 
-// Logic
+// Hub Logic
 const container = document.getElementById("movies");
-const frame = document.getElementById("movieFrame");
 const overlayPlayer = document.getElementById("playerOverlay");
-const showOverlay = document.getElementById("showOverlay");
-let currentTab = "movies", activeRating = "all", activeCat = "all", sortAZ = true;
+const frame = document.getElementById("movieFrame");
+const closeBtn = document.getElementById("closePlayer");
+let currentTab = "movies";
+let sortAZ = true;
 
-function setupDropdown(id, callback) {
-    const el = document.getElementById(id);
-    const trigger = el.querySelector('.select-trigger');
-    trigger.onclick = (e) => {
-        e.stopPropagation();
-        document.querySelectorAll('.custom-select').forEach(s => s !== el && s.classList.remove('open'));
-        el.classList.toggle('open');
+const showOverlay = document.createElement('div');
+showOverlay.id = 'showOverlay';
+document.body.appendChild(showOverlay);
+
+function renderList(list){
+  container.innerHTML="";
+  list.forEach(m=>{
+    const card=document.createElement('article'); card.className='card';
+    card.innerHTML = `
+      <div class="poster"><img src="${m.img}" alt="${m.title}"></div>
+      <div class="meta">
+        <div class="title-row"><h3 class="title">${m.title}</h3><div class="rating">${m.rating}</div></div>
+        <div class="desc">${m.desc}</div>
+        <div class="actions">
+          <button class="btn btn-watch">${m.rating === 'COMING SOON' ? '⏳ Soon' : '▶ Watch'}</button>
+          <button class="btn btn-info">Details</button>
+        </div>
+      </div>
+    `;
+    
+    card.querySelector('.btn-watch').onclick = () => {
+        if(m.rating === 'COMING SOON') return alert("Not available yet!");
+        if(currentTab === 'movies') { frame.src = m.link; overlayPlayer.style.display = 'flex'; }
+        else if(currentTab === 'shows') openShowDetail(m);
+        else openSportCategory(m);
     };
-    el.querySelectorAll('.option').forEach(opt => {
-        opt.onclick = () => {
-            trigger.textContent = opt.textContent;
-            el.classList.remove('open');
-            callback(opt.dataset.value);
-        };
-    });
+    card.querySelector('.btn-info').onclick = () => alert(m.title + ": " + m.desc);
+    container.append(card);
+  });
 }
 
-setupDropdown('ratingSelect', (val) => { activeRating = val; filterItems(); });
-setupDropdown('catSelect', (val) => { activeCat = val; filterItems(); });
-window.onclick = () => document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
-
-function renderList(list) {
-    container.innerHTML = "";
-    list.forEach(m => {
-        const card = document.createElement('article'); card.className = 'card';
-        card.innerHTML = `<div class="poster"><img src="${m.img}"></div><div class="meta"><h3>${m.title}</h3><span class="rating">${m.rating}</span><button class="btn-watch">▶ Watch Now</button></div>`;
-        card.querySelector('button').onclick = () => {
-            if(currentTab === 'movies') { frame.src = m.link; overlayPlayer.style.display = 'flex'; }
-            else if(currentTab === 'shows') openShow(m);
-            else openSports(m);
-        };
-        container.append(card);
-    });
-}
-
-function openShow(show) {
-    showOverlay.innerHTML = `<button onclick="this.parentElement.style.display='none'" style="background:red; color:white; border:0; padding:10px; cursor:pointer; margin:20px;">Close</button><h2 style="text-align:center">${show.title}</h2>`;
+function openShowDetail(show) {
+    showOverlay.innerHTML = `<button class="close-detail" id="closeShow">✖ Return</button> <h2>${show.title}</h2>`;
     show.seasons.forEach(s => {
         const div = document.createElement('div');
-        div.style.padding = "20px";
-        div.innerHTML = `<h3>${s.title}</h3>`;
+        div.innerHTML = `<h3 style="border-left: 4px solid var(--accent); padding-left: 10px;">${s.title}</h3>`;
+        const grid = document.createElement('div');
+        grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:20px;';
         s.episodes.forEach(e => {
-            const b = document.createElement('button');
-            b.style.margin = "5px"; b.textContent = e.title;
-            b.onclick = () => { frame.src = e.link; overlayPlayer.style.display = 'flex'; };
-            div.append(b);
+            const b = document.createElement('button'); b.className = 'btn btn-info'; b.textContent = e.title;
+            b.onclick = () => { frame.src = e.link; overlayPlayer.style.display='flex'; showOverlay.style.display='none'; };
+            grid.append(b);
         });
-        showOverlay.append(div);
+        div.append(grid); showOverlay.append(div);
     });
-    showOverlay.style.display = 'block';
+    document.getElementById('closeShow').onclick = () => showOverlay.style.display='none';
+    showOverlay.style.display='flex';
 }
 
-function openSports(sport) {
-    showOverlay.innerHTML = `<button onclick="this.parentElement.style.display='none'" style="background:red; color:white; border:0; padding:10px; cursor:pointer; margin:20px;">Close</button><h2 style="text-align:center">${sport.title}</h2>`;
+function openSportCategory(sport) {
+    showOverlay.innerHTML = `<button class="close-detail" id="closeShow">✖ Return</button> <h2>${sport.title}</h2>`;
+    const grid = document.createElement('div');
+    grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px;';
     sport.events.forEach(ev => {
-        const b = document.createElement('button');
-        b.style.margin = "20px"; b.textContent = ev.title;
-        b.onclick = () => { frame.src = ev.link; overlayPlayer.style.display = 'flex'; };
-        showOverlay.append(b);
+        const div = document.createElement('div'); div.className='card';
+        div.innerHTML = `<div class="poster"><img src="${ev.img}"></div><div class="meta"><h3 class="title">${ev.title}</h3><button class="btn btn-watch">▶ Play</button></div>`;
+        div.querySelector('button').onclick = () => { frame.src = ev.link; overlayPlayer.style.display='flex'; showOverlay.style.display='none'; };
+        grid.append(div);
     });
-    showOverlay.style.display = 'block';
+    showOverlay.append(grid);
+    document.getElementById('closeShow').onclick = () => showOverlay.style.display='none';
+    showOverlay.style.display='flex';
 }
 
-function filterItems() {
+function initHub() {
+  const q = document.getElementById("q");
+  const filter = document.getElementById("filter");
+  const catFilter = document.getElementById("categoryFilter");
+  const sortBtn = document.getElementById("sortBtn");
+  const tabs = document.querySelectorAll(".tab-btn");
+
+  function filterItems() {
     let list = currentTab === 'movies' ? movies : currentTab === 'shows' ? shows : sports;
-    const query = document.getElementById('q').value.toLowerCase();
+    const query = q.value.toLowerCase();
+    const rating = filter.value;
+    const cat = catFilter.value;
     let filtered = list.filter(m => 
-        (m.title.toLowerCase().includes(query)) &&
-        (activeRating === 'all' || m.rating === activeRating) &&
-        (activeCat === 'all' || m.category === activeCat)
+      (m.title.toLowerCase().includes(query) || (m.desc && m.desc.toLowerCase().includes(query))) &&
+      (rating === 'all' || m.rating === rating) &&
+      (cat === 'all' || m.category === cat)
     );
     if(sortAZ) filtered.sort((a,b) => a.title.localeCompare(b.title));
     else filtered.sort((a,b) => b.title.localeCompare(a.title));
     renderList(filtered);
+  }
+
+  q.oninput = filterItems; filter.onchange = filterItems; catFilter.onchange = filterItems;
+  sortBtn.onclick = () => { sortAZ = !sortAZ; sortBtn.textContent = sortAZ ? "Sort A-Z" : "Sort Z-A"; filterItems(); };
+  tabs.forEach(t => { t.onclick = () => { tabs.forEach(btn => btn.classList.remove('active')); t.classList.add('active'); currentTab = t.dataset.tab; filterItems(); }; });
+  filterItems();
 }
 
-document.getElementById('q').oninput = filterItems;
-document.getElementById('sortBtn').onclick = () => { sortAZ = !sortAZ; document.getElementById('sortBtn').textContent = sortAZ ? "Sort A-Z" : "Sort Z-A"; filterItems(); };
-
-document.querySelectorAll('.tab-btn').forEach((t, idx) => {
-    t.onclick = () => {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        t.classList.add('active'); 
-        document.getElementById('indicator').style.transform = `translateX(calc(${idx * 100}% + ${idx * 8}px))`;
-        currentTab = t.dataset.tab; filterItems();
-    };
-});
-
-document.getElementById('pwBtn').onclick = () => {
-    if(document.getElementById('pwInput').value === "GTICMOVIES6741") {
-        document.getElementById('passwordOverlay').classList.add('hidden');
-        document.getElementById('introOverlay').classList.remove('hidden');
-        setTimeout(() => {
-            document.getElementById('introOverlay').classList.add('hidden');
-            document.getElementById('mainContent').style.display = 'block';
-            document.getElementById('vpnOverlay').style.display = 'flex';
-            filterItems();
-        }, 2000);
-    } else { alert("Access Denied"); }
-};
-
-document.getElementById('closeVpn').onclick = () => document.getElementById('vpnOverlay').style.display = 'none';
-document.getElementById('closePlayer').onclick = () => { overlayPlayer.style.display = 'none'; frame.src = ""; };
-document.getElementById('logoutBtn').onclick = () => location.reload();
+closeBtn.onclick = () => { overlayPlayer.style.display = 'none'; frame.src = ""; };
 </script>
 </body>
 </html>
+```
