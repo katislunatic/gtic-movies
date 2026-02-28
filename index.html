@@ -9,244 +9,299 @@
 
 <style>
 :root {
-  --bg: #0b0b0d;
-  --card: #141417;
-  --muted: #a0a0a8;
-  --accent: #e50914;
-  --accent-hover: #ff1f2a;
-  --glass: rgba(255, 255, 255, 0.05);
-  --border: rgba(255, 255, 255, 0.08);
-  --radius: 16px;
-  --max-width: 1200px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  [cite_start]--bg: #0b0b0d; [cite: 1]
+  [cite_start]--card: #141417; [cite: 1]
+  [cite_start]--muted: #a0a0a8; [cite: 2]
+  [cite_start]--accent: #e50914; [cite: 2]
+  [cite_start]--accent-hover: #ff1f2a; [cite: 2]
+  [cite_start]--glass: rgba(255, 255, 255, 0.05); [cite: 2]
+  [cite_start]--border: rgba(255, 255, 255, 0.08); [cite: 2]
+  [cite_start]--radius: 16px; [cite: 2]
+  [cite_start]--max-width: 1200px; [cite: 2]
+  [cite_start]font-family: 'Inter', system-ui, -apple-system, sans-serif; [cite: 3]
 }
 
 * { box-sizing: border-box; }
 
 html, body { 
     height: 100%; 
-    margin: 0;
-    background-color: var(--bg);
+    [cite_start]margin: 0; [cite: 3]
+    [cite_start]background-color: var(--bg); [cite: 4]
     background-image: 
         radial-gradient(at 0% 0%, rgba(229, 9, 20, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(32, 50, 200, 0.05) 0px, transparent 50%);
-    color: #ffffff; 
+        [cite_start]radial-gradient(at 100% 0%, rgba(32, 50, 200, 0.05) 0px, transparent 50%); [cite: 4]
+    [cite_start]color: #ffffff; [cite: 5]
     -webkit-font-smoothing: antialiased; 
-    overflow-x: hidden;
+    [cite_start]overflow-x: hidden; [cite: 5]
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); [cite_start]} [cite: 5]
+::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; [cite_start]} [cite: 6]
 ::-webkit-scrollbar-thumb:hover { background: #444; }
 
 /* Password Overlay */
 #passwordOverlay {
-    position: fixed;
-    inset: 0; 
-    background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+    [cite_start]position: fixed; [cite: 6]
+    [cite_start]inset: 0; [cite: 7]
+    [cite_start]background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%); [cite: 7]
     display: flex; flex-direction: column; align-items: center; justify-content: center; 
-    z-index: 9999;
-    padding: 20px;
+    [cite_start]z-index: 9999; [cite: 7]
+    [cite_start]padding: 20px; [cite: 8]
 }
 #passwordOverlay.hidden { display: none; }
-#passwordOverlay .logo img { width: 100px; border-radius: 20px; margin-bottom: 24px; filter: drop-shadow(0 0 20px rgba(229,9,20,0.3)); }
-#passwordOverlay h2 { margin: 0 0 24px 0; font-size: 22px; font-weight: 600; text-align: center; max-width: 400px; line-height: 1.4; }
+[cite_start]#passwordOverlay .logo img { width: 100px; border-radius: 20px; margin-bottom: 24px; [cite: 8]
+    filter: drop-shadow(0 0 20px rgba(229,9,20,0.3)); [cite_start]} [cite: 9]
+[cite_start]#passwordOverlay h2 { margin: 0 0 24px 0; font-size: 22px; font-weight: 600; text-align: center; [cite: 9]
+    max-width: 400px; line-height: 1.4; [cite_start]} [cite: 10]
 #passwordOverlay input {
-    padding: 14px 20px; border-radius: 12px; border: 1px solid var(--border);
-    background: var(--glass); color: white; font-size: 16px; outline: none;
+    [cite_start]padding: 14px 20px; border-radius: 12px; border: 1px solid var(--border); [cite: 10]
+    [cite_start]background: var(--glass); color: white; font-size: 16px; outline: none; [cite: 11]
     width: 100%; max-width: 300px; text-align: center; margin-bottom: 16px;
-    backdrop-filter: blur(10px);
-    transition: border 0.3s;
+    [cite_start]backdrop-filter: blur(10px); [cite: 11]
+    [cite_start]transition: border 0.3s; [cite: 12]
 }
 #passwordOverlay input:focus { border-color: var(--accent); }
 #passwordOverlay button {
-    padding: 12px 40px; border-radius: 12px;
-    border: 0; background: var(--accent);
-    color: white; font-weight: 700; cursor: pointer; font-size: 16px; transition: transform 0.2s, background 0.2s;
-}
+    [cite_start]padding: 12px 40px; border-radius: 12px; [cite: 12]
+    [cite_start]border: 0; background: var(--accent); [cite: 13]
+    [cite_start]color: white; font-weight: 700; cursor: pointer; font-size: 16px; transition: transform 0.2s, background 0.2s; [cite: 13]
+[cite_start]} [cite: 14]
 #passwordOverlay button:hover { background: var(--accent-hover); transform: translateY(-2px); }
 
 /* Intro Overlay */
-#introOverlay { position: fixed; inset: 0; background: black; display: flex; align-items: center; justify-content: center; z-index: 9998; }
+[cite_start]#introOverlay { position: fixed; inset: 0; background: black; display: flex; [cite: 14]
+    align-items: center; justify-content: center; z-index: 9998; [cite_start]} [cite: 15]
 #introOverlay.hidden { display: none; }
-#introOverlay .introLogo { width: 280px; opacity: 0; animation: fadeInOut 2s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+[cite_start]#introOverlay .introLogo { width: 280px; opacity: 0; [cite: 15]
+    animation: fadeInOut 2s cubic-bezier(0.4, 0, 0.2, 1) forwards; [cite_start]} [cite: 16]
 @keyframes fadeInOut { 
-    0% { opacity: 0; transform: scale(0.8); filter: blur(10px); }
-    50% { opacity: 1; transform: scale(1); filter: blur(0); }
-    100% { opacity: 0; transform: scale(1.1); filter: blur(5px); } 
+    [cite_start]0% { opacity: 0; [cite: 16]
+    transform: scale(0.8); filter: blur(10px); [cite_start]} [cite: 17]
+    [cite_start]50% { opacity: 1; transform: scale(1); filter: blur(0); [cite: 17]
+    [cite_start]} [cite: 18]
+    [cite_start]100% { opacity: 0; transform: scale(1.1); filter: blur(5px); [cite: 18]
+    [cite_start]} [cite: 19]
 }
 
 /* AdBlock Popup */
 #vpnOverlay {
-    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
-    display: none; align-items: center; justify-content: center; z-index: 10001; padding: 20px;
+    [cite_start]position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); [cite: 19]
+    [cite_start]display: none; align-items: center; justify-content: center; z-index: 10001; padding: 20px; [cite: 20]
 }
-.vpn-card { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: 20px; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-.vpn-card h2 { color: var(--accent); margin-top: 0; }
+[cite_start].vpn-card { background: var(--card); border: 1px solid var(--border); padding: 30px; [cite: 20]
+    border-radius: 20px; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); [cite_start]} [cite: 21]
+[cite_start].vpn-card h2 { color: var(--accent); margin-top: 0; [cite: 21]
+[cite_start]} [cite: 22]
 .vpn-card p { color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
-.vpn-btn { background: var(--accent); color: white; border: 0; padding: 12px 25px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 15px; }
-.vpn-btn:hover { background: var(--accent-hover); }
+[cite_start].vpn-btn { background: var(--accent); color: white; border: 0; padding: 12px 25px; [cite: 22]
+    border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 15px; [cite_start]} [cite: 23]
+[cite_start].vpn-btn:hover { background: var(--accent-hover); [cite: 23]
+[cite_start]} [cite: 24]
 
 /* Link Buttons */
-.ad-links { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+[cite_start].ad-links { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; [cite: 24]
+[cite_start]} [cite: 25]
 .ad-link { 
     background: var(--glass); color: white; text-decoration: none; padding: 12px; 
-    border-radius: 10px; font-size: 14px; font-weight: 600; border: 1px solid var(--border);
+    [cite_start]border-radius: 10px; font-size: 14px; font-weight: 600; [cite: 25]
+    [cite_start]border: 1px solid var(--border); [cite: 26]
     transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
 }
-.ad-link:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); transform: scale(1.02); }
+[cite_start].ad-link:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); [cite: 26]
+    transform: scale(1.02); [cite_start]} [cite: 27]
 
 /* Layout */
-.wrap { max-width: var(--max-width); margin: 0 auto; padding: 40px 20px; display: none; animation: fadeIn 0.8s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+[cite_start].wrap { max-width: var(--max-width); margin: 0 auto; padding: 40px 20px; display: none; animation: fadeIn 0.8s ease; [cite: 27]
+[cite_start]} [cite: 28]
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); [cite_start]} to { opacity: 1; transform: translateY(0); [cite: 28]
+[cite_start]} } [cite: 29]
 
 header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
-header .left { display: flex; align-items: center; gap: 20px; }
+[cite_start]header .left { display: flex; align-items: center; gap: 20px; [cite: 29]
+[cite_start]} [cite: 30]
 header h1 { font-size: 28px; margin: 0; letter-spacing: -0.5px; }
-header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+[cite_start]header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; [cite: 30]
+[cite_start]} [cite: 31]
 .logo img { width: 60px; height: 60px; border-radius: 14px; object-fit: cover; }
 
-.logout-btn { background: var(--glass); color: #fff; border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.3s; }
+[cite_start].logout-btn { background: var(--glass); color: #fff; [cite: 31]
+    [cite_start]border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.3s; [cite: 32]
+[cite_start]} [cite: 33]
 .logout-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
 
 /* Sticky Controls Section */
 .sticky-bar {
-    position: sticky; top: 10px; z-index: 100;
+    [cite_start]position: sticky; top: 10px; [cite: 33]
+    [cite_start]z-index: 100; [cite: 34]
     background: rgba(11, 11, 13, 0.8);
     backdrop-filter: blur(16px);
     padding: 15px; border-radius: 20px;
     border: 1px solid var(--border);
-    margin-bottom: 30px;
-}
+    [cite_start]margin-bottom: 30px; [cite: 34]
+[cite_start]} [cite: 35]
 
-.controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+[cite_start].controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; [cite: 35]
+[cite_start]} [cite: 36]
 
 /* SEARCH BAR POLISH */
 .search { 
     flex: 2; min-width: 250px; display: flex; align-items: center; 
-    gap: 10px; background: rgba(255,255,255,0.03);
+    [cite_start]gap: 10px; [cite: 36]
+    [cite_start]background: rgba(255,255,255,0.03); [cite: 37]
     padding: 10px 16px; border-radius: 12px; border: 1px solid var(--border);
     transition: 0.3s;
 }
-.search:focus-within { border-color: var(--accent); background: rgba(255,255,255,0.06); }
-.search input { background: transparent; border: 0; outline: 0; color: #fff; width: 100%; font-size: 14px; }
+[cite_start].search:focus-within { border-color: var(--accent); background: rgba(255,255,255,0.06); [cite: 37]
+[cite_start]} [cite: 38]
+[cite_start].search input { background: transparent; border: 0; outline: 0; color: #fff; width: 100%; font-size: 14px; [cite: 38]
+[cite_start]} [cite: 39]
 
 .select { 
     appearance: none;
     background: rgba(255,255,255,0.05); 
     color: #fff; 
-    border: 1px solid var(--border);
-    padding: 10px 35px 10px 14px; 
+    [cite_start]border: 1px solid var(--border); [cite: 39]
+    [cite_start]padding: 10px 35px 10px 14px; [cite: 40]
     border-radius: 12px; 
     font-size: 14px;
     font-weight: 600;
     cursor: pointer; 
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
+    [cite_start]outline: none; [cite: 40]
+    [cite_start]transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); [cite: 41]
+    [cite_start]background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); [cite: 41]
+    [cite_start]background-repeat: no-repeat; [cite: 42]
     background-position: right 10px center;
     background-size: 16px;
 }
 
 @keyframes dropdownOpen {
-  from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+  [cite_start]from { opacity: 0; transform: translateY(-10px) scale(0.95); [cite: 42]
+  [cite_start]} [cite: 43]
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.select:hover { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
+[cite_start].select:hover { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); transform: translateY(-1px); [cite: 43]
+[cite_start]} [cite: 44]
 .select:focus { 
     border-color: var(--accent); 
-    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2);
-    animation: dropdownOpen 0.3s ease-out;
+    [cite_start]box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2); [cite: 44]
+    [cite_start]animation: dropdownOpen 0.3s ease-out; [cite: 45]
 }
 .select option { background: #1a1a1e; color: #fff; }
 
-#sortBtn { background-image: none; padding-right: 14px; }
+[cite_start]#sortBtn { background-image: none; padding-right: 14px; [cite: 45]
+[cite_start]} [cite: 46]
 
 /* --- POLISHED ANIMATED TABS --- */
 .tabs { 
-  display: flex; gap: 8px; margin: 0 auto 30px auto;
-  background: var(--glass); padding: 6px; border-radius: 16px; 
+  [cite_start]display: flex; gap: 8px; margin: 0 auto 30px auto; [cite: 46]
+  [cite_start]background: var(--glass); padding: 6px; border-radius: 16px; [cite: 47]
   width: 100%; max-width: 600px; position: relative; isolation: isolate; border: 1px solid var(--border);
-}
+[cite_start]} [cite: 48]
 .tabs::after {
   content: ""; position: absolute; z-index: -1; top: 6px; left: 6px;
-  height: calc(100% - 12px);
-  width: calc((100% - 12px - 24px) / 4); 
+  [cite_start]height: calc(100% - 12px); [cite: 48]
+  [cite_start]width: calc((100% - 12px - 24px) / 4); [cite: 49]
   background: var(--accent); border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
-  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  [cite_start]box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4); [cite: 49]
+  [cite_start]transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); [cite: 50]
 }
 .tabs:has([data-tab="movies"].active)::after { transform: translateX(0); }
-.tabs:has([data-tab="shows"].active)::after { transform: translateX(calc(100% + 8px)); }
+[cite_start].tabs:has([data-tab="shows"].active)::after { transform: translateX(calc(100% + 8px)); [cite: 50]
+[cite_start]} [cite: 51]
 .tabs:has([data-tab="sports"].active)::after { transform: translateX(calc(200% + 16px)); }
 .tabs:has([data-tab="favorites"].active)::after { transform: translateX(calc(300% + 24px)); }
 
-.tab-btn { flex: 1; position: relative; padding: 12px 0; border: 0; border-radius: 12px;
-background: transparent; color: var(--muted); font-size: 14px; font-weight: 700; cursor: pointer; transition: color 0.3s, transform 0.2s; text-align: center; }
+[cite_start].tab-btn { flex: 1; position: relative; [cite: 51]
+  [cite_start]padding: 12px 0; border: 0; border-radius: 12px; [cite: 52]
+  [cite_start]background: transparent; color: var(--muted); font-size: 14px; font-weight: 700; cursor: pointer; [cite: 52]
+  transition: color 0.3s, transform 0.2s; text-align: center; [cite_start]} [cite: 53]
 .tab-btn.active { color: white; transform: scale(1.05); }
-.tab-btn:hover:not(.active) { color: white; }
+[cite_start].tab-btn:hover:not(.active) { color: white; [cite: 53]
+[cite_start]} [cite: 54]
 
 /* Movie Cards */
 .movies { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
-.card { background: var(--card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); display: flex;
-flex-direction: column; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
-.card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+[cite_start].card { background: var(--card); border-radius: var(--radius); [cite: 54]
+  [cite_start]overflow: hidden; border: 1px solid var(--border); display: flex; [cite: 55]
+  [cite_start]flex-direction: column; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; [cite: 55]
+[cite_start]} [cite: 56]
+[cite_start].card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.6); [cite: 56]
+[cite_start]} [cite: 57]
 
 /* Favorite Heart Button Style */
 .fav-btn {
     position: absolute; top: 12px; right: 12px; z-index: 10;
-    background: rgba(0,0,0,0.5); border: 0; color: white;
+    [cite_start]background: rgba(0,0,0,0.5); [cite: 57]
+    [cite_start]border: 0; color: white; [cite: 58]
     width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
-    backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center;
-    transition: 0.3s; font-size: 18px;
+    [cite_start]backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; [cite: 58]
+    [cite_start]transition: 0.3s; font-size: 18px; [cite: 59]
 }
 .fav-btn.active { color: #ff1f2a; background: white; }
 .fav-btn:hover { transform: scale(1.1); }
 
-.poster { position: relative; height: 180px; background: #1a1a1e; overflow: hidden; }
-.poster img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+[cite_start].poster { position: relative; height: 180px; [cite: 59]
+  background: #1a1a1e; overflow: hidden; [cite_start]} [cite: 60]
+[cite_start].poster img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; [cite: 60]
+[cite_start]} [cite: 61]
 .card:hover .poster img { transform: scale(1.1); }
 .meta { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-.title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
-.title { font-size: 17px; font-weight: 700; margin: 0; line-height: 1.2; }
-.rating { background: var(--accent); padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 11px; color: white; white-space: nowrap; }
-.desc { color: var(--muted); font-size: 13.5px; line-height: 1.5; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+[cite_start].title-row { display: flex; [cite: 61]
+  justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; [cite_start]} [cite: 62]
+[cite_start].title { font-size: 17px; font-weight: 700; margin: 0; line-height: 1.2; [cite: 62]
+[cite_start]} [cite: 63]
+[cite_start].rating { background: var(--accent); padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 11px; color: white; white-space: nowrap; [cite: 63]
+[cite_start]} [cite: 64]
+.desc { color: var(--muted); font-size: 13.5px; line-height: 1.5; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 2; [cite_start]-webkit-box-orient: vertical; overflow: hidden; [cite: 64]
+[cite_start]} [cite: 65]
 .actions { display: flex; gap: 8px; margin-top: auto; }
-.btn { flex: 1; padding: 10px; border-radius: 10px; border: 0; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; }
+[cite_start].btn { flex: 1; padding: 10px; border-radius: 10px; border: 0; cursor: pointer; [cite: 65]
+  font-weight: 700; font-size: 13px; transition: 0.2s; [cite_start]} [cite: 66]
 .btn-watch { background: white; color: black; }
 .btn-watch:hover { background: #e0e0e0; }
-.btn-info { background: var(--glass); color: white; border: 1px solid var(--border); }
-.btn-info:hover { background: rgba(255,255,255,0.1); }
+[cite_start].btn-info { background: var(--glass); [cite: 66]
+  color: white; border: 1px solid var(--border); [cite_start]} [cite: 67]
+[cite_start].btn-info:hover { background: rgba(255,255,255,0.1); [cite: 67]
+[cite_start]} [cite: 68]
 
 /* Overlays */
 #playerOverlay, #showOverlay { 
     position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; 
-    align-items: center; justify-content: center; z-index: 10000; flex-direction: column; padding: 20px; 
+    [cite_start]align-items: center; [cite: 68]
+    [cite_start]justify-content: center; z-index: 10000; flex-direction: column; padding: 20px; [cite: 69]
 }
 
 /* Season & Episode Styling Correction */
-#showOverlay { overflow-y: auto; padding-top: 80px; }
+[cite_start]#showOverlay { overflow-y: auto; padding-top: 80px; [cite: 69]
+[cite_start]} [cite: 70]
 .show-content-wrapper { width: 100%; max-width: 900px; margin-bottom: 50px; }
-.season-block { background: var(--glass); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; }
+[cite_start].season-block { background: var(--glass); border: 1px solid var(--border); border-radius: 16px; padding: 20px; [cite: 70]
+  margin-bottom: 24px; [cite_start]} [cite: 71]
 .episode-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-top: 15px; }
 
-#playerOverlay iframe { width: 100%; max-width: 1000px; aspect-ratio: 16/9; border: 0; border-radius: 16px; box-shadow: 0 0 50px rgba(229,9,20,0.2); }
+[cite_start]#playerOverlay iframe { width: 100%; [cite: 71]
+  [cite_start]max-width: 1000px; aspect-ratio: 16/9; border: 0; border-radius: 16px; box-shadow: 0 0 50px rgba(229, 9, 20, 0.2); [cite: 72]
+[cite_start]} [cite: 73]
 #closePlayer, .close-detail { 
     position: fixed; top: 20px; right: 20px; z-index: 10001;
-    background: var(--accent); color: white; border: 0; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; 
+    [cite_start]background: var(--accent); color: white; [cite: 73]
+    [cite_start]border: 0; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; [cite: 74]
 }
 
-footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; text-align: center; border-top: 1px solid var(--border); }
+[cite_start]footer { margin-top: 60px; padding: 40px; color: var(--muted); [cite: 74]
+  font-size: 14px; text-align: center; border-top: 1px solid var(--border); [cite_start]} [cite: 75]
 
 @media(max-width: 768px) {
-    header { flex-direction: column; text-align: center; gap: 20px; }
+    [cite_start]header { flex-direction: column; text-align: center; [cite: 75]
+    gap: 20px; [cite_start]} [cite: 76]
     header .left { flex-direction: column; }
-    .sticky-bar { top: 0; border-radius: 0; margin: 0 -20px 30px -20px; }
-    .tabs { max-width: 100%; }
+    [cite_start].sticky-bar { top: 0; [cite: 76]
+    border-radius: 0; margin: 0 -20px 30px -20px; [cite_start]} [cite: 77]
+    [cite_start].tabs { max-width: 100%; [cite: 77]
+    [cite_start]} [cite: 78]
     .episode-grid { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
@@ -264,7 +319,8 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
     <div class="vpn-card">
         <div style="font-size: 50px; margin-bottom: 15px;">🚫</div>
         <h2>Block Annoying Popups</h2>
-        <p>The video providers we use often show aggressive ads. For a <b>100% clean experience</b>, we highly recommend installing a free Ad Blocker.</p>
+        [cite_start]<p>The video providers we use often show aggressive ads. [cite: 78]
+        [cite_start]For a <b>100% clean experience</b>, we highly recommend installing a free Ad Blocker.</p> [cite: 79]
         
         <div class="ad-links">
             <a href="https://ublockorigin.com/" target="_blank" class="ad-link"><span>🛡️</span> uBlock Origin (Best Extension)</a>
@@ -276,7 +332,8 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
 </div>
   
 <div id="introOverlay" class="hidden">
-  <img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" class="introLogo" />
+  [cite_start]<img src="https://i.ibb.co/C3kwF5SC/gtic-logo.png" [cite: 79]
+  [cite_start]class="introLogo" /> [cite: 80]
 </div>
 
 <div class="wrap" id="mainContent">
@@ -295,7 +352,8 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
     <div class="controls">
       <div class="search">
         <span>🔍</span>
-        <input id="q" placeholder="Search movies, shows, genres..." />
+        [cite_start]<input id="q" [cite: 80]
+        [cite_start]placeholder="Search movies, shows, genres..." /> [cite: 81]
       </div>
       <select id="filter" class="select">
         <option value="all">All Ratings</option>
@@ -307,7 +365,8 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
         <option value="TV-MA">TV-MA</option>
       </select>
       <select id="categoryFilter" class="select">
-        <option value="all">All Categories</option>
+    [cite_start][cite: 81]
+        [cite_start]<option value="all">All Categories</option> [cite: 82]
         <option value="Family">Family</option>
         <option value="Christmas">Christmas</option>
         <option value="Halloween">Halloween</option>
@@ -321,17 +380,20 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
   </div>
 
   <div class="tabs">
-    <button class="tab-btn active" data-tab="movies">Movies</button>
-    <button class="tab-btn" data-tab="shows">Shows</button>
-    <button class="tab-btn" data-tab="sports">Sports</button>
+    [cite_start]<button class="tab-btn active" [cite: 82]
+    [cite_start]data-tab="movies">Movies</button> [cite: 83]
+    <button class="tab-btn" data-tab="shows">TV Series</button>
+    <button class="tab-btn" data-tab="sports">Live Sports</button>
     <button class="tab-btn" data-tab="favorites">My List ❤️</button>
   </div>
 
   <main id="movies" class="movies"></main>
   
   <footer>
-    <p>&copy; 2026 GTIC Entertainment Hub</p>
-    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px;">High-speed streaming. No ads. No tracking.</p>
+    [cite_start]<p>&copy; [cite: 83]
+    [cite_start]2026 GTIC Entertainment Hub</p> [cite: 84]
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px;">High-speed streaming. [cite_start]No ads. [cite: 84]
+    [cite_start]No tracking.</p> [cite: 85]
   </footer>
 </div>
 
@@ -342,29 +404,28 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
 
 <script>
 // Password & VPN Logic
-const correctPassword = "GTICMOVIES6741";
-const devPassword = "GTICDEVS89";
+[cite_start]const correctPassword = "GTICMOVIES6741"; [cite: 85]
+[cite_start]const devPassword = "GTICDEVS89"; [cite: 86]
 const overlay = document.getElementById('passwordOverlay');
 const mainContent = document.getElementById('mainContent');
 const pwInput = document.getElementById('pwInput');
-const pwBtn = document.getElementById('pwBtn');
-const logoutBtn = document.getElementById('logoutBtn');
+[cite_start]const pwBtn = document.getElementById('pwBtn'); [cite: 86]
+[cite_start]const logoutBtn = document.getElementById('logoutBtn'); [cite: 87]
 const introOverlay = document.getElementById("introOverlay");
 const vpnOverlay = document.getElementById('vpnOverlay');
-const closeVpn = document.getElementById('closeVpn');
-
+[cite_start]const closeVpn = document.getElementById('closeVpn'); [cite: 87]
 // FAVORITES SYSTEM
-let favorites = JSON.parse(localStorage.getItem('gtic_favs')) || [];
+let favorites = JSON.parse(localStorage.getItem('gtic_favs')) || [cite_start][]; [cite: 88]
 
 function toggleFav(title) {
     if (favorites.includes(title)) {
-        favorites = favorites.filter(t => t !== title);
-    } else {
+        [cite_start]favorites = favorites.filter(t => t !== title); [cite: 88]
+    [cite_start]} else { [cite: 89]
         favorites.push(title);
     }
     localStorage.setItem('gtic_favs', JSON.stringify(favorites));
-    initHub(); 
-}
+    [cite_start]initHub(); [cite: 89]
+[cite_start]} [cite: 90]
 
 function playIntroThenShowContent() {
   introOverlay.classList.remove("hidden");
@@ -373,15 +434,15 @@ function playIntroThenShowContent() {
       mainContent.style.display="block";
       vpnOverlay.style.display = "flex"; 
       initHub();
-  },2000);
-}
+  [cite_start]},2000); [cite: 90]
+[cite_start]} [cite: 91]
 
 closeVpn.onclick = () => { vpnOverlay.style.display = "none"; };
 
 if(localStorage.getItem("gtic_dev_access")==="true"){ 
     overlay.classList.add("hidden"); 
-    playIntroThenShowContent();
-}
+    [cite_start]playIntroThenShowContent(); [cite: 91]
+[cite_start]} [cite: 92]
 
 pwBtn.addEventListener("click",()=>{ 
     const val=pwInput.value; 
@@ -390,8 +451,8 @@ pwBtn.addEventListener("click",()=>{
         overlay.classList.add("hidden"); 
         playIntroThenShowContent(); 
     } else{alert("Incorrect password"); pwInput.value="";} 
-});
-pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();});
+[cite_start]}); [cite: 92]
+[cite_start]pwInput.addEventListener("keydown", e=>{if(e.key==='Enter') pwBtn.click();}); [cite: 93]
 logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_access"); location.reload(); });
 
 // Content Data
@@ -400,37 +461,41 @@ const movies = [
   { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
   { title:"We Can Be Heroes", rating:"PG", desc:"Kids of superheroes must save their parents and the world.", link:"https://vidnest.fun/movie/615677", category:"Family", img:"https://image.tmdb.org/t/p/w1280/iVbV8IwLe65DFffbqVz9kcMRnnH.jpg" },
   { title:"The Wrecking Crew", rating:"R", desc:"Two mismatched detectives take down a criminal conspiracy.", link:"https://vidnest.fun/movie/1168190", category:"Action", img:"https://preview.redd.it/the-wrecking-crew-2026-new-prime-video-movie-v0-l7311klm85gg1.jpeg?auto=webp&s=d2f8c3588197d6cff5202d9cb6f4d1e4b6c1c0bd" },
-  { title:"The Parent Trap", rating:"PG", desc:"Twice the Fun, Double the Trouble.", link:"https://vidnest.fun/movie/9820", category:"Family", img:"https://ntvb.tmsimg.com/assets/p21442_v_h10_ab.jpg?w=1280&h=720" },
+  [cite_start]{ title:"The Parent Trap", [cite: 93]
+    [cite_start]rating:"PG", desc:"Twice the Fun, Double the Trouble.", link:"https://vidnest.fun/movie/9820", category:"Family", img:"https://ntvb.tmsimg.com/assets/p21442_v_h10_ab.jpg?w=1280&h=720" }, [cite: 94]
   { title:"The Lorax", rating:"PG", desc:"Bright colors and a 'save the trees' message.", link:"https://gtic-home.short.gy/Qz4XTe", category:"Family", img:"https://m.media-amazon.com/images/I/61xmDC+2x7L._UF894,1000_QL80_.jpg" },
   { title:"The Curse of Bridge Hollow", rating:"PG-13", desc:"Father and daughter save their town from spirits.", link:"https://gtic-home.short.gy/tpUnyh", category:"Halloween", img:"https://i.ytimg.com/vi/f93J5Bhrf5Q/maxresdefault.jpg" },
   { title:"The Black Phone", rating:"R", desc:"Dark thriller from Blumhouse.", link:"https://gtic-home.short.gy/9JmW8h", category:"Halloween", img:"https://i0.wp.com/www.friendsofcc.com/wp-content/uploads/2022/06/02-bp-dm-mobile-banner-1080x745-rr-f01-052622-62902757c6bea-1-e1656788983973.jpg?fit=919%2C496&ssl=1" },
   { title:"Superman", rating:"PG-13", desc:"The new chapter in DC’s legacy.", link:"https://gtic-home.short.gy/Y3QXuR", category:"Action", img:"https://flixchatter.net/wp-content/uploads/2025/07/gunn-superman-2025.jpg" },
   { title:"Super Mario Bros. Movie", rating:"PG", desc:"Action, nostalgia, and fun.", link:"https://gtic-home.short.gy/RYrb3q", category:"Action", img:"https://i.ytimg.com/vi/PlBwcQic1vI/maxresdefault.jpg" },
-  { title:"Sonic the Hedgehog 3", rating:"PG", desc:"Sonic faces his biggest challenge yet.", link:"https://gtic-home.short.gy/BQ9ZoC", category:"Action", img:"https://thecollision.org/wp-content/uploads/2024/12/sonic3.png" },
+  [cite_start]{ title:"Sonic the Hedgehog 3", rating:"PG", desc:"Sonic faces [cite: 94]
+    [cite_start]his biggest challenge yet.", link:"https://gtic-home.short.gy/BQ9ZoC", category:"Action", img:"https://thecollision.org/wp-content/uploads/2024/12/sonic3.png" }, [cite: 95]
   { title:"Sonic the Hedgehog 2", rating:"PG", desc:"Sonic teams up with Tails.", link:"https://gtic-home.short.gy/e68XtB", category:"Action", img:"https://static0.moviewebimages.com/wordpress/wp-content/uploads/2022/02/sonic-2-poster.jpg" },
   { title:"Sonic the Hedgehog", rating:"PG", desc:"Sonic joins the adventure in live-action.", link:"https://gtic-home.short.gy/xL1ftq", category:"Action", img:"https://miro.medium.com/1*bjdQG6NqjdtpvMeb0OAVBQ.jpeg" },
   { title:"Red One", rating:"PG-13", desc:"Holiday adventure with The Rock.", link:"https://gtic-home.short.gy/CgaE2Y", category:"Christmas", img:"https://ntvb.tmsimg.com/assets/p26548425_v_h8_aa.jpg?w=1280&h=720" },
   { title:"M3GAN 2.0", rating:"PG-13", desc:"The AI terror returns.", link:"https://gtic-home.short.gy/cHbEJq", category:"Halloween", img:"https://i.ytimg.com/vi/6HInuht789U/maxresdefault.jpg" },
   { title:"M3GAN", rating:"PG-13", desc:"Creepy doll meets technology.", link:"https://gtic-home.short.gy/7oEn8H", category:"Halloween", img:"https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6402d394a80141001df76adf.jpg" },
   { title:"Mission: Impossible 8", rating:"PG-13", desc:"The final reckoning for Ethan Hunt.", link:"https://gtic-home.short.gy/6dxKAC", category:"Action", img:"https://img.englishcinemaparis.com/gvhsMT4MMV_MrmPc8kejNbesyIS9xsxDhMTETlqzcGo/resize:fill:800:450:1:0/gravity:sm/aHR0cHM6Ly9leHBhdGNpbmVtYXByb2QuYmxvYi5jb3JlLndpbmRvd3MubmV0L2ltYWdlcy9hNjdhNzUyZi0wNzAyLTQ3NmYtYjlhOC1hODc5ZjdmMTU0ZjEuanBn.jpg" },
-  { title:"KPop Demon Hunters", rating:"PG-13", desc:"K-Pop stars fight demons in epic battles.", link:"https://gtic-home.short.gy/0TCvNH", category:"Action", img:"https://thefilmlegacy.com/wp-content/uploads/2025/07/k-pop-demon-hunters.jpg?w=960" },
+  [cite_start]{ title:"KPop Demon Hunters", [cite: 95]
+    [cite_start]rating:"PG-13", desc:"K-Pop stars fight demons in epic battles.", link:"https://gtic-home.short.gy/0TCvNH", category:"Action", img:"https://thefilmlegacy.com/wp-content/uploads/2025/07/k-pop-demon-hunters.jpg?w=960" }, [cite: 96]
   { title:"Five Nights at Freddy's 2", rating:"PG-13", desc:"New nightmares awaken at Fazbear’s.", link:"https://gtic-home.short.gy/hnpEfD", category:"Halloween", img:"https://m.media-amazon.com/images/M/MV5BZjczNjMxYTgtZTMxOS00MTg5LWFiMjYtYzIwMDQ5MTQ3ODU0XkEyXkFqcGdeQWFybm8@._V1_.jpg" },
   { title:"Five Nights at Freddy's", rating:"PG-13", desc:"Survive the night at Freddy Fazbear's Pizza.", link:"https://gtic-home.short.gy/GOFNw3", category:"Halloween", img:"https://4kwallpapers.com/images/wallpapers/five-nights-at-3840x2160-13263.jpg" },
   { title:"Fall", rating:"PG-13", desc:"Two friends get stuck on a 2,000-foot radio tower.", link:"https://gtic-home.short.gy/RF4Dxt", category:"Action", img:"https://www.cdcun.com/media/news/1102_thumb.jpg" },
   { title:"Dog Man", rating:"PG", desc:"Part dog, part man, all hero.", link:"https://gtic-home.short.gy/G4Q2Kq", category:"Family", img:"https://4kwallpapers.com/images/walls/thumbs_3t/21440.jpg" },
   { title:"Dear Santa", rating:"PG", desc:"Jack Black stars in this holiday comedy.", link:"https://gtic-home.short.gy/1zJ5Hu", category:"Christmas", img:"https://ntvb.tmsimg.com/assets/p28597719_v_h8_aa.jpg?w=960&h=540" },
-  { title:"Coco", rating:"PG", desc:"A journey through music and memory.", link:"https://gtic-home.short.gy/8zA1fM", category:"Family", img:"https://stanleymovietheater.com/wp-content/uploads/2020/10/Coco-Family-Poster-Pixar.jpg" },
+  [cite_start]{ title:"Coco", rating:"PG", desc:"A [cite: 96]
+    [cite_start]journey through music and memory.", link:"https://gtic-home.short.gy/8zA1fM", category:"Family", img:"https://stanleymovietheater.com/wp-content/uploads/2020/10/Coco-Family-Poster-Pixar.jpg" }, [cite: 97]
   { title:"Cars 3", rating:"G", desc:"McQueen faces a new generation of racers.", link:"https://gtic-home.short.gy/T2sq4p", category:"Family", img:"https://thedisneydrivenlife.com/wp-content/uploads/2016/12/cars3internationalheader.jpg" },
   { title:"Cars 2", rating:"G", desc:"Mater gets caught in international espionage.", link:"https://gtic-home.short.gy/PFW9BQ", category:"Action", img:"https://wallpapers.com/images/hd/cars-2-movie-poster-yz8huh9xd0z74hx3.jpg" },
   { title:"Cars", rating:"G", desc:"A race car learns life is about the journey.", link:"https://gtic-home.short.gy/734Nd9", category:"Family", img:"https://files.ekmcdn.com/allwallpapers/images/cars-characters-61x91-5cm-disney-movie-poster-37932-1-p.jpg?v=1E386C7A-4150-42FA-9679-082254DCFE1C" },
   { title:"Captain Underpants", rating:"PG", desc:"Fourth-grade pranksters create a superhero.", link:"https://gtic-home.short.gy/U1HUbb", category:"Comedy", img:"https://pbs.twimg.com/media/GZtQF8WaAAEYFwZ.jpg:large" },
   { title:"Bring It On: Cheer or Die", rating:"PG-13", desc:"Horror spin on the cheerleading series.", link:"https://gtic-home.short.gy/KJBAeC", category:"Halloween", img:"https://images.plex.tv/photo?size=large-1920&scale=1&url=https%3A%2F%2Fmetadata-static.plex.tv%2F9%2Fgracenote%2F9b27249211b3c547cd67f8a67351f7cb.jpg" },
-  { title:"Black Phone 2", rating:"R", desc:"The grabber returns.", link:"https://gtic-home.short.gy/ft5UYq", category:"Halloween", img:"https://attractionsmagazine.com/wp-content/uploads/2025/10/Black-Phone-2-Ethan-Hawke-Mason-Thames-courtesy-of-Universal.jpg" },
+  [cite_start]{ title:"Black Phone 2", rating:"R", desc:"The grabber returns.", link:"https://gtic-home.short.gy/ft5UYq", [cite: 97]
+    [cite_start]category:"Halloween", img:"https://attractionsmagazine.com/wp-content/uploads/2025/10/Black-Phone-2-Ethan-Hawke-Mason-Thames-courtesy-of-Universal.jpg" }, [cite: 98]
   { title:"A Minecraft Movie", rating:"PG", desc:"The sandbox world comes to life.", link:"https://gtic-home.short.gy/MUcD5Y", category:"Family", img:"https://uhsswordandshield.com/wp-content/uploads/2025/05/film_feature_minecraft-movie-poster.jpg" },
   { title:"A Charlie Brown Christmas", rating:"G", desc:"Classic holiday comfort.", link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview", category:"Christmas", img:"https://i.ebayimg.com/images/g/rRoAAOSwfERnGtix/s-l400.jpg" }
-];
-
-const shows = [
+[cite_start]]; [cite: 98]
+[cite_start]const shows = [ [cite: 99]
   { 
     title:"The Last of Us", rating:"TV-MA", desc:"Survivors navigate a fungal apocalypse.", category:"Drama", 
     img:"https://beam-images.warnermediacdn.com/2025-03/the-last-of-us-s2-og-image.jpg?host=wbd-dotcom-drupal-prd-us-east-1.s3.amazonaws.com",
@@ -441,7 +506,8 @@ const shows = [
         {title:"Episode 5", link:"https://vidnest.fun/tv/100088/1/5"}, {title:"Episode 6", link:"https://vidnest.fun/tv/100088/1/6"},
         {title:"Episode 7", link:"https://vidnest.fun/tv/100088/1/7"}, {title:"Episode 8", link:"https://vidnest.fun/tv/100088/1/8"}, {title:"Episode 9", link:"https://vidnest.fun/tv/100088/1/9"}
       ]},
-      { title:"Season 2", episodes:[
+ [cite_start][cite: 99]
+      [cite_start]{ title:"Season 2", episodes:[ [cite: 100]
         {title:"Episode 1", link:"https://vidnest.fun/tv/100088/2/1"}, {title:"Episode 2", link:"https://vidnest.fun/tv/100088/2/2"},
         {title:"Episode 3", link:"https://vidnest.fun/tv/100088/2/3"}, {title:"Episode 4", link:"https://vidnest.fun/tv/100088/2/4"},
         {title:"Episode 5", link:"https://vidnest.fun/tv/100088/2/5"}, {title:"Episode 6", link:"https://vidnest.fun/tv/100088/2/6"}, {title:"Episode 7", link:"https://vidnest.fun/tv/100088/2/7"}
@@ -452,32 +518,39 @@ const shows = [
     title:"The Flash", rating:"TV-PG", desc:"Barry Allen becomes the fastest man alive.", category:"Action", 
     img:"https://beam-images.warnermediacdn.com/BEAM_LWM_DELIVERABLES/c83bc8d3-c134-4b41-b744-150010a68b7c/6d8331d3-dc28-4f57-987c-243b6ffe9d0c?host=wbd-images.prod-vod.h264.io&partner=beamcom&w=500",
     seasons:[
-      { title:"Season 1", episodes:[
-        {title:"Episode 1", link:"https://vidnest.fun/tv/60735/1/1"}, {title:"Episode 2", link:"https://vidnest.fun/tv/60735/1/2"},
+      [cite_start]{ title:"Season 1", episodes:[ [cite: 100]
+   [cite_start][cite: 101]
+      {title:"Episode 1", link:"https://vidnest.fun/tv/60735/1/1"}, {title:"Episode 2", link:"https://vidnest.fun/tv/60735/1/2"},
         {title:"Episode 3", link:"https://vidnest.fun/tv/60735/1/3"}, {title:"Episode 4", link:"https://vidnest.fun/tv/60735/1/4"},
         {title:"Episode 5", link:"https://vidnest.fun/tv/60735/1/5"}, {title:"Episode 6", link:"https://vidnest.fun/tv/60735/1/6"},
         {title:"Episode 7", link:"https://vidnest.fun/tv/60735/1/7"}, {title:"Episode 8", link:"https://vidnest.fun/tv/60735/1/8"}, {title:"Episode 9", link:"https://vidnest.fun/tv/60735/1/9"}
       ]}
     ]
   }
-];
-
-const sports = [
+[cite_start]]; [cite: 101]
+[cite_start]const sports = [ [cite: 102]
+  {
+    title: "NFL Channel", 
+    rating: "LIVE 24/7", 
+    desc: "Live breaking news, game highlights, and exclusive NFL coverage.", 
+    category: "Sports",
+    img: "https://static.www.nfl.com/image/upload/v1554321393/league/ov7m7u7tp9o0fdtmlyda.jpg",
+    link: "https://tubitv.com/live/613761/nfl-channel" 
+  },
   {
     title: "WWE", rating: "SPORTS", desc: "Premium live events and weekly shows.", img: "https://insidepulse.com/wp-content/uploads/2017/12/WWE-logo-banner.jpg",
     events: [
-      { title: "WrestleMania 41: Saturday", rating: "LIVE", desc: "Night 1 of the Showcase of the Immortals.", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285198" },
-      { title: "WrestleMania 41: Sunday", rating: "LIVE", desc: "Night 2 of the Showcase of the Immortals.", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285199" }
+      { title: "WrestleMania 41: Sat", rating: "LIVE", desc: "Night 1 of the Showcase of the Immortals.", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285198" },
+      { title: "WrestleMania 41: Sun", rating: "LIVE", desc: "Night 2 of the Showcase of the Immortals.", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285199" }
     ]
   }
-];
-
+[cite_start]]; [cite: 102]
 // Hub Logic
-const container = document.getElementById("movies");
+[cite_start]const container = document.getElementById("movies"); [cite: 103]
 const overlayPlayer = document.getElementById("playerOverlay");
 const frame = document.getElementById("movieFrame");
-const closeBtn = document.getElementById("closePlayer");
-let currentTab = "movies";
+[cite_start]const closeBtn = document.getElementById("closePlayer"); [cite: 103]
+[cite_start]let currentTab = "movies"; [cite: 104]
 let sortAZ = true;
 
 const showOverlay = document.createElement('div');
@@ -485,11 +558,10 @@ showOverlay.id = 'showOverlay';
 document.body.appendChild(showOverlay);
 
 function renderList(list){
-  container.innerHTML="";
-  
-  if (currentTab === 'favorites' && list.length === 0) {
-      container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 50px; color: var(--muted);"><h3>Your list is empty!</h3><p>Click the ❤️ on any content to save it here.</p></div>`;
-      return;
+  [cite_start]container.innerHTML=""; [cite: 104]
+  [cite_start]if (currentTab === 'favorites' && list.length === 0) { [cite: 105]
+      [cite_start]container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 50px; color: var(--muted);"><h3>Your list is empty!</h3><p>Click the ❤️ on any content to save it here.</p></div>`; [cite: 105]
+      [cite_start]return; [cite: 106]
   }
 
   list.forEach(m=>{
@@ -502,7 +574,8 @@ function renderList(list){
         <div class="title-row"><h3 class="title">${m.title}</h3><div class="rating">${m.rating}</div></div>
         <div class="desc">${m.desc}</div>
         <div class="actions">
-          <button class="btn btn-watch">${m.rating === 'COMING SOON' ? '⏳ Soon' : '▶ Watch'}</button>
+          [cite_start]<button class="btn btn-watch">${m.rating === 'COMING [cite: 106]
+          SOON' ? [cite_start]'⏳ Soon' : '▶ Watch'}</button> [cite: 107]
           <button class="btn btn-info">Details</button>
         </div>
       </div>
@@ -510,16 +583,17 @@ function renderList(list){
     
     card.querySelector('.btn-watch').onclick = () => {
         if(m.rating === 'COMING SOON') return alert("Not available yet!");
-        if(currentTab === 'movies' || (currentTab === 'favorites' && m.link)) { 
-            frame.src = m.link; overlayPlayer.style.display = 'flex'; 
+        if(currentTab === 'movies' || m.link || (currentTab === 'favorites' && m.link)) { 
+            [cite_start]frame.src = m.link; [cite: 107]
+            [cite_start]overlayPlayer.style.display = 'flex'; [cite: 108]
         }
         else if(m.seasons) openShowDetail(m);
         else if(m.events) openSportCategory(m);
-    };
-    card.querySelector('.btn-info').onclick = () => alert(m.title + ": " + m.desc);
+    [cite_start]}; [cite: 108]
+    [cite_start]card.querySelector('.btn-info').onclick = () => alert(m.title + ": " + m.desc); [cite: 109]
     container.append(card);
-  });
-}
+  [cite_start]}); [cite: 109]
+[cite_start]} [cite: 110]
 
 function openShowDetail(show) {
     showOverlay.innerHTML = `
@@ -527,8 +601,8 @@ function openShowDetail(show) {
         <div class="show-content-wrapper">
             <h1 style="margin-bottom: 30px; text-align: center;">${show.title}</h1>
         </div>
-    `;
-    const wrapper = showOverlay.querySelector('.show-content-wrapper');
+    [cite_start]`; [cite: 110]
+    [cite_start]const wrapper = showOverlay.querySelector('.show-content-wrapper'); [cite: 111]
 
     show.seasons.forEach(s => {
         const seasonDiv = document.createElement('div');
@@ -540,78 +614,80 @@ function openShowDetail(show) {
 
         s.episodes.forEach(e => {
             const b = document.createElement('button');
-            b.className = 'btn btn-info';
+ [cite_start][cite: 111]
+            [cite_start]b.className = 'btn btn-info'; [cite: 112]
             b.textContent = e.title;
             b.onclick = () => { 
                 frame.src = e.link; 
                 overlayPlayer.style.display = 'flex'; 
-                showOverlay.style.display = 'none'; 
+                [cite_start]showOverlay.style.display [cite: 112]
+                [cite_start]= 'none'; [cite: 113]
             };
             epGrid.append(b);
         });
 
         seasonDiv.append(epGrid);
         wrapper.append(seasonDiv);
-    });
-
-    document.getElementById('closeShow').onclick = () => showOverlay.style.display='none';
+    [cite_start]}); [cite: 113]
+    [cite_start]document.getElementById('closeShow').onclick = () => showOverlay.style.display='none'; [cite: 114]
     showOverlay.style.display='flex';
 }
 
 function openSportCategory(sport) {
-    showOverlay.innerHTML = `<button class="close-detail" id="closeShow">✖ Return</button> <h2>${sport.title}</h2>`;
-    const grid = document.createElement('div');
-    grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; width:100%; max-width:1100px; padding:20px;';
-    sport.events.forEach(ev => {
+    [cite_start]showOverlay.innerHTML = `<button class="close-detail" id="closeShow">✖ Return</button> <h2>${sport.title}</h2>`; [cite: 114]
+    [cite_start]const grid = document.createElement('div'); [cite: 115]
+    [cite_start]grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; width:100%; max-width:1100px; padding:20px;'; [cite: 115]
+    [cite_start]sport.events.forEach(ev => { [cite: 116]
         const div = document.createElement('div'); div.className='card';
         div.innerHTML = `<div class="poster"><img src="${ev.img}"></div><div class="meta"><h3 class="title">${ev.title}</h3><button class="btn btn-watch">▶ Play</button></div>`;
         div.querySelector('button').onclick = () => { frame.src = ev.link; overlayPlayer.style.display='flex'; showOverlay.style.display='none'; };
         grid.append(div);
-    });
-    showOverlay.append(grid);
+    [cite_start]}); [cite: 116]
+    [cite_start]showOverlay.append(grid); [cite: 117]
     document.getElementById('closeShow').onclick = () => showOverlay.style.display='none';
     showOverlay.style.display='flex';
 }
 
 function initHub() {
   const q = document.getElementById("q");
-  const filter = document.getElementById("filter");
-  const catFilter = document.getElementById("categoryFilter");
+  [cite_start]const filter = document.getElementById("filter"); [cite: 117]
+  [cite_start]const catFilter = document.getElementById("categoryFilter"); [cite: 118]
   const sortBtn = document.getElementById("sortBtn");
   const tabs = document.querySelectorAll(".tab-btn");
 
   function filterItems() {
-    let list;
-    if (currentTab === 'favorites') {
-        list = [...movies, ...shows, ...sports].filter(item => favorites.includes(item.title));
-    } else {
-        list = currentTab === 'movies' ? movies : currentTab === 'shows' ? shows : sports;
+    [cite_start]let list; [cite: 118]
+    [cite_start]if (currentTab === 'favorites') { [cite: 119]
+        [cite_start]list = [...movies, ...shows, ...sports].filter(item => favorites.includes(item.title)); [cite: 119]
+    [cite_start]} else { [cite: 120]
+        [cite_start]list = currentTab === 'movies' ? [cite: 120]
+        [cite_start]movies : currentTab === 'shows' ? shows : sports; [cite: 121]
     }
 
-    const query = q.value.toLowerCase();
-    const rating = filter.value;
+    [cite_start]const query = q.value.toLowerCase(); [cite: 121]
+    [cite_start]const rating = filter.value; [cite: 122]
     const cat = catFilter.value;
     let filtered = list.filter(m => 
       (m.title.toLowerCase().includes(query) || (m.desc && m.desc.toLowerCase().includes(query))) &&
       (rating === 'all' || m.rating === rating) &&
       (cat === 'all' || m.category === cat)
-    );
-    if(sortAZ) filtered.sort((a,b) => a.title.localeCompare(b.title));
+    [cite_start]); [cite: 122]
+    [cite_start]if(sortAZ) filtered.sort((a,b) => a.title.localeCompare(b.title)); [cite: 123]
     else filtered.sort((a,b) => b.title.localeCompare(a.title));
     renderList(filtered);
   }
 
-  q.oninput = filterItems; filter.onchange = filterItems; catFilter.onchange = filterItems;
-  sortBtn.onclick = () => { sortAZ = !sortAZ; sortBtn.textContent = sortAZ ? "Sort A-Z" : "Sort Z-A"; filterItems(); };
-  tabs.forEach(t => { 
+  [cite_start]q.oninput = filterItems; filter.onchange = filterItems; catFilter.onchange = filterItems; [cite: 123]
+  sortBtn.onclick = () => { sortAZ = !sortAZ; sortBtn.textContent = sortAZ ? "Sort A-Z" : "Sort Z-A"; filterItems(); [cite_start]}; [cite: 124]
+  [cite_start]tabs.forEach(t => { [cite: 125]
       t.onclick = () => { 
           tabs.forEach(btn => btn.classList.remove('active')); 
           t.classList.add('active'); 
           currentTab = t.dataset.tab; 
           filterItems(); 
       }; 
-  });
-  filterItems();
+  [cite_start]}); [cite: 125]
+  [cite_start]filterItems(); [cite: 126]
 }
 
 document.getElementById("closePlayer").onclick = () => { document.getElementById('playerOverlay').style.display = 'none'; frame.src = ""; };
