@@ -223,9 +223,22 @@ flex-direction: column; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.
 .btn-info:hover { background: rgba(255,255,255,0.1); }
 
 /* Overlays */
-#playerOverlay, #showOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; align-items: center; justify-content: center; z-index: 10000; flex-direction: column; padding: 20px; }
+#playerOverlay, #showOverlay { 
+    position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; 
+    align-items: center; justify-content: center; z-index: 10000; flex-direction: column; padding: 20px; 
+}
+
+/* Season & Episode Styling Correction */
+#showOverlay { overflow-y: auto; padding-top: 80px; }
+.show-content-wrapper { width: 100%; max-width: 900px; margin-bottom: 50px; }
+.season-block { background: var(--glass); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; }
+.episode-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-top: 15px; }
+
 #playerOverlay iframe { width: 100%; max-width: 1000px; aspect-ratio: 16/9; border: 0; border-radius: 16px; box-shadow: 0 0 50px rgba(229,9,20,0.2); }
-#closePlayer, .close-detail { margin-top: 25px; background: var(--accent); color: white; border: 0; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; }
+#closePlayer, .close-detail { 
+    position: fixed; top: 20px; right: 20px; z-index: 10001;
+    background: var(--accent); color: white; border: 0; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; 
+}
 
 footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; text-align: center; border-top: 1px solid var(--border); }
 
@@ -234,6 +247,7 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
     header .left { flex-direction: column; }
     .sticky-bar { top: 0; border-radius: 0; margin: 0 -20px 30px -20px; }
     .tabs { max-width: 100%; }
+    .episode-grid { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
 </head>
@@ -339,7 +353,7 @@ const introOverlay = document.getElementById("introOverlay");
 const vpnOverlay = document.getElementById('vpnOverlay');
 const closeVpn = document.getElementById('closeVpn');
 
-// --- FAVORITES SYSTEM ---
+// FAVORITES SYSTEM
 let favorites = JSON.parse(localStorage.getItem('gtic_favs')) || [];
 
 function toggleFav(title) {
@@ -349,7 +363,7 @@ function toggleFav(title) {
         favorites.push(title);
     }
     localStorage.setItem('gtic_favs', JSON.stringify(favorites));
-    initHub(); // Refresh to update icons and list
+    initHub(); 
 }
 
 function playIntroThenShowContent() {
@@ -508,19 +522,38 @@ function renderList(list){
 }
 
 function openShowDetail(show) {
-    showOverlay.innerHTML = `<button class="close-detail" id="closeShow">✖ Return</button> <h2>${show.title}</h2>`;
+    showOverlay.innerHTML = `
+        <button class="close-detail" id="closeShow">✖ Return</button>
+        <div class="show-content-wrapper">
+            <h1 style="margin-bottom: 30px; text-align: center;">${show.title}</h1>
+        </div>
+    `;
+    const wrapper = showOverlay.querySelector('.show-content-wrapper');
+
     show.seasons.forEach(s => {
-        const div = document.createElement('div');
-        div.innerHTML = `<h3 style="border-left: 4px solid var(--accent); padding-left: 10px;">${s.title}</h3>`;
-        const grid = document.createElement('div');
-        grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:20px;';
+        const seasonDiv = document.createElement('div');
+        seasonDiv.className = 'season-block';
+        seasonDiv.innerHTML = `<h3 style="border-left: 4px solid var(--accent); padding-left: 12px; margin: 0;">${s.title}</h3>`;
+        
+        const epGrid = document.createElement('div');
+        epGrid.className = 'episode-grid';
+
         s.episodes.forEach(e => {
-            const b = document.createElement('button'); b.className = 'btn btn-info'; b.textContent = e.title;
-            b.onclick = () => { frame.src = e.link; overlayPlayer.style.display='flex'; showOverlay.style.display='none'; };
-            grid.append(b);
+            const b = document.createElement('button');
+            b.className = 'btn btn-info';
+            b.textContent = e.title;
+            b.onclick = () => { 
+                frame.src = e.link; 
+                overlayPlayer.style.display = 'flex'; 
+                showOverlay.style.display = 'none'; 
+            };
+            epGrid.append(b);
         });
-        div.append(grid); showOverlay.append(div);
+
+        seasonDiv.append(epGrid);
+        wrapper.append(seasonDiv);
     });
+
     document.getElementById('closeShow').onclick = () => showOverlay.style.display='none';
     showOverlay.style.display='flex';
 }
@@ -528,7 +561,7 @@ function openShowDetail(show) {
 function openSportCategory(sport) {
     showOverlay.innerHTML = `<button class="close-detail" id="closeShow">✖ Return</button> <h2>${sport.title}</h2>`;
     const grid = document.createElement('div');
-    grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px;';
+    grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; width:100%; max-width:1100px; padding:20px;';
     sport.events.forEach(ev => {
         const div = document.createElement('div'); div.className='card';
         div.innerHTML = `<div class="poster"><img src="${ev.img}"></div><div class="meta"><h3 class="title">${ev.title}</h3><button class="btn btn-watch">▶ Play</button></div>`;
