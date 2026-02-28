@@ -363,7 +363,7 @@ function toggleFav(title) {
         favorites.push(title);
     }
     localStorage.setItem('gtic_favs', JSON.stringify(favorites));
-    initHub();
+    initHub(); 
 }
 
 function playIntroThenShowContent() {
@@ -464,14 +464,6 @@ const shows = [
 
 const sports = [
   {
-    title: "NFL Channel", 
-    rating: "LIVE 24/7", 
-    desc: "Live breaking news, game highlights, and exclusive NFL coverage.", 
-    category: "Sports",
-    img: "https://static.www.nfl.com/image/upload/v1554321393/league/ov7m7u7tp9o0fdtmlyda.jpg",
-    link: "https://tubitv.com/live/613761/nfl-channel" 
-  },
-  {
     title: "WWE", rating: "SPORTS", desc: "Premium live events and weekly shows.", img: "https://insidepulse.com/wp-content/uploads/2017/12/WWE-logo-banner.jpg",
     events: [
       { title: "WrestleMania 41: Sat", rating: "LIVE", desc: "Night 1 of the Showcase of the Immortals.", img: "https://s.yimg.com/os/en/evening_standard_239/b76fc7a3e8f86308b5564787ce4f5329", link: "https://vidnest.fun/movie/1285198" },
@@ -518,9 +510,8 @@ function renderList(list){
     
     card.querySelector('.btn-watch').onclick = () => {
         if(m.rating === 'COMING SOON') return alert("Not available yet!");
-        if(currentTab === 'movies' || m.link || (currentTab === 'favorites' && m.link)) { 
-            frame.src = m.link; 
-            overlayPlayer.style.display = 'flex'; 
+        if(currentTab === 'movies' || (currentTab === 'favorites' && m.link)) { 
+            frame.src = m.link; overlayPlayer.style.display = 'flex'; 
         }
         else if(m.seasons) openShowDetail(m);
         else if(m.events) openSportCategory(m);
@@ -562,6 +553,7 @@ function openShowDetail(show) {
         seasonDiv.append(epGrid);
         wrapper.append(seasonDiv);
     });
+
     document.getElementById('closeShow').onclick = () => showOverlay.style.display='none';
     showOverlay.style.display='flex';
 }
