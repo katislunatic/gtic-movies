@@ -210,6 +210,16 @@ flex-direction: column; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.
 .card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
 
 /* Favorite Heart Button Style */
+.order-badge {
+    position: absolute; top: 12px; left: 12px; z-index: 10;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white; font-size: 11px; font-weight: 800;
+    padding: 4px 8px; border-radius: 8px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+}
+.order-badge span { color: var(--accent); margin-right: 3px; }
+
 .fav-btn {
     position: absolute; top: 12px; right: 12px; z-index: 10;
     background: rgba(0,0,0,0.5); border: 0; color: white;
@@ -515,7 +525,12 @@ const movies = [
   { title:"Bring It On: Cheer or Die", rating:"PG-13", desc:"Horror spin on the cheerleading series.", link:"https://gtic-home.short.gy/KJBAeC", category:"Halloween", img:"https://images.plex.tv/photo?size=large-1920&scale=1&url=https%3A%2F%2Fmetadata-static.plex.tv%2F9%2Fgracenote%2F9b27249211b3c547cd67f8a67351f7cb.jpg" },
   { title:"Black Phone 2", rating:"R", desc:"The grabber returns.", link:"https://gtic-home.short.gy/ft5UYq", category:"Halloween", img:"https://attractionsmagazine.com/wp-content/uploads/2025/10/Black-Phone-2-Ethan-Hawke-Mason-Thames-courtesy-of-Universal.jpg" },
   { title:"A Minecraft Movie", rating:"PG", desc:"The sandbox world comes to life.", link:"https://gtic-home.short.gy/MUcD5Y", category:"Family", img:"https://uhsswordandshield.com/wp-content/uploads/2025/05/film_feature_minecraft-movie-poster.jpg" },
-  { title:"A Charlie Brown Christmas", rating:"G", desc:"Classic holiday comfort.", link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview", category:"Christmas", img:"https://i.ebayimg.com/images/g/rRoAAOSwfERnGtix/s-l400.jpg" }
+  { title:"A Charlie Brown Christmas", rating:"G", desc:"Classic holiday comfort.", link:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/preview", category:"Christmas", img:"https://i.ebayimg.com/images/g/rRoAAOSwfERnGtix/s-l400.jpg" },
+  { title:"The Hunger Games", rating:"PG-13", desc:"Katniss volunteers to take her sister's place in a deadly televised fight-to-the-death competition.", link:"https://vidnest.fun/movie/70160", category:"Action", img:"https://image.tmdb.org/t/p/w780/pa5GfBJsjBiJaKSeOSCmWRPHFDu.jpg", series:"The Hunger Games", order:1 },
+  { title:"The Hunger Games: Catching Fire", rating:"PG-13", desc:"Katniss and Peeta are thrust back into the arena as the Capitol raises the stakes in the Quarter Quell.", link:"https://vidnest.fun/movie/101299", category:"Action", img:"https://image.tmdb.org/t/p/w780/lXS60geme1LlEob5Wgvj3KiljAj.jpg", series:"The Hunger Games", order:2 },
+  { title:"The Hunger Games: Mockingjay Part 1", rating:"PG-13", desc:"Katniss becomes the symbol of rebellion as District 13 wages war against the Capitol.", link:"https://vidnest.fun/movie/131631", category:"Action", img:"https://image.tmdb.org/t/p/w780/cHBGTCh67dGAi9zxFGRMeWJGknD.jpg", series:"The Hunger Games", order:3 },
+  { title:"The Hunger Games: Mockingjay Part 2", rating:"PG-13", desc:"Katniss and her allies launch a final mission to assassinate President Snow and end the Capitol's reign.", link:"https://vidnest.fun/movie/131634", category:"Action", img:"https://image.tmdb.org/t/p/w780/lHgDWRnZvGvOzONiHgfFxRKFjDh.jpg", series:"The Hunger Games", order:4 },
+  { title:"The Hunger Games: Ballad of Songbirds & Snakes", rating:"PG-13", desc:"A young Coriolanus Snow mentors District 12's tribute Lucy Gray Baird 64 years before his tyrannical reign.", link:"https://vidnest.fun/movie/695721", category:"Action", img:"https://image.tmdb.org/t/p/w780/mBaXZ95R2OxueZhvQbcEWy2DqyO.jpg", series:"The Hunger Games", order:5 }
 ];
 
 const shows = [
@@ -566,7 +581,6 @@ const overlayPlayer = document.getElementById("playerOverlay");
 const frame = document.getElementById("movieFrame");
 const closeBtn = document.getElementById("closePlayer");
 let currentTab = "movies";
-let sortAZ = true;
 
 const showOverlay = document.createElement('div');
 showOverlay.id = 'showOverlay';
@@ -584,6 +598,7 @@ function renderList(list){
     const isFav = favorites.includes(m.title);
     const card=document.createElement('article'); card.className='card';
     card.innerHTML = `
+      ${m.order ? `<div class="order-badge"><span>#${m.order}</span>${m.series ? 'Watch Order' : ''}</div>` : ''}
       <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFav('${m.title}')">${isFav ? '❤️' : '🤍'}</button>
       <div class="poster"><img src="${m.img}" alt="${m.title}"></div>
       <div class="meta">
@@ -668,6 +683,8 @@ function initHub() {
   const sortBtn = document.getElementById("sortBtn");
   const tabs = document.querySelectorAll(".tab-btn");
 
+  let sortMode = 'az'; // 'az', 'za', 'order'
+
   function filterItems() {
     let list;
     if (currentTab === 'favorites') {
@@ -684,13 +701,27 @@ function initHub() {
       (rating === 'all' || m.rating === rating) &&
       (cat === 'all' || m.category === cat)
     );
-    if(sortAZ) filtered.sort((a,b) => a.title.localeCompare(b.title));
-    else filtered.sort((a,b) => b.title.localeCompare(a.title));
+    if (sortMode === 'az') filtered.sort((a,b) => a.title.localeCompare(b.title));
+    else if (sortMode === 'za') filtered.sort((a,b) => b.title.localeCompare(a.title));
+    else if (sortMode === 'order') {
+      filtered.sort((a,b) => {
+        const aHas = a.order != null, bHas = b.order != null;
+        if (aHas && bHas) return (a.series || '').localeCompare(b.series || '') || a.order - b.order;
+        if (aHas) return -1;
+        if (bHas) return 1;
+        return a.title.localeCompare(b.title);
+      });
+    }
     renderList(filtered);
   }
 
   q.oninput = filterItems; filter.onchange = filterItems; catFilter.onchange = filterItems;
-  sortBtn.onclick = () => { sortAZ = !sortAZ; sortBtn.textContent = sortAZ ? "Sort A-Z" : "Sort Z-A"; filterItems(); };
+  sortBtn.onclick = () => {
+    if (sortMode === 'az') { sortMode = 'za'; sortBtn.textContent = 'Sort Z-A'; }
+    else if (sortMode === 'za') { sortMode = 'order'; sortBtn.textContent = '🎬 Watch Order'; }
+    else { sortMode = 'az'; sortBtn.textContent = 'Sort A-Z'; }
+    filterItems();
+  };
   tabs.forEach(t => { 
       t.onclick = () => { 
           tabs.forEach(btn => btn.classList.remove('active')); 
