@@ -108,7 +108,7 @@ header h1 { font-size: 28px; margin: 0; letter-spacing: -0.5px; }
 header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
 .logo img { width: 60px; height: 60px; border-radius: 14px; object-fit: cover; }
 
-.logout-btn { background: var(--glass); color: #fff; border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.3s; }
+.logout-btn { background: var(--glass); color: #fff; border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.3s; white-space: nowrap; }
 .logout-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
 
 /* Sticky Controls Section */
@@ -116,16 +116,16 @@ header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
     position: sticky; top: 10px; z-index: 100;
     background: rgba(11, 11, 13, 0.8);
     backdrop-filter: blur(16px);
-    padding: 15px; border-radius: 20px;
+    padding: 12px; border-radius: 20px;
     border: 1px solid var(--border);
     margin-bottom: 30px;
 }
 
-.controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
 /* SEARCH BAR POLISH */
 .search { 
-    flex: 2; min-width: 250px; display: flex; align-items: center; 
+    flex: 1 1 100%; display: flex; align-items: center; 
     gap: 10px; background: rgba(255,255,255,0.03);
     padding: 10px 16px; border-radius: 12px; border: 1px solid var(--border);
     transition: 0.3s;
@@ -133,22 +133,35 @@ header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
 .search:focus-within { border-color: var(--accent); background: rgba(255,255,255,0.06); }
 .search input { background: transparent; border: 0; outline: 0; color: #fff; width: 100%; font-size: 14px; }
 
+/* Bottom row: dropdowns + sort */
+.controls-row2 {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
 .select { 
     appearance: none;
     background: rgba(255,255,255,0.05); 
     color: #fff; 
     border: 1px solid var(--border);
-    padding: 10px 35px 10px 14px; 
+    padding: 10px 32px 10px 12px; 
     border-radius: 12px; 
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer; 
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
+    background-position: right 8px center;
+    background-size: 14px;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @keyframes dropdownOpen {
@@ -164,13 +177,13 @@ header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
 }
 .select option { background: #1a1a1e; color: #fff; }
 
-#sortBtn { background-image: none; padding-right: 14px; }
+#sortBtn { background-image: none; padding: 10px 12px; flex: 0 0 auto; }
 
 /* --- POLISHED ANIMATED TABS --- */
 .tabs { 
-  display: flex; gap: 8px; margin: 0 auto 30px auto;
+  display: flex; gap: 6px; margin: 0 auto 30px auto;
   background: var(--glass); padding: 6px; border-radius: 16px; 
-  width: 100%; max-width: 600px; position: relative; isolation: isolate; border: 1px solid var(--border);
+  width: 100%; position: relative; isolation: isolate; border: 1px solid var(--border);
 }
 .tabs::after {
   content: ""; position: absolute; z-index: -1; top: 6px; left: 6px;
@@ -181,12 +194,12 @@ header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
   transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 .tabs:has([data-tab="movies"].active)::after { transform: translateX(0); }
-.tabs:has([data-tab="shows"].active)::after { transform: translateX(calc(100% + 8px)); }
-.tabs:has([data-tab="sports"].active)::after { transform: translateX(calc(200% + 16px)); }
-.tabs:has([data-tab="favorites"].active)::after { transform: translateX(calc(300% + 24px)); }
+.tabs:has([data-tab="shows"].active)::after { transform: translateX(calc(100% + 6px)); }
+.tabs:has([data-tab="sports"].active)::after { transform: translateX(calc(200% + 12px)); }
+.tabs:has([data-tab="favorites"].active)::after { transform: translateX(calc(300% + 18px)); }
 
-.tab-btn { flex: 1; position: relative; padding: 12px 0; border: 0; border-radius: 12px;
-background: transparent; color: var(--muted); font-size: 14px; font-weight: 700; cursor: pointer; transition: color 0.3s, transform 0.2s; text-align: center; }
+.tab-btn { flex: 1; position: relative; padding: 10px 4px; border: 0; border-radius: 12px;
+background: transparent; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; transition: color 0.3s, transform 0.2s; text-align: center; white-space: nowrap; }
 .tab-btn.active { color: white; transform: scale(1.05); }
 .tab-btn:hover:not(.active) { color: white; }
 
@@ -242,12 +255,85 @@ flex-direction: column; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.
 
 footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; text-align: center; border-top: 1px solid var(--border); }
 
+/* ===== MOBILE RESPONSIVE ===== */
 @media(max-width: 768px) {
-    header { flex-direction: column; text-align: center; gap: 20px; }
-    header .left { flex-direction: column; }
-    .sticky-bar { top: 0; border-radius: 0; margin: 0 -20px 30px -20px; }
-    .tabs { max-width: 100%; }
+    .wrap { padding: 20px 16px; }
+
+    header { flex-direction: row; text-align: left; gap: 12px; margin-bottom: 24px; }
+    header .left { flex-direction: row; gap: 12px; }
+    header h1 { font-size: 20px; }
+    header p { font-size: 13px; }
+    .logo img { width: 44px; height: 44px; border-radius: 10px; }
+
+    .sticky-bar { 
+        position: sticky; top: 0; 
+        border-radius: 0 0 20px 20px; 
+        margin: 0 -16px 24px -16px; 
+        padding: 10px 12px;
+    }
+
+    .controls { gap: 8px; }
+
+    /* Search full width */
+    .search { flex: 1 1 100%; }
+
+    /* 2-col grid for dropdowns + sort */
+    .controls-row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .select { 
+        font-size: 12px; 
+        padding: 9px 26px 9px 10px;
+        background-position: right 6px center;
+        background-size: 12px;
+    }
+
+    #sortBtn { 
+        font-size: 12px; 
+        padding: 9px 10px;
+    }
+
+    /* Tabs: keep on one line, smaller text */
+    .tabs { 
+        gap: 4px; 
+        padding: 5px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+    }
+    .tab-btn { 
+        font-size: 11px; 
+        padding: 9px 2px;
+        border-radius: 10px;
+    }
+    /* Recalculate sliding pill for tighter gaps */
+    .tabs::after {
+        width: calc((100% - 10px - 16px) / 4);
+    }
+    .tabs:has([data-tab="shows"].active)::after { transform: translateX(calc(100% + 4px)); }
+    .tabs:has([data-tab="sports"].active)::after { transform: translateX(calc(200% + 8px)); }
+    .tabs:has([data-tab="favorites"].active)::after { transform: translateX(calc(300% + 12px)); }
+
+    .movies { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+    .poster { height: 120px; }
+    .meta { padding: 12px; }
+    .title { font-size: 14px; }
+    .desc { font-size: 12px; margin-bottom: 12px; }
+    .btn { font-size: 11px; padding: 8px 6px; }
+
     .episode-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media(max-width: 400px) {
+    .controls-row2 {
+        grid-template-columns: 1fr 1fr;
+    }
+    #sortBtn {
+        grid-column: 1 / -1;
+    }
 }
 </style>
 </head>
@@ -297,26 +383,28 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
         <span>🔍</span>
         <input id="q" placeholder="Search movies, shows, genres..." />
       </div>
-      <select id="filter" class="select">
-        <option value="all">All Ratings</option>
-        <option value="G">G</option>
-        <option value="PG">PG</option>
-        <option value="PG-13">PG-13</option>
-        <option value="R">R</option>
-        <option value="TV-PG">TV-PG</option>
-        <option value="TV-MA">TV-MA</option>
-      </select>
-      <select id="categoryFilter" class="select">
-        <option value="all">All Categories</option>
-        <option value="Family">Family</option>
-        <option value="Christmas">Christmas</option>
-        <option value="Halloween">Halloween</option>
-        <option value="Action">Action</option>
-        <option value="Comedy">Comedy</option>
-        <option value="Drama">Drama</option>
-        <option value="Crime">Crime</option>
-      </select>
-      <button id="sortBtn" class="select">Sort A-Z</button>
+      <div class="controls-row2">
+        <select id="filter" class="select">
+          <option value="all">All Ratings</option>
+          <option value="G">G</option>
+          <option value="PG">PG</option>
+          <option value="PG-13">PG-13</option>
+          <option value="R">R</option>
+          <option value="TV-PG">TV-PG</option>
+          <option value="TV-MA">TV-MA</option>
+        </select>
+        <select id="categoryFilter" class="select">
+          <option value="all">All Categories</option>
+          <option value="Family">Family</option>
+          <option value="Christmas">Christmas</option>
+          <option value="Halloween">Halloween</option>
+          <option value="Action">Action</option>
+          <option value="Comedy">Comedy</option>
+          <option value="Drama">Drama</option>
+          <option value="Crime">Crime</option>
+        </select>
+        <button id="sortBtn" class="select">Sort A-Z</button>
+      </div>
     </div>
   </div>
 
@@ -404,7 +492,7 @@ const movies = [
   { title:"The Lorax", rating:"PG", desc:"Bright colors and a 'save the trees' message.", link:"https://gtic-home.short.gy/Qz4XTe", category:"Family", img:"https://m.media-amazon.com/images/I/61xmDC+2x7L._UF894,1000_QL80_.jpg" },
   { title:"The Curse of Bridge Hollow", rating:"PG-13", desc:"Father and daughter save their town from spirits.", link:"https://gtic-home.short.gy/tpUnyh", category:"Halloween", img:"https://i.ytimg.com/vi/f93J5Bhrf5Q/maxresdefault.jpg" },
   { title:"The Black Phone", rating:"R", desc:"Dark thriller from Blumhouse.", link:"https://gtic-home.short.gy/9JmW8h", category:"Halloween", img:"https://i0.wp.com/www.friendsofcc.com/wp-content/uploads/2022/06/02-bp-dm-mobile-banner-1080x745-rr-f01-052622-62902757c6bea-1-e1656788983973.jpg?fit=919%2C496&ssl=1" },
-  { title:"Superman", rating:"PG-13", desc:"The new chapter in DC’s legacy.", link:"https://gtic-home.short.gy/Y3QXuR", category:"Action", img:"https://flixchatter.net/wp-content/uploads/2025/07/gunn-superman-2025.jpg" },
+  { title:"Superman", rating:"PG-13", desc:"The new chapter in DC's legacy.", link:"https://gtic-home.short.gy/Y3QXuR", category:"Action", img:"https://flixchatter.net/wp-content/uploads/2025/07/gunn-superman-2025.jpg" },
   { title:"Super Mario Bros. Movie", rating:"PG", desc:"Action, nostalgia, and fun.", link:"https://gtic-home.short.gy/RYrb3q", category:"Action", img:"https://i.ytimg.com/vi/PlBwcQic1vI/maxresdefault.jpg" },
   { title:"Sonic the Hedgehog 3", rating:"PG", desc:"Sonic faces his biggest challenge yet.", link:"https://gtic-home.short.gy/BQ9ZoC", category:"Action", img:"https://thecollision.org/wp-content/uploads/2024/12/sonic3.png" },
   { title:"Sonic the Hedgehog 2", rating:"PG", desc:"Sonic teams up with Tails.", link:"https://gtic-home.short.gy/e68XtB", category:"Action", img:"https://static0.moviewebimages.com/wordpress/wp-content/uploads/2022/02/sonic-2-poster.jpg" },
@@ -414,7 +502,7 @@ const movies = [
   { title:"M3GAN", rating:"PG-13", desc:"Creepy doll meets technology.", link:"https://gtic-home.short.gy/7oEn8H", category:"Halloween", img:"https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6402d394a80141001df76adf.jpg" },
   { title:"Mission: Impossible 8", rating:"PG-13", desc:"The final reckoning for Ethan Hunt.", link:"https://gtic-home.short.gy/6dxKAC", category:"Action", img:"https://img.englishcinemaparis.com/gvhsMT4MMV_MrmPc8kejNbesyIS9xsxDhMTETlqzcGo/resize:fill:800:450:1:0/gravity:sm/aHR0cHM6Ly9leHBhdGNpbmVtYXByb2QuYmxvYi5jb3JlLndpbmRvd3MubmV0L2ltYWdlcy9hNjdhNzUyZi0wNzAyLTQ3NmYtYjlhOC1hODc5ZjdmMTU0ZjEuanBn.jpg" },
   { title:"KPop Demon Hunters", rating:"PG-13", desc:"K-Pop stars fight demons in epic battles.", link:"https://gtic-home.short.gy/0TCvNH", category:"Action", img:"https://thefilmlegacy.com/wp-content/uploads/2025/07/k-pop-demon-hunters.jpg?w=960" },
-  { title:"Five Nights at Freddy's 2", rating:"PG-13", desc:"New nightmares awaken at Fazbear’s.", link:"https://gtic-home.short.gy/hnpEfD", category:"Halloween", img:"https://m.media-amazon.com/images/M/MV5BZjczNjMxYTgtZTMxOS00MTg5LWFiMjYtYzIwMDQ5MTQ3ODU0XkEyXkFqcGdeQWFybm8@._V1_.jpg" },
+  { title:"Five Nights at Freddy's 2", rating:"PG-13", desc:"New nightmares awaken at Fazbear's.", link:"https://gtic-home.short.gy/hnpEfD", category:"Halloween", img:"https://m.media-amazon.com/images/M/MV5BZjczNjMxYTgtZTMxOS00MTg5LWFiMjYtYzIwMDQ5MTQ3ODU0XkEyXkFqcGdeQWFybm8@._V1_.jpg" },
   { title:"Five Nights at Freddy's", rating:"PG-13", desc:"Survive the night at Freddy Fazbear's Pizza.", link:"https://gtic-home.short.gy/GOFNw3", category:"Halloween", img:"https://4kwallpapers.com/images/wallpapers/five-nights-at-3840x2160-13263.jpg" },
   { title:"Fall", rating:"PG-13", desc:"Two friends get stuck on a 2,000-foot radio tower.", link:"https://gtic-home.short.gy/RF4Dxt", category:"Action", img:"https://www.cdcun.com/media/news/1102_thumb.jpg" },
   { title:"Dog Man", rating:"PG", desc:"Part dog, part man, all hero.", link:"https://gtic-home.short.gy/G4Q2Kq", category:"Family", img:"https://4kwallpapers.com/images/walls/thumbs_3t/21440.jpg" },
