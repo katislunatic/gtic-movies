@@ -400,6 +400,7 @@ footer { margin-top: 60px; padding: 40px; color: var(--muted); font-size: 14px; 
           <option value="PG">PG</option>
           <option value="PG-13">PG-13</option>
           <option value="R">R</option>
+          <option value="NR">NR</option>
           <option value="TV-PG">TV-PG</option>
           <option value="TV-MA">TV-MA</option>
         </select>
@@ -494,6 +495,7 @@ logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("gtic_dev_acces
 
 // Content Data
 const movies = [
+  { title:"Blue My Mind", rating:"NR", desc:"A teenage girl undergoes a terrifying transformation as she discovers her true nature.", link:"https://vidnest.fun/movie/455974", category:"Drama", img:"https://m.media-amazon.com/images/S/pv-target-images/15bde55dc223c3c68e00f77bcd926f072d5c05c159970810f595a1c0cf8e87c5.png" },
   { title:"Backrooms", rating:"COMING SOON", desc:"A young cinematographer's descent into the eerie reality. Based on the viral horror phenomenon.", link:"#", category:"Halloween", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoLmtwlJmhqSrqTK0CmtLhc-9AF6kcgo8y8ORQVH7FLuzREvYdoph63RXb&s=10" },
   { title:"Zootopia 2", rating:"PG", desc:"Judy and Nick return to crack a wild mystery in Zootopia.", link:"https://vidnest.fun/movie/1084242", category:"Family", img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/44d994ac-3f6c-4d9d-8000-fd8f4bfc9cfc/compose?aspectRatio=1.78&format=webp&width=1200" },
   { title:"We Can Be Heroes", rating:"PG", desc:"Kids of superheroes must save their parents and the world.", link:"https://vidnest.fun/movie/615677", category:"Family", img:"https://image.tmdb.org/t/p/w1280/iVbV8IwLe65DFffbqVz9kcMRnnH.jpg" },
